@@ -1,19 +1,59 @@
-// proyecto0.cpp : Este archivo contiene la función "main". La ejecución del programa comienza y termina ahí.
-//
-
 #include <iostream>
+#include <string>
+#include <cstdlib>
+#include <time.h>
+#include "LinkedPriorityQueue.h"
 
-int main()
-{
-    std::cout << "Hello World!\n";
+using namespace std;
+
+int main() {
+
+    PriorityQueue<string>* queue = new LinkedPriorityQueue<string>(3);
+
+    while (true) {
+        int option;
+
+        cout << "¡Buen día!" << endl;
+        cout << "Inserte la opción que quiere realizar: " << endl;
+        cout << "1- Manejo de usuarios" << endl;
+        cout << "2- Salir" << endl;
+
+        cin >> option;
+        switch (option)
+        {
+        case 1:
+            cout << "1- Agregar usuario. " << endl;
+            cout << "2- Eliminar usuario. " << endl;
+            cout << "3- Regresar. " << endl;
+            int suboption;
+            cin >> suboption;
+            if (suboption == 1) {
+                string name;
+                int priority;
+
+                cout << "Inserte su nombre:  " << endl;
+                cin >> name;
+                cout << "Inserte la prioridad: " << endl;
+                cin >> priority;
+
+                queue->insert(name, priority);
+                queue->print();
+            }
+            if (suboption == 2) {
+                string name;
+                int priority;
+
+                cout << "Inserte su nombre:  " << endl;
+                cin >> name;
+                cout << "Inserte la prioridad: " << endl;
+                cin >> priority;
+
+                queue->remove(name, priority);
+                queue->print();
+            }
+
+        default:
+            break;
+        }
+    }
 }
-
-// Ejecutar programa: Ctrl + F5 o menú Depurar > Iniciar sin depurar
-// Depurar programa: F5 o menú Depurar > Iniciar depuración
-
-// Sugerencias para primeros pasos: 1. Use la ventana del Explorador de soluciones para agregar y administrar archivos
-//   2. Use la ventana de Team Explorer para conectar con el control de código fuente
-//   3. Use la ventana de salida para ver la salida de compilación y otros mensajes
-//   4. Use la ventana Lista de errores para ver los errores
-//   5. Vaya a Proyecto > Agregar nuevo elemento para crear nuevos archivos de código, o a Proyecto > Agregar elemento existente para agregar archivos de código existentes al proyecto
-//   6. En el futuro, para volver a abrir este proyecto, vaya a Archivo > Abrir > Proyecto y seleccione el archivo .sln
