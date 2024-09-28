@@ -131,11 +131,15 @@
     <ClCompile Include="proyecto0.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Area.h" />
+    <ClInclude Include="ArrayList.h" />
     <ClInclude Include="LinkedPriorityQueue.h" />
     <ClInclude Include="LinkedQueue.h" />
+    <ClInclude Include="List.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="PriorityQueue.h" />
     <ClInclude Include="Queue.h" />
+    <ClInclude Include="Servicio.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

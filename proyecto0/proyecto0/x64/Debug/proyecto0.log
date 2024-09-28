@@ -1,0 +1,6 @@
+﻿  proyecto0.cpp
+C:\Users\Juanp\OneDrive - Estudiantes ITCR\TEC\II Semestre\Estructuras de Datos\Proyecto\proyecto0_ED\proyecto0\ArrayList.h(167,4): error C2679: '<<' binario: no se encontró un operador que adopte un operando en la parte derecha de tipo 'E' (o bien no existe una conversión aceptable)
+C:\Users\Juanp\OneDrive - Estudiantes ITCR\TEC\II Semestre\Estructuras de Datos\Proyecto\proyecto0_ED\proyecto0\ArrayList.h(167,4): error C2679:         with
+C:\Users\Juanp\OneDrive - Estudiantes ITCR\TEC\II Semestre\Estructuras de Datos\Proyecto\proyecto0_ED\proyecto0\ArrayList.h(167,4): error C2679:         [
+C:\Users\Juanp\OneDrive - Estudiantes ITCR\TEC\II Semestre\Estructuras de Datos\Proyecto\proyecto0_ED\proyecto0\ArrayList.h(167,4): error C2679:             E=Area
+C:\Users\Juanp\OneDrive - Estudiantes ITCR\TEC\II Semestre\Estructuras de Datos\Proyecto\proyecto0_ED\proyecto0\ArrayList.h(167,4): error C2679:         ]
