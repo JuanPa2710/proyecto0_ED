@@ -40,11 +40,17 @@ public:
 		size++;
 	}
 
-	void remove(E element, int priority) {
-		if (priority < 0 || priority >= priorities)
-			throw runtime_error("Invalid priority.");
-		queues[priority].remove(element);
-		size--;
+	void remove(E element) {
+		for (int i = 0; i < priorities; i++) {
+			try {
+				queues[i].remove(element);
+				size--;
+				return;
+			}
+			catch (runtime_error& e) {
+			}
+		}
+		throw runtime_error("Element not found in the priority queue.");
 	}
 
 	E min() {

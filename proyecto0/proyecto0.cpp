@@ -51,10 +51,8 @@ int main() {
 
                 cout << "Inserte su nombre:  " << endl;
                 cin >> name;
-                cout << "Inserte la prioridad: " << endl;
-                cin >> priority;
 
-                queue->remove(name, priority);
+                queue->remove(name);
                 queue->print();
             }
             break;

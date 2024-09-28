@@ -10,7 +10,7 @@ public:
 	PriorityQueue() {}
 	virtual ~PriorityQueue() {}
 	virtual void insert(E element, int priority) = 0;
-	virtual void remove(E element, int priority) = 0;
+	virtual void remove(E element) = 0;
 	virtual E min() = 0;
 	virtual E removeMin() = 0;
 	virtual void clear() = 0;
