@@ -13,21 +13,31 @@ int main() {
 
     PriorityQueue<string> *queue = new LinkedPriorityQueue<string>(3);
     List<Area> *areas = new ArrayList<Area>();
+    queue->insert("Adulto mayor.", 0);
+    queue->insert("Menor de 6 años.", 1);
+    queue->insert("Usuario regular.", 2);
 
     while (true) {
         int option;
 
-        cout << "¡Buen día!" << endl;        
+        cout << "¡Buen día!" << endl;  
+        cout << "Seleccione la acción que desea realizar: " << endl;
+        cout << "0- Solicitar un tiquete." << endl;
         cout << "1- Manejo de usuarios." << endl;
         cout << "2- Manejo de áreas." << endl;
-        cout << "3- Salir." << endl;
+        cout << "3- Mostrar estadísticas." << endl;
+        cout << "4- Salir." << endl;
         cout << "Inserte la opción que quiere realizar: " << endl;
 
         cin >> option;
         switch (option) {
+        case 0:
+
+            break;
+
         case 1:
-            cout << "1- Agregar usuario. " << endl;
-            cout << "2- Eliminar usuario. " << endl;
+            cout << "1- Agregar tipo de usuario. " << endl;
+            cout << "2- Eliminar tipo de usuario. " << endl;
             cout << "3- Regresar. " << endl;
 
             int suboption;
@@ -36,7 +46,7 @@ int main() {
                 string name;
                 int priority;
 
-                cout << "Inserte su nombre:  " << endl;
+                cout << "Inserte la categoría:  " << endl;
                 cin >> name;
                 cout << "Inserte la prioridad: " << endl;
                 cin >> priority;
@@ -47,9 +57,8 @@ int main() {
 
             if (suboption == 2) {
                 string name;
-                int priority;
 
-                cout << "Inserte su nombre:  " << endl;
+                cout << "Inserte la categoría:  " << endl;
                 cin >> name;
 
                 queue->remove(name);
@@ -83,6 +92,13 @@ int main() {
                 areas->append(tempArea);
                 areas->print();
             }
+
+        case 3: 
+            break;
+
+        case 4:
+            exit(0);
+            break;
         }
             break;
 
