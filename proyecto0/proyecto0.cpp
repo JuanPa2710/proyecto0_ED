@@ -7,7 +7,9 @@
 #include <string>
 
 using namespace std;
+using std::cin;
 using std::stoi;
+using std::chrono::system_clock;
 
 
 //int prueba() {
@@ -124,8 +126,8 @@ int main() {
     queue->insert("Menor de 6 años.", 1);
     queue->insert("Usuario regular.", 2);
 
-    while (true) {
-        int option;
+    int option = 0;
+    while (option != 3) {        
         cout << "1- Solicitar un tiquete." << endl;
         cout << "2- Manejo de áreas." << endl;
         cout << "3- Salir." << endl;
@@ -136,50 +138,79 @@ int main() {
 
         }
 
-        if (option == 2) {   
+        if (option == 2) {
             system("cls");
-            cout << "1- Agregar un área. " << endl;
-            cout << "2- Modificar cantidad de ventanillas. " << endl;
-            cout << "3- Eliminar un área. " << endl;
-            cout << "4- Regresar." << endl;
-            cout << "Inserte la opción que quiere realizar: ";
-
             int optionArea = 0;
-            cin >> optionArea;
+            while (optionArea != 4) {
+                cout << "1- Agregar un área. " << endl;
+                cout << "2- Modificar cantidad de ventanillas. " << endl;
+                cout << "3- Consultar áreas. " << endl;
+                cout << "3- Eliminar un área. " << endl;
+                cout << "4- Regresar." << endl;
+                cout << "Inserte la opción que quiere realizar: ";
 
-            if (optionArea == 1) {
-                system("cls");
-                string descripcion, codigo, ventanillas;
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cin >> optionArea;
 
-                cout << "Ingrese la descripción del área: ";
-                getline(cin, descripcion);
+                if (optionArea == 1) {
+                    system("cls");
+                    string descripcion, codigo, ventanillas;
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-                cout << "Ingrese el código del área: ";
-                getline(cin, codigo);
+                    cout << "Ingrese la descripción del área: ";
+                    getline(cin, descripcion);
 
-                cout << "Ingrese la cantidad de ventanillas del área: ";
-                getline(cin, ventanillas);
+                    cout << "Ingrese el código del área: ";
+                    getline(cin, codigo);
 
-                Area tempArea(descripcion, codigo, stoi(ventanillas));
-                areas->append(tempArea);         
-                Tiquete tempTiquete("C100", std::chrono::system_clock::now(), 0);
-                tempArea.agregarTiquete(tempTiquete, 0);
-                tempArea.toString();
+                    cout << "Ingrese la cantidad de ventanillas del área: ";
+                    getline(cin, ventanillas);
+
+                    Area tempArea(descripcion, codigo, stoi(ventanillas));
+                    tempArea.toString();
+                    areas->append(tempArea);
+                    cout << "El área " << descripcion << " fue creada correctamente." << endl;
+                    /*Tiquete tempTiquete("C100", std::chrono::system_clock::now(), 0);
+                    tempArea.agregarTiquete(tempTiquete, 0);*/
+                }
+
+                if (optionArea == 2) {
+                    system("cls");
+                    Area tempArea;
+                    string resul;
+
+                    cout << "Áreas disponibles: " << endl;
+                    areas->printShow();                    
+
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                    cout << "\nIngrese que área desea modificar: ";
+                    getline(cin, resul);
+                    
+                    tempArea.setDescripcion(resul);
+                    int pos = areas->indexOf(tempArea, 0);
+
+                    areas->goToPos(pos);
+                    tempArea.setDescripcion(areas->getElement().getDescripcion());
+                    cout << "Se ha encontrado el área: " << tempArea.getDescripcion() << endl;
+                    cout << "Ingrese el nuevo número de ventanillas: ";
+                    getline(cin, resul);
+
+                    tempArea.setCantVentanillas(stoi(resul));
+                    tempArea.toString();
+                    cin >> resul;
+                }
+
+                if (optionArea == 3) {
+                    system("cls");
+
+                    string resul;
+                    cout << "Áreas disponibles: " << endl << endl;
+                    for (areas->goToStart(); !areas->atEnd(); areas->next())
+                        areas->getElement().toString();
+
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                    cin >> resul;
+                }
             }
-
-            /*if (optionArea == 2) {
-                system("cls");
-                int cantVentanillas;
-                string resul;
-                cout << "Estás son las áreas disponibles: " << endl;
-                areas->printShow(); 
-                cout << endl;
-
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cout << "Ingrese el nuevo número de ventanillas: ";
-                getline(cin, resul);
-            }*/
         }
     }
 }

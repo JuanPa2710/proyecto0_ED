@@ -144,7 +144,7 @@ public:
 		int i = start;
 		while (i < size) {
 			if (element == elements[i])
-				return i + 1;
+				return i;
 			i++;
 		}
 
@@ -173,7 +173,7 @@ public:
 
 	void printShow() {
 		for (int i = 0; i < size; i++) {
-			cout << i + 1 << ". " << elements[i] << " ";
+			cout << i + 1 << ". " << elements[i] << endl;
 		}
 	}
 };
