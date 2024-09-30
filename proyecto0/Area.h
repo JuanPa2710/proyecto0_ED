@@ -18,10 +18,12 @@ private:
 	string codigo;
 	int cantVentanillas;
 	List<string> *ventanillas;
-	List<Servicio> *servicios;
 	PriorityQueue<Tiquete> *tiquetes;
 
 	void asignarCodigosVentanillas() {
+		if (ventanillas->getSize() > 0)
+			ventanillas->clear();
+
 		for (int i = 1; i <= cantVentanillas; i++) {
 			string tempCod = codigo + to_string(i);
 			ventanillas->append(tempCod);
@@ -41,13 +43,11 @@ public:
 		this->codigo = codigo;
 		this->cantVentanillas = cantVentanillas;
 		ventanillas = new ArrayList<string>();
-		servicios = new ArrayList<Servicio>();
 		tiquetes = new LinkedPriorityQueue<Tiquete>(10);
 		asignarCodigosVentanillas();
 	}
 
 	~Area() {
-		
 	}
 
 	void setDescripcion(string descrip) {
@@ -82,7 +82,6 @@ public:
 	void toString() {
 		cout << "Area: {" << descrip << ", " << codigo << ", " << cantVentanillas << "}" << endl;
 		cout << "Ventanillas: ";  ventanillas->print();
-		cout << "Servicios: "; servicios->print();
 		cout << "Tiquetes: "; tiquetes->print();
 	}
 

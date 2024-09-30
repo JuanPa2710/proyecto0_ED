@@ -127,7 +127,8 @@ int main() {
     queue->insert("Usuario regular.", 2);
 
     int option = 0;
-    while (option != 3) {        
+    while (option != 3) {     
+        system("cls");
         cout << "1- Solicitar un tiquete." << endl;
         cout << "2- Manejo de áreas." << endl;
         cout << "3- Salir." << endl;
@@ -141,12 +142,13 @@ int main() {
         if (option == 2) {
             system("cls");
             int optionArea = 0;
-            while (optionArea != 4) {
+            while (optionArea != 5) {
+                system("cls");
                 cout << "1- Agregar un área. " << endl;
                 cout << "2- Modificar cantidad de ventanillas. " << endl;
                 cout << "3- Consultar áreas. " << endl;
-                cout << "3- Eliminar un área. " << endl;
-                cout << "4- Regresar." << endl;
+                cout << "4- Eliminar un área. " << endl;
+                cout << "5- Regresar." << endl;
                 cout << "Inserte la opción que quiere realizar: ";
 
                 cin >> optionArea;
@@ -166,11 +168,10 @@ int main() {
                     getline(cin, ventanillas);
 
                     Area tempArea(descripcion, codigo, stoi(ventanillas));
-                    tempArea.toString();
                     areas->append(tempArea);
                     cout << "El área " << descripcion << " fue creada correctamente." << endl;
-                    /*Tiquete tempTiquete("C100", std::chrono::system_clock::now(), 0);
-                    tempArea.agregarTiquete(tempTiquete, 0);*/
+                    Tiquete tempTiquete("C100", std::chrono::system_clock::now(), 0);
+                    tempArea.agregarTiquete(tempTiquete, 0);
                 }
 
                 if (optionArea == 2) {
@@ -185,9 +186,12 @@ int main() {
                     cout << "\nIngrese que área desea modificar: ";
                     getline(cin, resul);
                     
-                    tempArea.setDescripcion(resul);
+                    for (areas->goToStart(); !areas->atEnd(); areas->next()) {
+                        if (areas->getElement().getDescripcion() == resul)
+                            tempArea = areas->getElement();
+                    }
+                        
                     int pos = areas->indexOf(tempArea, 0);
-
                     areas->goToPos(pos);
                     tempArea.setDescripcion(areas->getElement().getDescripcion());
                     cout << "Se ha encontrado el área: " << tempArea.getDescripcion() << endl;
@@ -209,6 +213,29 @@ int main() {
 
                     cin.ignore(numeric_limits<streamsize>::max(), '\n');
                     cin >> resul;
+                }
+
+                if (optionArea == 4) {
+                    Area tempArea;
+                    string resul;
+                    system("cls");
+
+                    cout << "Áreas disponibles: " << endl;
+                    areas->printShow();
+
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                    cout << "\nIngrese que área desea eliminar: ";
+                    getline(cin, resul);
+
+                    for (areas->goToStart(); !areas->atEnd(); areas->next()) {
+                        if (areas->getElement().getDescripcion() == resul)
+                            tempArea = areas->getElement();
+                    }
+
+                    int pos = areas->indexOf(tempArea, 0);
+                    areas->goToPos(pos);
+                    cout << "Se ha eliminado correctamente el área: " << areas->remove() << endl;
+                    getline(cin, resul);                   
                 }
             }
         }
