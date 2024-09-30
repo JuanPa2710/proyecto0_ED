@@ -21,12 +21,12 @@ int main() {
         cout << "1- Manejo de usuarios." << endl;
         cout << "2- Manejo de áreas." << endl;
         cout << "3- Salir." << endl;
-        cout << "Inserte la opción que quiere realizar: " << endl;
+        cout << "Inserte la opción que quiere realizar: ";
 
         cin >> option;
         switch (option) {
         case 1:
-            cout << "1- Agregar usuario. " << endl;
+            cout << "\n1- Agregar usuario. " << endl;
             cout << "2- Eliminar usuario. " << endl;
             cout << "3- Regresar. " << endl;
 
@@ -47,7 +47,7 @@ int main() {
 
             if (suboption == 2) {
                 string name;
-                int priority;
+                int priority = 0;
 
                 cout << "Inserte su nombre:  " << endl;
                 cin >> name;
@@ -58,10 +58,11 @@ int main() {
             break;
 
         case 2: {
-            cout << "1- Agregar un área. " << endl;
+            cout << "\n1- Agregar un área. " << endl;
             cout << "2- Modificar cantidad de ventanillas. " << endl;
             cout << "3- Eliminar un área. " << endl;
             cout << "4- Regresar." << endl;
+            cout << "Inserte la opción que quiere realizar: ";
 
             int optionArea = 0;
             cin >> optionArea;
@@ -73,10 +74,10 @@ int main() {
                 cout << "\nIngrese la descripción del área: ";
                 getline(cin, descripcion);
 
-                cout << "\nIngrese el código del área: ";
+                cout << "Ingrese el código del área: ";
                 getline(cin, codigo);
 
-                cout << "\nIngrese la cantidad de ventanillas del área: ";
+                cout << "Ingrese la cantidad de ventanillas del área: ";
                 getline(cin, ventanillas);
 
                 Area tempArea(descripcion, codigo, stoi(ventanillas));

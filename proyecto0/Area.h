@@ -1,9 +1,11 @@
 #pragma once
 
 #include <string>
+#include <ostream>
 #include "ArrayList.h"
 
 using std::string;
+using std::ostream;
 
 class Area {
 private:
@@ -24,6 +26,11 @@ private:
 	}
 
 public:
+	Area() {
+		descrip, codigo = "";
+		cantVentanillas = 0;
+	}
+
 	Area(string descrip, string codigo, int cantVentanillas) {
 		this->descrip = descrip;
 		this->codigo = codigo;
@@ -55,5 +62,10 @@ public:
 		this->cantVentanillas = cantVentanillas;
 		asignarCodigosVentanillas();
 	}
+
+	friend ostream& operator<<(ostream& os, const Area& area) {
+        os << area.descrip;
+        return os;
+    }
 };
 
