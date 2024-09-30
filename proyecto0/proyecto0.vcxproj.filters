@@ -19,6 +19,9 @@
     <Filter Include="Archivos de encabezado\estructuras">
       <UniqueIdentifier>{d1e67688-a5c1-4fb4-a666-24f407be60da}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Archivos de encabezado\control">
+      <UniqueIdentifier>{b900b7c9-70e5-495c-92aa-492663702a23}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="proyecto0.cpp">
@@ -44,17 +47,20 @@
     <ClInclude Include="Queue.h">
       <Filter>Archivos de encabezado\estructuras</Filter>
     </ClInclude>
-    <ClInclude Include="Servicio.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
     <ClInclude Include="List.h">
       <Filter>Archivos de encabezado\estructuras</Filter>
     </ClInclude>
-    <ClInclude Include="Area.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
     <ClInclude Include="ArrayList.h">
       <Filter>Archivos de encabezado\estructuras</Filter>
+    </ClInclude>
+    <ClInclude Include="Area.h">
+      <Filter>Archivos de encabezado\modelos</Filter>
+    </ClInclude>
+    <ClInclude Include="Servicio.h">
+      <Filter>Archivos de encabezado\modelos</Filter>
+    </ClInclude>
+    <ClInclude Include="Tiquete.h">
+      <Filter>Archivos de encabezado\modelos</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

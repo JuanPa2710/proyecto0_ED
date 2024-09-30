@@ -4,11 +4,9 @@
 #include <time.h>
 #include "LinkedPriorityQueue.h"
 #include "Area.h"
-#include <chrono>
 #include <string>
 
 using namespace std;
-using std::chrono::seconds;
 
 
 int main() {
@@ -30,7 +28,7 @@ int main() {
         cout << "2- Manejo de áreas." << endl;
         cout << "3- Mostrar estadísticas." << endl;
         cout << "4- Salir." << endl;
-        cout << "Inserte la opción que quiere realizar: " << endl;
+        cout << "Inserte la opción que quiere realizar: ";
 
 
         cin >> option;
@@ -38,10 +36,10 @@ int main() {
 
             case 1: {
                 system("cls");
-
-                cout << "\n1- Agregar usuario. " << endl;
+                cout << "1- Agregar usuario. " << endl;
                 cout << "2- Eliminar usuario. " << endl;
                 cout << "3- Regresar. " << endl;
+                cout << "Inserte la opción que quiere realizar: ";
 
                 int suboption;
                 cin >> suboption;
