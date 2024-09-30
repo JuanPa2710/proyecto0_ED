@@ -4,12 +4,15 @@
 #include <time.h>
 #include "LinkedPriorityQueue.h"
 #include "Area.h"
+#include <chrono>
+#include <string>
 
 using namespace std;
+using std::chrono::seconds;
+
 
 int main() {
-    setlocale(LC_ALL, "spanish");
-    setlocale(LC_ALL, "es_ES");
+    setlocale(LC_ALL, "es_ES.UTF-8");
 
     PriorityQueue<string> *queue = new LinkedPriorityQueue<string>(3);
     List<Area> *areas = new ArrayList<Area>();
@@ -34,18 +37,16 @@ int main() {
         switch (option) {
 
             case 1: {
+                system("cls");
 
                 cout << "\n1- Agregar usuario. " << endl;
                 cout << "2- Eliminar usuario. " << endl;
-
-                cout << "1- Agregar tipo de usuario. " << endl;
-                cout << "2- Eliminar tipo de usuario. " << endl;
-
                 cout << "3- Regresar. " << endl;
 
                 int suboption;
                 cin >> suboption;
                 if (suboption == 1) {
+                    system("cls");
                     string name;
                     int priority;
 
@@ -59,6 +60,7 @@ int main() {
                 }
 
                 if (suboption == 2) {
+                    system("cls");
                     string name;
 
                     int priority = 0;
@@ -73,6 +75,7 @@ int main() {
                   break;
 
             case 2: {
+                system("cls");
                 cout << "\n1- Agregar un área. " << endl;
                 cout << "2- Modificar cantidad de ventanillas. " << endl;
                 cout << "3- Eliminar un área. " << endl;
@@ -83,6 +86,7 @@ int main() {
                 cin >> optionArea;
 
                 if (optionArea == 1) {
+                    system("cls");
                     string descripcion, codigo, ventanillas;
                     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
