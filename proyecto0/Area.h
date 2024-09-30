@@ -63,9 +63,10 @@ public:
 		asignarCodigosVentanillas();
 	}
 
-	friend ostream& operator<<(ostream& os, const Area& area) {
-        os << area.descrip;
-        return os;
-    }
+	
 };
 
+ostream &operator<<(ostream &os, Area &area) {
+	os << area.getDescripcion();
+	return os;
+}
