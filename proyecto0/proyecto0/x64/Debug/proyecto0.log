@@ -1,3 +1,3 @@
 ﻿  proyecto0.cpp
-C:\Users\Juanp\OneDrive - Estudiantes ITCR\TEC\II Semestre\Estructuras de Datos\Proyecto\proyecto0_ED\proyecto0\LinkedPriorityQueue.h(50,26): warning C4101: 'e': variable local sin referencia
-  proyecto0.vcxproj -> C:\Users\Juanp\OneDrive - Estudiantes ITCR\TEC\II Semestre\Estructuras de Datos\Proyecto\proyecto0_ED\proyecto0\x64\Debug\proyecto0.exe
+C:\Users\Juanp\OneDrive - Estudiantes ITCR\TEC\II Semestre\Estructuras de Datos\Proyecto\proyecto0_ED\proyecto0\Servicio.h(14,10): error C3646: 'areaAsignada': especificador de invalidación desconocido
+C:\Users\Juanp\OneDrive - Estudiantes ITCR\TEC\II Semestre\Estructuras de Datos\Proyecto\proyecto0_ED\proyecto0\Servicio.h(14,5): error C4430: falta el especificador de tipo; se presupone int. Nota: C++ no admite default-int

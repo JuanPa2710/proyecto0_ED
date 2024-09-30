@@ -18,6 +18,7 @@ private:
 	string codigo;
 	int cantVentanillas;
 	List<string> *ventanillas;
+	PriorityQueue<Servicio> *servicio;
 	PriorityQueue<Tiquete> *tiquetes;
 
 	void asignarCodigosVentanillas() {

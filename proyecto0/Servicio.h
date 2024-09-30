@@ -11,14 +11,19 @@ using std::ostream;
 class Servicio {
 private:
     string descrip;
+    int prioridad;
+    string areaAsignada;
 
 public:  
     Servicio() {
-        this->descrip = "";
+        this->descrip, this->areaAsignada = "";
+        this->prioridad = 0;
     }
 
-    Servicio(string descrip) {
+    Servicio(string descrip, int prioridad,string areaAsignada) {
         this->descrip = descrip;
+        this->prioridad = prioridad;
+        this->areaAsignada = areaAsignada;
     }
 
     ~Servicio() {}
