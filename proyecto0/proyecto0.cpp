@@ -2,9 +2,10 @@
 #include <string>
 #include <cstdlib>
 #include <time.h>
+#include <string>
+
 #include "LinkedPriorityQueue.h"
 #include "Area.h"
-#include <string>
 
 using namespace std;
 using std::cin;
@@ -121,17 +122,20 @@ int main() {
 
     PriorityQueue<string> *queue = new LinkedPriorityQueue<string>(3);
     List<Area> *areas = new ArrayList<Area>();
+    List<Servicio> *servicios = new ArrayList<Servicio>();
+
     bool continuar = true;
     queue->insert("Adulto mayor.", 0);
     queue->insert("Menor de 6 años.", 1);
     queue->insert("Usuario regular.", 2);
 
     int option = 0;
-    while (option != 3) {     
+    while (option != 4) {     
         system("cls");
         cout << "1- Solicitar un tiquete." << endl;
         cout << "2- Manejo de áreas." << endl;
-        cout << "3- Salir." << endl;
+        cout << "3- Manejo de servicios." << endl;
+        cout << "4- Salir." << endl;
         cout << "Inserte la opción que quiere realizar: ";
         cin >> option;
 
@@ -236,6 +240,50 @@ int main() {
                     areas->goToPos(pos);
                     cout << "Se ha eliminado correctamente el área: " << areas->remove() << endl;
                     getline(cin, resul);                   
+                }
+            }
+        }
+
+        if (option == 3) {
+            system("cls");
+            int optionServicio = 0;
+            while (optionServicio != 5) {
+                system("cls");
+                cout << "1- Agregar un servicio. " << endl;
+                cout << "2- Reodenar servicios. " << endl;
+                cout << "3- Consultar servicios. " << endl;
+                cout << "4- Eliminar servicios. " << endl;
+                cout << "5- Regresar." << endl;
+                cout << "Inserte la opción que quiere realizar: ";
+                cin >> optionServicio;
+
+                if (optionServicio == 1) {
+                    system("cls");
+                    string descripcion, prioridad, area, prueba;
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+                    cout << "Ingrese la descripción del servicio: ";
+                    getline(cin, descripcion);
+
+                    cout << "Ingrese la prioridad del servicio: ";
+                    getline(cin, prioridad);
+
+                    cout << "\nÁreas disponibles: " << endl << endl;
+                    for (areas->goToStart(); !areas->atEnd(); areas->next())
+                        areas->getElement().toString();
+                    cout << "Ingrese a que área pertenece: ";
+                    getline(cin, area);
+
+                    Area tempArea(area);
+                    int pos = areas->indexOf(tempArea, 0);
+                    areas->goToPos(pos);
+                    tempArea = areas->getElement();
+
+                    Servicio tempServicio(descripcion, stoi(prioridad), area);         
+                    areas->getElement().agregarServicio(tempServicio);
+                    servicios->append(tempServicio);                    
+                    servicios->print();
+                    getline(cin, prueba);
                 }
             }
         }

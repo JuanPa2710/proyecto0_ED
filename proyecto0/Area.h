@@ -18,7 +18,7 @@ private:
 	string codigo;
 	int cantVentanillas;
 	List<string> *ventanillas;
-	PriorityQueue<Servicio> *servicio;
+	List<Servicio> *servicios;
 	PriorityQueue<Tiquete> *tiquetes;
 
 	void asignarCodigosVentanillas() {
@@ -36,6 +36,7 @@ public:
 		descrip, codigo = "";
 		cantVentanillas = 0;
 		ventanillas = new ArrayList<string>();
+		servicios = new ArrayList<Servicio>();
 		tiquetes = new LinkedPriorityQueue<Tiquete>(10);
 	}
 
@@ -44,8 +45,15 @@ public:
 		this->codigo = codigo;
 		this->cantVentanillas = cantVentanillas;
 		ventanillas = new ArrayList<string>();
+		servicios = new ArrayList<Servicio>();
 		tiquetes = new LinkedPriorityQueue<Tiquete>(10);
 		asignarCodigosVentanillas();
+	}
+
+	Area(string descrip) {
+		this->descrip = descrip;
+		this->codigo = "";
+		this->cantVentanillas = 0;
 	}
 
 	~Area() {
@@ -76,13 +84,19 @@ public:
 		return cantVentanillas;
 	}
 
+	void agregarServicio(Servicio serv) {
+		servicios->append(serv);
+	}
+
 	void agregarTiquete(Tiquete tiquete, int prioridad) {
 		tiquetes->insert(tiquete, prioridad);
 	}
 
+
 	void toString() {
 		cout << "Area: {" << descrip << ", " << codigo << ", " << cantVentanillas << "}" << endl;
 		cout << "Ventanillas: ";  ventanillas->print();
+		cout << "Servicios: "; servicios->print();
 		cout << "Tiquetes: "; tiquetes->print();
 	}
 
@@ -94,7 +108,7 @@ public:
 		this->tiquetes = other.tiquetes;
 	}
 
-	bool operator==(const Area other) {
+	bool operator==(const Area &other) {
 		return descrip == other.descrip;
 	}
 };

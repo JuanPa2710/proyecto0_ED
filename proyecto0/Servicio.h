@@ -36,6 +36,12 @@ public:
         return descrip;
     }
 
+    void operator=(Servicio other) {
+        this->descrip = other.descrip;
+        this->prioridad = other.prioridad;
+        this->areaAsignada = other.areaAsignada;
+    }
+
     bool operator==(const Servicio &other) {
         return this->descrip == other.descrip;
     }
