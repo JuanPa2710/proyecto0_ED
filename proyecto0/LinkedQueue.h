@@ -1,3 +1,13 @@
+/*
+Archivo el cual define el comportamiento de la cola enlazada.
+Incluye dos punteros, uno para el frente y otro para el final, junto a un entero que indica el tamaño.
+En cuanto a sus métodos, tenemos su constructor el cual por determinado crea un nodo nuevo al inicio y al final, y define el tamaño como 0. El destructor elimina
+los elementos de la cola y elimina el espacio dedicado a la cola en la memoria. Enqueue inserta un elemento atrás, dequeue elimina el elemento en la parte de al
+frente de la cola, remove elimina un elemento dado de la cola, frontValue retorna el elemento al frente en el momento, clear limpia la cola, getSize retorna el
+tamaño de la cola y por último, print muestra la cola.
+Código hecho por Fiorella Gónzalez.
+*/
+
 #pragma once
 #include <stdexcept>
 #include <iostream>
@@ -33,7 +43,7 @@ public:
 			throw runtime_error("Queue is empty.");
 		E result = front->next->element;
 		Node<E>* temp = front->next;
-		front->next = temp->next; // front->next = front->next->next;
+		front->next = temp->next;
 		delete temp;
 		size--;
 		if (size == 0)

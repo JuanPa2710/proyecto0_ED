@@ -1,3 +1,17 @@
+/*
+Archivo el cual define el comportamiento de las listas de arreglos.
+Contiene sus atributos protegidos, incluyendo un puntero a los elementos, y varios enteros que definen el tamaño máximo de la lista, el tamaño actual, y la posición
+actual.
+En cuanto su aspecto privado, tenemos expand, el cual expande el almacenamiento de la lista al doble.
+En sus métodos públicos tenemos el constructors, el cual recibe el tamaño máximo, el destructor donde se libra la memoria donde se tenía la lista, insert agrega un
+elemento al final de la lista, append agrega de igual manera un elemento pero lo agrega al final de la lista, remove elimina el elemento en la posición actual,
+getElement retorna el elemento en la posición actual, clear limpia la lista, goToStar y goToEnd pone la posición actual al inicia y al final respectivamente, contains,
+determina si la lista contiene cierto elemento, indexOf indica el índice de un elemento respecto a un índice dado, goToPos actualiza la posición actual en una nueva 
+posición dada, next y previous mueve la posición un paso adelante y atrás respectivamente, atStart y atEnd indica si la posición se encuentra al inicio o al final
+respectivamente, getPos retorna la posición actual, getSize retorna el tamaño actual, y ambos prints muestran la lista actual en diferentes formatos.
+Código hecho por Jose Adrián Piedra y Juan Pablo Jímenez.
+*/
+
 #pragma once
 
 #define DEFAULT_MAX 1024

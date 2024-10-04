@@ -1,3 +1,15 @@
+/*
+EL archivo tipo objeto el cual define el comportamiento de las áreas.
+Entre sus diversos atributos, se tiene la descripción del área, el código del área, la cantidad de las ventanillas, dos listas para las ventanillas y los sevicios
+ofrecidos, y una lista de prioridad para los tiquetes. Además, como parte de la parte privada de la clase, aparte de los atributos, se tiene el método
+asignarCodigosVentanillas, el cual asigna las ventanillas con los códigos indicados.
+En cuanto su parte publica, se tiene su constructor determinado y su constructor para áreas específicas, diversos gets para ver los atributos de áreas específicas,
+sets para los diferentes atributos para modificarlos a áreas específicas, agregarServicio y agregarTiquetes los cuales agregan un nuevo servicio o tiquete dependiendo
+del caso, toString lo muestra de manera legible el objeto en la consola, operator= el cual cambia los atributos de un área a ser idénticas a de otra área, operator==
+el cual compara la descripción de dos áreas, y por último  &operator<<, el cual permite usar cout con los objetos tipo área.
+Código hecho por Código hecho por Jose Adrián Piedra y Juan Pablo Jímenez.
+*/
+
 #define DEFAULT_MAX 1024
 
 #pragma once

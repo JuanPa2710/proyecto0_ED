@@ -1,3 +1,10 @@
+/*
+El archivo principal en el que se maneja toda la interacción de la consola con el usuario.
+En el main, se encuentra diversos prints y manejos de input para decidir que mostrar en el menú, basado en lo que decida el usuario.
+Además, se puede encontrar algunos aspectos lógicos del programa en general, como la inicialización de listas en las que se trabajara.
+Código hecho por Fiorella Gónzalez, Jose Adrián Piedra y Juan Pablo Jímenez.
+*/
+
 #include <iostream>
 #include <string>
 #include <cstdlib>
@@ -11,110 +18,6 @@ using namespace std;
 using std::cin;
 using std::stoi;
 using std::chrono::system_clock;
-
-//int prueba() {
-//    setlocale(LC_ALL, "es_ES.UTF-8");
-//
-//    PriorityQueue<string> *queue = new LinkedPriorityQueue<string>(3);
-//    List<Area> *areas = new ArrayList<Area>();
-//    queue->insert("Adulto mayor.", 0);
-//    queue->insert("Menor de 6 años.", 1);
-//    queue->insert("Usuario regular.", 2);
-//
-//    while (true) {
-//        int option;
-//
-//        cout << "¡Buen día!" << endl;
-//        cout << "Seleccione la acción que desea realizar: " << endl;
-//        cout << "0- Solicitar un tiquete." << endl;
-//        cout << "1- Manejo de usuarios." << endl;
-//        cout << "2- Manejo de áreas." << endl;
-//        cout << "3- Mostrar estadísticas." << endl;
-//        cout << "4- Salir." << endl;
-//        cout << "Inserte la opción que quiere realizar: ";
-//
-//
-//        cin >> option;
-//        switch (option) {
-//
-//            case 1: {
-//                system("cls");
-//                cout << "1- Agregar usuario. " << endl;
-//                cout << "2- Eliminar usuario. " << endl;
-//                cout << "3- Regresar. " << endl;
-//                cout << "Inserte la opción que quiere realizar: ";
-//
-//                int suboption;
-//                cin >> suboption;
-//                if (suboption == 1) {
-//                    system("cls");
-//                    string name;
-//                    int priority;
-//
-//                    cout << "Inserte la categoría:  " << endl;
-//                    cin >> name;
-//                    cout << "Inserte la prioridad: " << endl;
-//                    cin >> priority;
-//
-//                    queue->insert(name, priority);
-//                    queue->print();
-//                }
-//
-//                if (suboption == 2) {
-//                    system("cls");
-//                    string name;
-//
-//                    int priority = 0;
-//
-//                    cout << "Inserte la categoría:  " << endl;
-//                    cin >> name;
-//
-//                    queue->remove(name);
-//                    queue->print();
-//                }
-//            }
-//                  break;
-//
-//            case 2: {
-//                system("cls");
-//                cout << "\n1- Agregar un área. " << endl;
-//                cout << "2- Modificar cantidad de ventanillas. " << endl;
-//                cout << "3- Eliminar un área. " << endl;
-//                cout << "4- Regresar." << endl;
-//                cout << "Inserte la opción que quiere realizar: ";
-//
-//                int optionArea = 0;
-//                cin >> optionArea;
-//
-//                if (optionArea == 1) {
-//                    system("cls");
-//                    string descripcion, codigo, ventanillas;
-//                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-//
-//                    cout << "\nIngrese la descripción del área: ";
-//                    getline(cin, descripcion);
-//
-//                    cout << "Ingrese el código del área: ";
-//                    getline(cin, codigo);
-//
-//                    cout << "Ingrese la cantidad de ventanillas del área: ";
-//                    getline(cin, ventanillas);
-//
-//                    Area tempArea(descripcion, codigo, stoi(ventanillas));
-//                    areas->append(tempArea);
-//                    areas->print();
-//                }
-//                
-//            
-//            }
-//                  break;
-//
-//            default:
-//                break;                  
-//        }
-//    }
-//    return 0;
-//}
 
 int main() {
     setlocale(LC_ALL, "es_ES.UTF-8");
@@ -175,13 +78,14 @@ int main() {
                         cin >> optionUsers;
 
                         if (optionUsers == 1) {
+                            system("cls");
                             string nombre;
                             int prioridad;
 
-                            cout << "Ingrese el nombre del área: ";
+                            cout << "Ingrese el nombre del área: "; << endl;
                             cin >> nombre;
 
-                            cout << "Ingrese la descripción del área: ";
+                            cout << "Ingrese la descripción del área: " << endl;
                             cin >> prioridad;
 
                             Usuarios tipo(nombre);
@@ -190,7 +94,14 @@ int main() {
                             cout << "El tipo de usuario " << nombre << " fue agregado." << endl;
                         }
 
-                        if (optionUsers == 2) {}
+                        if (optionUsers == 2) {
+                            system("cls");
+                            string nombre;
+                            cout << "Ingrese el nombre del área: " << endl;
+                            cin >> nombre;
+
+                            usuarios->remove(nombre);
+                        }
 
                         if (optionUsers == 3) {
                             break;

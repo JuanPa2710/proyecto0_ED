@@ -1,3 +1,10 @@
+/*
+Archivo donde se define como objeto los tipos de usuarios. 
+Contiene su atributo principal nombre, con su debido constructor el cual recibe el nombre que recibirá el tipo de usuario.
+Además, contiene un metodo para descubrir el nombre del tipo de usuario, y otro para verificar si dos tipos de usuarios tienen el mismo nombre.
+Código hecho por Fiorella González.
+*/
+
 #pragma once
 #include <stdexcept>
 #include <ostream>
@@ -16,12 +23,6 @@ public:
     }
 
     Usuarios(string nombre) {
-        this->nombre = nombre;
-    }
-
-    ~Usuarios() {}
-
-    void setNombre(string nombre) {
         this->nombre = nombre;
     }
 
