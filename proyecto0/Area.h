@@ -100,6 +100,11 @@ public:
 		servicios->append(serv);
 	}
 
+	void eliminarServicio(Servicio serv) {
+		servicios->goToPos(servicios->indexOf(serv, 0));
+		servicios->remove();
+	}
+
 	void agregarTiquete(Tiquete tiquete, int prioridad) {
 		tiquetes->insert(tiquete, prioridad);
 	}

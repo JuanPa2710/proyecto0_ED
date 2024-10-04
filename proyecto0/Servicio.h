@@ -26,6 +26,10 @@ public:
         this->areaAsignada = areaAsignada;
     }
 
+    Servicio(string descrip) {
+        this->descrip = descrip;
+    }
+
     ~Servicio() {}
 
     void setDescripcion(string descrip) {
@@ -34,6 +38,14 @@ public:
 
     string getDescripcion() {
         return descrip;
+    }
+
+    void setAreaAsignada(string areaAsignada) {
+        this->areaAsignada = areaAsignada;
+    }
+
+    string getAreaAsignada() {
+        return areaAsignada;
     }
 
     void operator=(Servicio other) {

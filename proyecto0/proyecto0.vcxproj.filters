@@ -59,5 +59,8 @@
     <ClInclude Include="Tiquete.h">
       <Filter>Archivos de encabezado\modelos</Filter>
     </ClInclude>
+    <ClInclude Include="Usuarios.h">
+      <Filter>Archivos de encabezado\modelos</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -142,6 +142,7 @@
     <ClInclude Include="Queue.h" />
     <ClInclude Include="Servicio.h" />
     <ClInclude Include="Tiquete.h" />
+    <ClInclude Include="Usuarios.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

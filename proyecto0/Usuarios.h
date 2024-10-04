@@ -33,4 +33,9 @@ public:
     bool operator==(const Usuarios& other) {
         return this->nombre == other.nombre;
     }
+
 };
+ostream& operator<<(ostream& os, Usuarios usuario) {
+    os << usuario.getNombre();
+    return os;
+}
