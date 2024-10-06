@@ -1,3 +1,12 @@
+/*
+Archivo tipo objeto en donde se define el comportamiento de los servicios.
+Entre sus atributos privados, se tiene la descripción del servicio, la prioridad que tiene, y la área en donde se encuentra.
+En cuanto sus métodos públicos, se tiene su constructor determinado y su constructor para servicios específicos, a su vez, se tienen gets y sets para tanto las
+descripciones como el área asignada, además, se tiene operator= el cual cambia los atributos de un servicio a ser idénticas a la de otra servicio, operator==
+el cual compara la descripción de dos servicios, y por último  &operator<<, el cual permite usar cout con los objetos tipo servicio.
+Código hecho por Jose Adrián Piedra y Juan Pablo Jímenez.
+*/
+
 #pragma once
 #include <stdexcept>
 #include <ostream>

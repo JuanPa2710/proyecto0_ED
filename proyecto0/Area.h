@@ -7,7 +7,7 @@ En cuanto su parte publica, se tiene su constructor determinado y su constructor
 sets para los diferentes atributos para modificarlos a áreas específicas, agregarServicio y agregarTiquetes los cuales agregan un nuevo servicio o tiquete dependiendo
 del caso, toString lo muestra de manera legible el objeto en la consola, operator= el cual cambia los atributos de un área a ser idénticas a de otra área, operator==
 el cual compara la descripción de dos áreas, y por último  &operator<<, el cual permite usar cout con los objetos tipo área.
-Código hecho por Código hecho por Jose Adrián Piedra y Juan Pablo Jímenez.
+Código hecho por Jose Adrián Piedra y Juan Pablo Jímenez.
 */
 
 #define DEFAULT_MAX 1024
