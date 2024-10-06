@@ -1,8 +1,8 @@
 /*
 Archivo donde se define como objeto los tipos de usuarios. 
-Contiene su atributo principal nombre, con su debido constructor el cual recibe el nombre que recibirá el tipo de usuario.
-Además, contiene un metodo para descubrir el nombre del tipo de usuario, y otro para verificar si dos tipos de usuarios tienen el mismo nombre.
-Código hecho por Fiorella González.
+Contiene su atributo principal nombre, con su debido constructor el cual recibe el nombre que recibirÃ¡ el tipo de usuario.
+AdemÃ¡s, contiene un metodo para descubrir el nombre del tipo de usuario, y otro para verificar si dos tipos de usuarios tienen el mismo nombre.
+CÃ³digo hecho por Fiorella GonzÃ¡lez.
 */
 
 #pragma once
@@ -16,18 +16,29 @@ using std::ostream;
 class Usuarios {
 private:
     string nombre;
+    int prioridad;
 
 public:
     Usuarios() {
         this->nombre = "";
+        this->prioridad=0;
     }
 
     Usuarios(string nombre) {
         this->nombre = nombre;
     }
 
+    Usuarios(string nombre, int prioridad) {
+        this->nombre = nombre;
+        this->prioridad= prioridad;
+    }
+
     string getNombre() {
         return nombre;
+    }
+
+    int getPrioridad() {
+        return prioridad;
     }
 
     bool operator==(const Usuarios& other) {
@@ -39,3 +50,4 @@ ostream& operator<<(ostream& os, Usuarios usuario) {
     os << usuario.getNombre();
     return os;
 }
+
