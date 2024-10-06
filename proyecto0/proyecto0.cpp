@@ -13,6 +13,9 @@ Código hecho por Fiorella Gónzalez, Jose Adrián Piedra y Juan Pablo Jímenez.
 #include "LinkedPriorityQueue.h"
 #include "Area.h"
 #include "Usuarios.h"
+#include "Servicio.h"
+#include "Tiquete.h"
+
 
 using namespace std;
 using std::cin;
@@ -20,17 +23,19 @@ using std::stoi;
 using std::chrono::system_clock;
 
 int main() {
+    std::chrono::time_point<std::chrono::system_clock> horaActual;
     setlocale(LC_ALL, "es_ES.UTF-8");
 
-    PriorityQueue<Usuarios>* usuarios = new LinkedPriorityQueue<Usuarios>(2048);
+    PriorityQueue<Usuarios>* usuarios = new LinkedPriorityQueue<Usuarios>(4);
     List<Area>* areas = new ArrayList<Area>();
     List<Servicio>* servicios = new ArrayList<Servicio>();
 
     bool continuar = true;
 
-    Usuarios tipo0("Adulto mayor.");
-    Usuarios tipo1("Menor de 6 años.");
-    Usuarios tipo2("Usuario regular.");
+    Usuarios tipo0("Adulto mayor");
+    Usuarios tipo1("Menor de 6 años");
+    Usuarios tipo2("Usuario regular");
+
 
     usuarios->insert(tipo0, 0);
     usuarios->insert(tipo1, 1);
@@ -47,6 +52,8 @@ int main() {
     tempArea1.agregarServicio(tempServicio2);
     tempArea1.agregarServicio(tempServicio3);
 
+    
+
     areas->append(tempArea1);
     areas->append(tempArea2);
 
@@ -54,6 +61,7 @@ int main() {
     servicios->append(tempServicio2);
     servicios->append(tempServicio3);
 
+    int tiqueteConsecutivo = 100;
     int option = 0;
 
     while (option != 6) {
@@ -69,7 +77,81 @@ int main() {
 
         if (option == 1) {}
 
-        if (option == 2) {}
+        if (option == 2) {  // Opción para solicitar un tiquete
+            system("cls");
+            usuarios->print();
+            string tipoUsuarioSeleccionado;
+            cout << "Seleccione el tipo de usuario:" << endl;
+            cin >> tipoUsuarioSeleccionado;
+            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+            servicios->print();
+            cout << endl;
+            string servicioSeleccionado;
+            cout << "Seleccione el servicio que desea usar:" << endl;
+            cin >> servicioSeleccionado;
+            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+            string areaSeleccionada;
+            bool areaEncontrada = false;
+
+            for (servicios->goToStart(); !servicios->atEnd(); servicios->next()) {
+                if(servicios->getElement().getDescripcion() == servicioSeleccionado) {
+                    areaSeleccionada = servicios->getElement().getAreaAsignada();
+                    areaEncontrada = true;
+                    break;
+                }
+            }
+
+            if (!areaEncontrada) {
+                cout << "Error: No se pudo encontrar el servicio seleccionado." << endl;
+            }
+            else {
+                string codigoArea;
+                bool codigoAreaEncontrado = false; 
+
+                for (areas->goToStart(); !areas->atEnd(); areas->next()) {
+                    if (areas->getElement().getDescripcion() == areaSeleccionada) { 
+                        codigoArea = areas->getElement().getCodigo(); 
+                        codigoAreaEncontrado = true; 
+                        break;
+                    }
+                }
+
+                // Comprobar si se encontró el código del área
+                if (!codigoAreaEncontrado) {
+                    cout << "Error: No se pudo obtener el código del área." << endl;
+                }
+                else {
+                    string codigoTiquete = codigoArea + to_string(tiqueteConsecutivo);
+
+                    horaActual = std::chrono::system_clock::now();
+                    
+                    Usuarios prioridadUsuario = prioridadUsuario.getPrioridad();  // Obtener prioridad del usuario
+                    cout << prioridadUsuario;
+                    cout << endl << prioridadUsuario;
+
+                    int prioridadServicio = servicios->getElement().getPrioridad(); // Obtener prioridad del servicio
+                    cout << prioridadServicio;
+                    int prioridadTiquete = prioridadUsuario * 10 + prioridadServicio;
+
+                    std::time_t tiempoActual = std::chrono::system_clock::to_time_t(horaActual);
+
+                    // Crear el tiquete y agregarlo a la cola
+                    Tiquete nuevoTiquete(codigoTiquete, horaActual, prioridadTiquete);
+                    areas->goToPos(0); 
+                    areas->getElement().agregarTiquete(nuevoTiquete, 0);
+
+
+                    cout << "Tiquete generado: " << codigoTiquete << endl;
+                    cout << "Hora: " << tiempoActual << endl;  // Mostrar la hora
+                    cout << "Prioridad: " << prioridadTiquete << endl;
+                    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    tiqueteConsecutivo++;
+                }
+            }
+            
+        }
 
         if (option == 3) {}
 
