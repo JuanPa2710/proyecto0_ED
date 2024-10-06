@@ -29,6 +29,8 @@ private:
 		throw runtime_error("Queue not found.");
 	}
 
+
+
 public:
 	LinkedPriorityQueue(int priorities) {
 		if (priorities < 1)

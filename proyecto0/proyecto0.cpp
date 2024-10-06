@@ -26,20 +26,20 @@ int main() {
     std::chrono::time_point<std::chrono::system_clock> horaActual;
     setlocale(LC_ALL, "es_ES.UTF-8");
 
-    PriorityQueue<Usuarios>* usuarios = new LinkedPriorityQueue<Usuarios>(4);
+    List<Usuarios>* usuarios = new ArrayList<Usuarios>();
     List<Area>* areas = new ArrayList<Area>();
     List<Servicio>* servicios = new ArrayList<Servicio>();
 
     bool continuar = true;
 
-    Usuarios tipo0("Adulto mayor");
-    Usuarios tipo1("Menor de 6 años");
-    Usuarios tipo2("Usuario regular");
+    Usuarios tipo0("Adulto mayor", 0);
+    Usuarios tipo1("Menor de edad", 1);
+    Usuarios tipo2("Usuario regular", 2);
 
 
-    usuarios->insert(tipo0, 0);
-    usuarios->insert(tipo1, 1);
-    usuarios->insert(tipo2, 2);
+    usuarios->insert(tipo0);
+    usuarios->insert(tipo1);
+    usuarios->insert(tipo2);
 
     Area tempArea1("Cajas", "C", stoi("4"));
     Area tempArea2("Farmacia", "F", stoi("5"));
@@ -51,8 +51,6 @@ int main() {
     tempArea1.agregarServicio(tempServicio1);
     tempArea1.agregarServicio(tempServicio2);
     tempArea1.agregarServicio(tempServicio3);
-
-    
 
     areas->append(tempArea1);
     areas->append(tempArea2);
@@ -79,18 +77,18 @@ int main() {
 
         if (option == 2) {  // Opción para solicitar un tiquete
             system("cls");
-            usuarios->print();
+            usuarios->printShow();
             string tipoUsuarioSeleccionado;
-            cout << "Seleccione el tipo de usuario:" << endl;
-            cin >> tipoUsuarioSeleccionado;
+            cout << "Seleccione el tipo de usuario: ";            
             cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
-            servicios->print();
+            getline(cin, tipoUsuarioSeleccionado);
+            cout << endl;
+            
+            servicios->printShow();
             cout << endl;
             string servicioSeleccionado;
-            cout << "Seleccione el servicio que desea usar:" << endl;
-            cin >> servicioSeleccionado;
-            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            cout << "Seleccione el servicio que desea usar: ";
+            getline(cin, servicioSeleccionado);
 
             string areaSeleccionada;
             bool areaEncontrada = false;
@@ -127,12 +125,12 @@ int main() {
 
                     horaActual = std::chrono::system_clock::now();
                     
-                    Usuarios prioridadUsuario = prioridadUsuario.getPrioridad();  // Obtener prioridad del usuario
-                    cout << prioridadUsuario;
-                    cout << endl << prioridadUsuario;
+                    int pos = usuarios->indexOf(Usuarios(tipoUsuarioSeleccionado), 0);
+                    usuarios->goToPos(pos);
+                    Usuarios usuario = usuarios->getElement();  
+                    int prioridadUsuario = usuario.getPrioridad();
 
-                    int prioridadServicio = servicios->getElement().getPrioridad(); // Obtener prioridad del servicio
-                    cout << prioridadServicio;
+                    int prioridadServicio = servicios->getElement().getPrioridad();
                     int prioridadTiquete = prioridadUsuario * 10 + prioridadServicio;
 
                     std::time_t tiempoActual = std::chrono::system_clock::to_time_t(horaActual);
@@ -184,14 +182,14 @@ int main() {
                             string nombre;
                             int prioridad;
 
-                            cout << "Ingrese el nombre del área: " << endl;
+                            cout << "Ingrese el nombre del Usuario: " << endl;
                             cin >> nombre;
 
-                            cout << "Ingrese la descripción del área: " << endl;
+                            cout << "Ingrese la prioridad: " << endl;
                             cin >> prioridad;
 
-                            Usuarios tipo(nombre);
-                            usuarios->insert(tipo, prioridad);
+                            Usuarios tipo(nombre, prioridad);
+                            usuarios->insert(tipo);
 
                             cout << "El tipo de usuario " << nombre << " fue agregado." << endl;
                         }
@@ -200,9 +198,11 @@ int main() {
                             system("cls");
                             string nombre;
                             cout << "Ingrese el nombre del área: " << endl;
-                            cin >> nombre;
+                            getline(cin, nombre);
 
-                            usuarios->remove(nombre);
+                            int pos = usuarios->indexOf(Usuarios(nombre), 0);
+                            usuarios->goToPos(pos);
+                            cout << "Usuario " << usuarios->remove() << " eliminado correctamente" << endl;
                         }
 
                         if (optionUsers == 3) {

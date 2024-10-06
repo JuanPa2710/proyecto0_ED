@@ -49,6 +49,14 @@ public:
         return descrip;
     }
 
+    void setPrioridad(int prioridad) {
+        this->prioridad;
+    }
+
+    int getPrioridad() {
+        return prioridad;
+    }
+
     void setAreaAsignada(string areaAsignada) {
         this->areaAsignada = areaAsignada;
     }
