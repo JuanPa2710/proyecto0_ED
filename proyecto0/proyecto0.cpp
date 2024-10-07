@@ -22,6 +22,8 @@ using std::cin;
 using std::stoi;
 using std::chrono::system_clock;
 
+static int countAreas = 0;
+
 int main() {
     std::chrono::time_point<std::chrono::system_clock> horaActual;
     setlocale(LC_ALL, "es_ES.UTF-8");
@@ -141,6 +143,7 @@ int main() {
                     areas->goToPos(posArea);
                     tempArea = areas->getElement();
                     tempArea.agregarTiquete(nuevoTiquete, prioridadTiquete);
+                    countAreas++;
 
                     usuario.setCount();
                     usuarios->remove();
