@@ -62,5 +62,8 @@
     <ClInclude Include="Usuarios.h">
       <Filter>Archivos de encabezado\modelos</Filter>
     </ClInclude>
+    <ClInclude Include="Ventanilla.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

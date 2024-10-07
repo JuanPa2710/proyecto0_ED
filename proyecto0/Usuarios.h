@@ -17,20 +17,25 @@ class Usuarios {
 private:
     string nombre;
     int prioridad;
+    int count;
 
 public:
     Usuarios() {
         this->nombre = "";
         this->prioridad=0;
+        this->count = 0;
     }
 
     Usuarios(string nombre) {
         this->nombre = nombre;
+        this->count = 0;
+        this->prioridad = 0;
     }
 
     Usuarios(string nombre, int prioridad) {
         this->nombre = nombre;
         this->prioridad= prioridad;
+        this->count = 0;
     }
 
     string getNombre() {
@@ -40,6 +45,15 @@ public:
     int getPrioridad() {
         return prioridad;
     }
+
+    int getCount() {
+        return count;
+    }
+
+    void setCount() {
+        this->count++; 
+    }
+
 
     bool operator==(const Usuarios& other) {
         return this->nombre == other.nombre;

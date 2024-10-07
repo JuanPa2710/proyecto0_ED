@@ -36,7 +36,6 @@ int main() {
     Usuarios tipo1("Menor de edad", 1);
     Usuarios tipo2("Usuario regular", 2);
 
-
     usuarios->insert(tipo0);
     usuarios->insert(tipo1);
     usuarios->insert(tipo2);
@@ -134,11 +133,18 @@ int main() {
                     int prioridadTiquete = prioridadUsuario * 10 + prioridadServicio;
 
                     std::time_t tiempoActual = std::chrono::system_clock::to_time_t(horaActual);
-
+                    
                     // Crear el tiquete y agregarlo a la cola
                     Tiquete nuevoTiquete(codigoTiquete, horaActual, prioridadTiquete);
-                    areas->goToPos(0); 
-                    areas->getElement().agregarTiquete(nuevoTiquete, 0);
+                    Area tempArea(areaSeleccionada);
+                    int posArea = areas->indexOf(tempArea, 0);
+                    areas->goToPos(posArea);
+                    tempArea = areas->getElement();
+                    tempArea.agregarTiquete(nuevoTiquete, prioridadTiquete);
+
+                    usuario.setCount();
+                    usuarios->remove();
+                    usuarios->insert(usuario);
 
 
                     cout << "Tiquete generado: " << codigoTiquete << endl;
@@ -151,7 +157,41 @@ int main() {
             
         }
 
-        if (option == 3) {}
+        if (option == 3) {
+            system("cls");
+            string areaSeleccionada;
+            string ventanilla;
+
+            areas->printShow();
+
+            cout << "Ingrese el área que desee atender: ";
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            getline(cin, areaSeleccionada);
+
+            cout << "Ingrese el número de ventanilla: ";
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            getline(cin, ventanilla);
+
+            Area areaActual;
+            bool areaEncontrada = false;
+
+            for (areas->goToStart(); !areas->atEnd(); areas->next()) {
+                if (areas->getElement().getDescripcion() == areaSeleccionada) {
+                    areaActual = areas->getElement();
+                    areaEncontrada = true;
+                }
+            }
+
+            if (!areaEncontrada) {
+                cout << "Error: No se encontró el área seleccionada." << endl;
+            }
+            else {
+                Tiquete tiqueteAtendido = areaActual.atenderTiquete(); //**
+                cout << "Se está atendiendo el tiquete. " << endl;
+            }
+
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
 
         if (option == 4) {
             int suboption = 0;
@@ -242,8 +282,7 @@ int main() {
                             Area tempArea(descripcion, codigo, stoi(ventanillas));
                             areas->append(tempArea);
                             cout << "El área " << descripcion << " fue creada correctamente." << endl;
-                            Tiquete tempTiquete("C100", std::chrono::system_clock::now(), 0);
-                            tempArea.agregarTiquete(tempTiquete, 0);
+                            
                         }
 
                         if (optionArea == 2) {
@@ -422,7 +461,60 @@ int main() {
             }
         }
 
-        if (option == 5) {}
+        if (option == 5) {
+            int optionServicio = 0;
+            while (optionServicio != 6) {
+                system("cls");
+                cout << "1- Tiempo de espera por área." << endl;
+                cout << "2- Cantidad de tiquetes por área" << endl;
+                cout << "3- Cantidad de tiquetes por ventanilla" << endl;
+                cout << "4- Cantidad de tiquetes por servicio. " << endl;
+                cout << "5- Cantidad de tiquetes por tipo de usuario" << endl;
+                cout << "6- Regresar." << endl;
+                cout << "Inserte la opción que quiere realizar: ";
+                cin >> optionServicio;
+
+                if (optionServicio == 1) {
+                    system("cls");
+
+                }
+
+                if (optionServicio == 2) {
+                    system("cls");
+                    for (areas->goToStart(); !areas->atEnd(); areas->next()) {
+
+                        cout << areas->getElement().getDescripcion() << endl;
+                        cout << areas->getElement().getCount() << endl;
+                    }
+                    cout << "Presione cualquier tecla para continuar...";
+                    cin.ignore();
+                    cin.get();
+                }
+
+                if (optionServicio == 3) {
+                    system("cls");
+
+                }
+
+                if (optionServicio == 4) {
+                    system("cls");
+
+                }
+
+                if (optionServicio == 5) {
+                    system("cls");
+                    for (usuarios->goToStart(); !usuarios->atEnd(); usuarios->next()) {
+
+                        cout << usuarios->getElement().getNombre() << endl;
+                        cout << usuarios->getElement().getCount() << endl;
+                    }
+                    cout << "Presione cualquier tecla para continuar...";
+                    cin.ignore();
+                    cin.get();
+
+                }
+            }
+        }
 
         if (option == 6) {}
     }

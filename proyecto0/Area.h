@@ -29,9 +29,11 @@ private:
 	string descrip;
 	string codigo;
 	int cantVentanillas;
-	List<string> *ventanillas;
-	List<Servicio> *servicios;
-	PriorityQueue<Tiquete> *tiquetes;
+	int count;
+	List<string>* ventanillas;
+	List<Servicio>* servicios;
+	PriorityQueue<Tiquete>* tiquetes;
+	
 
 	void asignarCodigosVentanillas() {
 		if (ventanillas->getSize() > 0)
@@ -44,12 +46,14 @@ private:
 	}
 
 public:
+
 	Area() {
 		descrip, codigo = "";
 		cantVentanillas = 0;
+		count = 0;
 		ventanillas = new ArrayList<string>();
 		servicios = new ArrayList<Servicio>();
-		tiquetes = new LinkedPriorityQueue<Tiquete>(10);
+		tiquetes = new LinkedPriorityQueue<Tiquete>(100);	
 	}
 
 	Area(string descrip, string codigo, int cantVentanillas) {
@@ -58,7 +62,8 @@ public:
 		this->cantVentanillas = cantVentanillas;
 		ventanillas = new ArrayList<string>();
 		servicios = new ArrayList<Servicio>();
-		tiquetes = new LinkedPriorityQueue<Tiquete>(10);
+		tiquetes = new LinkedPriorityQueue<Tiquete>(100);
+		count = 0;
 		asignarCodigosVentanillas();
 	}
 
@@ -66,6 +71,7 @@ public:
 		this->descrip = descrip;
 		this->codigo = "";
 		this->cantVentanillas = 0;
+		this->count = 0;
 	}
 
 	~Area() {
@@ -107,8 +113,17 @@ public:
 
 	void agregarTiquete(Tiquete tiquete, int prioridad) {
 		tiquetes->insert(tiquete, prioridad);
+		count += 1;
 	}
 
+	Tiquete atenderTiquete() {
+		if (!tiquetes->isEmpty()) {
+			return tiquetes->removeMin();
+		}
+		else {
+			throw runtime_error("No hay tiquetes en la cola");
+		}
+	}
 
 	void toString() {
 		cout << "Area: {" << descrip << ", " << codigo << ", " << cantVentanillas << "}" << endl;
@@ -117,20 +132,29 @@ public:
 		cout << "Tiquetes: "; tiquetes->print();
 	}
 
+	void setCount() {
+		count++;
+	}
+
+	int getCount() {
+		return count;
+	}
+
 	void operator=(Area other) {
 		this->descrip = other.descrip;
 		this->codigo = other.codigo;
 		this->cantVentanillas = other.cantVentanillas;
 		this->ventanillas = other.ventanillas;
 		this->tiquetes = other.tiquetes;
+		this->count = other.count;
 	}
 
-	bool operator==(const Area &other) {
+	bool operator==(const Area& other) {
 		return descrip == other.descrip;
 	}
 };
 
-ostream &operator<<(ostream &os, Area area) {
+ostream& operator<<(ostream& os, Area area) {
 	os << area.getDescripcion();
 	return os;
 }
