@@ -496,7 +496,6 @@ int main() {
                 if (optionServicio == 2) {
                     system("cls");
                     for (areas->goToStart(); !areas->atEnd(); areas->next()) {
-
                         cout << areas->getElement()->getDescripcion() << endl;
                         cout << areas->getElement()->getCount() << endl;
                     }

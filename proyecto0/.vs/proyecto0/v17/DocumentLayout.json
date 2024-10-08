@@ -1,27 +1,14 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\josea\\source\\repos\\JuanPa2710\\proyecto0_ED\\proyecto0\\",
+  "WorkspaceRootPath": "C:\\Users\\Juanp\\OneDrive - Estudiantes ITCR\\TEC\\II Semestre\\Estructuras de Datos\\Proyecto\\proyecto0_ED\\proyecto0\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{94C6F89F-FD75-4DB0-9B63-D60D479F878E}|proyecto0.vcxproj|C:\\Users\\josea\\source\\repos\\JuanPa2710\\proyecto0_ED\\proyecto0\\proyecto0.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{94C6F89F-FD75-4DB0-9B63-D60D479F878E}|proyecto0.vcxproj|C:\\Users\\Juanp\\OneDrive - Estudiantes ITCR\\TEC\\II Semestre\\Estructuras de Datos\\Proyecto\\proyecto0_ED\\proyecto0\\proyecto0.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{94C6F89F-FD75-4DB0-9B63-D60D479F878E}|proyecto0.vcxproj|solutionrelative:proyecto0.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-<<<<<<< HEAD
-      "AbsoluteMoniker": "D:0:0:{94C6F89F-FD75-4DB0-9B63-D60D479F878E}|proyecto0.vcxproj|C:\\Users\\Juanp\\OneDrive - Estudiantes ITCR\\TEC\\II Semestre\\Estructuras de Datos\\Proyecto\\proyecto0_ED\\proyecto0\\ArrayList.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{94C6F89F-FD75-4DB0-9B63-D60D479F878E}|proyecto0.vcxproj|solutionrelative:ArrayList.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-=======
-      "AbsoluteMoniker": "D:0:0:{94C6F89F-FD75-4DB0-9B63-D60D479F878E}|proyecto0.vcxproj|C:\\Users\\josea\\source\\repos\\JuanPa2710\\proyecto0_ED\\proyecto0\\Area.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{94C6F89F-FD75-4DB0-9B63-D60D479F878E}|proyecto0.vcxproj|C:\\Users\\Juanp\\OneDrive - Estudiantes ITCR\\TEC\\II Semestre\\Estructuras de Datos\\Proyecto\\proyecto0_ED\\proyecto0\\Area.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{94C6F89F-FD75-4DB0-9B63-D60D479F878E}|proyecto0.vcxproj|solutionrelative:Area.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{94C6F89F-FD75-4DB0-9B63-D60D479F878E}|proyecto0.vcxproj|C:\\Users\\josea\\source\\repos\\JuanPa2710\\proyecto0_ED\\proyecto0\\Ventanilla.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{94C6F89F-FD75-4DB0-9B63-D60D479F878E}|proyecto0.vcxproj|solutionrelative:Ventanilla.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{94C6F89F-FD75-4DB0-9B63-D60D479F878E}|proyecto0.vcxproj|C:\\Users\\josea\\source\\repos\\JuanPa2710\\proyecto0_ED\\proyecto0\\Servicio.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{94C6F89F-FD75-4DB0-9B63-D60D479F878E}|proyecto0.vcxproj|solutionrelative:Servicio.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
->>>>>>> origin/main
     }
   ],
   "DocumentGroupContainers": [
@@ -31,82 +18,38 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-<<<<<<< HEAD
           "SelectedChildIndex": 0,
-=======
-          "SelectedChildIndex": 3,
->>>>>>> origin/main
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Area.h",
-              "DocumentMoniker": "C:\\Users\\josea\\source\\repos\\JuanPa2710\\proyecto0_ED\\proyecto0\\Area.h",
-              "RelativeDocumentMoniker": "Area.h",
-              "ToolTip": "C:\\Users\\josea\\source\\repos\\JuanPa2710\\proyecto0_ED\\proyecto0\\Area.h",
-              "RelativeToolTip": "Area.h",
-              "ViewState": "AQIAAG8AAAAAAAAAAAAAAHsAAAACAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-10-08T06:32:03.89Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Servicio.h",
-              "DocumentMoniker": "C:\\Users\\josea\\source\\repos\\JuanPa2710\\proyecto0_ED\\proyecto0\\Servicio.h",
-              "RelativeDocumentMoniker": "Servicio.h",
-              "ToolTip": "C:\\Users\\josea\\source\\repos\\JuanPa2710\\proyecto0_ED\\proyecto0\\Servicio.h",
-              "RelativeToolTip": "Servicio.h",
-              "ViewState": "AQIAAE8AAAAAAAAAAAAAAFMAAAAVAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-10-08T06:10:22.369Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "proyecto0.cpp",
-              "DocumentMoniker": "C:\\Users\\josea\\source\\repos\\JuanPa2710\\proyecto0_ED\\proyecto0\\proyecto0.cpp",
+              "DocumentMoniker": "C:\\Users\\Juanp\\OneDrive - Estudiantes ITCR\\TEC\\II Semestre\\Estructuras de Datos\\Proyecto\\proyecto0_ED\\proyecto0\\proyecto0.cpp",
               "RelativeDocumentMoniker": "proyecto0.cpp",
-              "ToolTip": "C:\\Users\\josea\\source\\repos\\JuanPa2710\\proyecto0_ED\\proyecto0\\proyecto0.cpp",
+              "ToolTip": "C:\\Users\\Juanp\\OneDrive - Estudiantes ITCR\\TEC\\II Semestre\\Estructuras de Datos\\Proyecto\\proyecto0_ED\\proyecto0\\proyecto0.cpp",
               "RelativeToolTip": "proyecto0.cpp",
-<<<<<<< HEAD
-              "ViewState": "AQIAAB0BAAAAAAAAAAAAANsBAABhAAAA",
-=======
-              "ViewState": "AQIAAKcAAAAAAAAAAAAAAK0AAAARAAAA",
->>>>>>> origin/main
+              "ViewState": "AQIAAPUBAAAAAAAAAAAAAPEBAABOAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-10-08T05:05:11.512Z",
               "IsPinned": true,
               "EditorCaption": ""
             },
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Area.h",
+              "DocumentMoniker": "C:\\Users\\Juanp\\OneDrive - Estudiantes ITCR\\TEC\\II Semestre\\Estructuras de Datos\\Proyecto\\proyecto0_ED\\proyecto0\\Area.h",
+              "RelativeDocumentMoniker": "Area.h",
+              "ToolTip": "C:\\Users\\Juanp\\OneDrive - Estudiantes ITCR\\TEC\\II Semestre\\Estructuras de Datos\\Proyecto\\proyecto0_ED\\proyecto0\\Area.h",
+              "RelativeToolTip": "Area.h",
+              "ViewState": "AQIAAJwAAAAAAAAAAAAkwLkAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-10-08T08:13:28.634Z",
+              "EditorCaption": ""
             },
             {
-              "$type": "Document",
-<<<<<<< HEAD
-              "DocumentIndex": 1,
-              "Title": "ArrayList.h",
-              "DocumentMoniker": "C:\\Users\\Juanp\\OneDrive - Estudiantes ITCR\\TEC\\II Semestre\\Estructuras de Datos\\Proyecto\\proyecto0_ED\\proyecto0\\ArrayList.h",
-              "RelativeDocumentMoniker": "ArrayList.h",
-              "ToolTip": "C:\\Users\\Juanp\\OneDrive - Estudiantes ITCR\\TEC\\II Semestre\\Estructuras de Datos\\Proyecto\\proyecto0_ED\\proyecto0\\ArrayList.h",
-              "RelativeToolTip": "ArrayList.h",
-              "ViewState": "AQIAABIAAAAAAAAAAAAawCAAAAAIAAAA",
-=======
-              "DocumentIndex": 2,
-              "Title": "Ventanilla.h",
-              "DocumentMoniker": "C:\\Users\\josea\\source\\repos\\JuanPa2710\\proyecto0_ED\\proyecto0\\Ventanilla.h",
-              "RelativeDocumentMoniker": "Ventanilla.h",
-              "ToolTip": "C:\\Users\\josea\\source\\repos\\JuanPa2710\\proyecto0_ED\\proyecto0\\Ventanilla.h",
-              "RelativeToolTip": "Ventanilla.h",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAEsAAAAaAAAA",
->>>>>>> origin/main
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-10-08T07:13:59.756Z",
-              "EditorCaption": ""
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
             }
           ]
         }
