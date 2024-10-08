@@ -12,7 +12,6 @@ Código hecho por Jose Adrián Piedra y Juan Pablo Jímenez.
 #include <ostream>
 #include <string>
 
-#include "Area.h"
 
 using std::string;
 using std::ostream;
@@ -65,7 +64,7 @@ public:
         return areaAsignada;
     }
 
-    void operator=(Servicio other) {
+    void operator=(const Servicio &other) {
         this->descrip = other.descrip;
         this->prioridad = other.prioridad;
         this->areaAsignada = other.areaAsignada;
@@ -81,3 +80,7 @@ ostream &operator<<(ostream &os, Servicio &servicio) {
     return os;
 }
 
+ostream &operator<<(ostream &os, Servicio *servicio) {
+    os << servicio->getDescripcion();
+    return os;
+}

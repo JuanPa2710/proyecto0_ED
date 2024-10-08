@@ -29,9 +29,10 @@ private:
 	string descrip;
 	string codigo;
 	int cantVentanillas;
+	int count;
 	List<string>* ventanillas;
-	List<Servicio>* servicios;
-	PriorityQueue<Tiquete>* tiquetes;
+	List<Servicio*> *servicios;
+	PriorityQueue<Tiquete> *tiquetes;
 	
 
 	void asignarCodigosVentanillas() {
@@ -48,8 +49,9 @@ public:
 	Area() {
 		descrip, codigo = "";
 		cantVentanillas = 0;
+		count = 0;
 		ventanillas = new ArrayList<string>();
-		servicios = new ArrayList<Servicio>();
+		servicios = new ArrayList<Servicio*>();
 		tiquetes = new LinkedPriorityQueue<Tiquete>(100);	
 	}
 
@@ -57,8 +59,9 @@ public:
 		this->descrip = descrip;
 		this->codigo = codigo;
 		this->cantVentanillas = cantVentanillas;
+		this->count = 0;
 		ventanillas = new ArrayList<string>();
-		servicios = new ArrayList<Servicio>();
+		servicios = new ArrayList<Servicio*>();
 		tiquetes = new LinkedPriorityQueue<Tiquete>(100);
 		asignarCodigosVentanillas();
 	}
@@ -67,9 +70,13 @@ public:
 		this->descrip = descrip;
 		this->codigo = "";
 		this->cantVentanillas = 0;
+		this->count = 0;
 	}
 
 	~Area() {
+		delete servicios;
+		delete ventanillas;
+		delete tiquetes;
 	}
 
 	void setDescripcion(string descrip) {
@@ -97,21 +104,25 @@ public:
 		return cantVentanillas;
 	}
 
-	void agregarServicio(Servicio serv) {
+	void setCount() {
+		this->count += 1;
+	}
+
+	int getCount() {
+		return this->count;
+	}
+
+	void agregarServicio(Servicio *serv) {
 		servicios->append(serv);
 	}
 
-	void eliminarServicio(Servicio serv) {
+	void eliminarServicio(Servicio *serv) {
 		servicios->goToPos(servicios->indexOf(serv, 0));
 		servicios->remove();
 	}
 
 	void agregarTiquete(Tiquete tiquete, int prioridad) {
 		tiquetes->insert(tiquete, prioridad);
-	}
-
-	int getCount() {
-		return tiquetes->getSize();
 	}
 
 	Tiquete atenderTiquete() {
@@ -130,20 +141,38 @@ public:
 		cout << "Tiquetes: "; tiquetes->print();
 	}
 
-	void operator=(Area other) {
+	void operator=(const Area &other) {
 		this->descrip = other.descrip;
 		this->codigo = other.codigo;
 		this->cantVentanillas = other.cantVentanillas;
+		this->count = other.count;
+
 		this->ventanillas = other.ventanillas;
+		this->servicios = other.servicios;
 		this->tiquetes = other.tiquetes;
 	}
 
 	bool operator==(const Area& other) {
 		return descrip == other.descrip;
 	}
+
+	bool operator !=(const Area &other) {
+		return (this->descrip != other.descrip &&
+			this->codigo != other.codigo &&
+			this->cantVentanillas != cantVentanillas &&
+			this->count != other.count &&
+			this->ventanillas != other.ventanillas &&
+			this->servicios != other.servicios &&
+			this->tiquetes != other.tiquetes);
+	}
 };
 
-ostream& operator<<(ostream& os, Area area) {
+ostream& operator<<(ostream& os, Area *area) {
+	os << area->getDescripcion();
+	return os;
+}
+
+ostream &operator<<(ostream &os, Area& area) {
 	os << area.getDescripcion();
 	return os;
 }

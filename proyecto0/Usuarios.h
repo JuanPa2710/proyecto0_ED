@@ -55,12 +55,27 @@ public:
     }
 
 
-    bool operator==(const Usuarios& other) {
+    bool operator==(Usuarios *other) {
+        return this->nombre == other->nombre;
+    }
+
+    bool operator==(Usuarios& other) {
         return this->nombre == other.nombre;
     }
 
+    void operator=(const Usuarios &other) {
+        this->nombre = other.nombre;
+        this->prioridad = other.prioridad;
+        this->count = other.count;
+    }
+
 };
-ostream& operator<<(ostream& os, Usuarios usuario) {
+ostream &operator<<(ostream& os, Usuarios usuario) {
     os << usuario.getNombre();
+    return os;
+}
+
+ostream &operator<<(ostream &os, Usuarios *usuario) {
+    os << usuario->getNombre();
     return os;
 }

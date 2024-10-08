@@ -134,6 +134,7 @@
   <ItemGroup>
     <ClInclude Include="Area.h" />
     <ClInclude Include="ArrayList.h" />
+    <ClInclude Include="LinkedList.h" />
     <ClInclude Include="LinkedPriorityQueue.h" />
     <ClInclude Include="LinkedQueue.h" />
     <ClInclude Include="List.h" />
