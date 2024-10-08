@@ -5,132 +5,12 @@ Además, se puede encontrar algunos aspectos lógicos del programa en general, c
 Código hecho por Fiorella Gónzalez, Jose Adrián Piedra y Juan Pablo Jímenez.
 */
 
+#pragma warning(disable : 4996)
 #include <iostream>
 #include <string>
 #include <cstdlib>
 #include <time.h>
-
-#include "LinkedPriorityQueue.h"
-#include "LinkedList.h"
-#include "Usuarios.h"
-#include "Servicio.h"
-#include "Area.h"
-#include "Tiquete.h"
-#include "curses.h"
-
-using namespace std;
-using std::cin;
-using std::stoi;
-using std::to_string;
-using std::chrono::system_clock;
-
-//void printMenu(WINDOW *menu_win, int highlight, const char *choices[], int n_choices) {
-//    int x, y;
-//    x = 2;
-//    y = 2;
-//    box(menu_win, 0, 0);
-//    curs_set(0);
-//
-//    for (int i = 0; i < n_choices; ++i) {
-//        if (highlight == i + 1) {
-//            wattron(menu_win, A_REVERSE);
-//            mvwprintw(menu_win, y, x, "%s", choices[i]);
-//            wattroff(menu_win, A_REVERSE);
-//        } else
-//            mvwprintw(menu_win, y, x, "%s", choices[i]);
-//        ++y;
-//    }
-//    wrefresh(menu_win);
-//}
-//
-//int main() {
-//    // Inicializa curses
-//    initscr();
-//    clear();
-//    noecho();
-//    cbreak();
-//
-//    int startx = 0, starty = 0;
-//    int highlight = 1;
-//    int choice = 0;
-//    int c;
-//
-//    const char *choices[] = {
-//            "Opción 1",
-//            "Opción 2",
-//            "Opción 3",
-//            "Salir",
-//    };
-//
-//    int n_choices = sizeof(choices) / sizeof(char *);
-//
-//    WINDOW *menu_win = newwin(10, 10, starty, startx);
-//    keypad(menu_win, TRUE);  // Permite usar teclas como las flechas
-//    mvprintw(0, 0, "Usa las teclas de flecha para moverte, Enter para seleccionar");
-//    refresh();
-//
-//    printMenu(menu_win, highlight, choices, n_choices);
-//
-//    while (1) {
-//        c = wgetch(menu_win);
-//        switch (c) {
-//        case KEY_UP:
-//            if (highlight == 1)
-//                highlight = n_choices;
-//            else
-//                --highlight;
-//            break;
-//        case KEY_DOWN:
-//            if (highlight == n_choices)
-//                highlight = 1;
-//            else
-//                ++highlight;
-//            break;
-//        case 10:  // Tecla Enter
-//            choice = highlight;
-//            break;
-//        }
-//        printMenu(menu_win, highlight, choices, n_choices);
-//        if (choice != 0)
-//            break;
-//    }
-//
-//    mvprintw(23, 0, "Has elegido la opción %d con texto: %s", choice, choices[choice - 1]);
-//    clrtoeol();
-//    refresh();
-//    getch();
-//    endwin();
-//    return 0;
-//}
-//
-//int prueba() {
-//    initscr();
-//    clear();
-//    noecho();
-//    cbreak();
-//    curs_set(0);
-//
-//    WINDOW *menuWin = newwin(10, 10, 0, 0);
-//    keypad(menuWin, TRUE);
-//    refresh();
-//
-//    printMenu(menuWin, highlight, choices, n_choices);
-//
-//    endwin();
-//    return 0;
-//}
-
-/*
-El archivo principal en el que se maneja toda la interacción de la consola con el usuario.
-En el main, se encuentra diversos prints y manejos de input para decidir que mostrar en el menú, basado en lo que decida el usuario.
-Además, se puede encontrar algunos aspectos lógicos del programa en general, como la inicialización de listas en las que se trabajara.
-Código hecho por Fiorella Gónzalez, Jose Adrián Piedra y Juan Pablo Jímenez.
-*/
-
-#include <iostream>
-#include <string>
-#include <cstdlib>
-#include <time.h>
+#include <iomanip>
 
 #include "LinkedPriorityQueue.h"
 #include "LinkedList.h"
@@ -250,6 +130,7 @@ int main() {
             int prioridadTiquete = prioridadUsuario * 10 + prioridadServicio;
 
             std::time_t tiempoActual = std::chrono::system_clock::to_time_t(horaActual);
+            std::tm* horaLocal = std::localtime(&tiempoActual);
 
             // Crear el tiquete y agregarlo a la cola
             Tiquete *nuevoTiquete = new Tiquete(codigoTiquete, horaActual, prioridadTiquete);
@@ -257,9 +138,10 @@ int main() {
             areaActual->agregarTiquete(nuevoTiquete, prioridadTiquete);
             areaActual->setCount();
             usuario->setCount();
+            servicioActual->setCount();
 
             cout << "Tiquete generado: " << codigoTiquete << endl;
-            cout << "Hora: " << tiempoActual << endl;  // Mostrar la hora
+            cout << "Hora: " << std::put_time(horaLocal, "%H:%M:%S") << endl;
             cout << "Prioridad: " << prioridadTiquete << endl;
             cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             tiqueteConsecutivo++;
@@ -623,21 +505,35 @@ int main() {
                     cin.get();
                 }
 
-                /*if (optionServicio == 3) {
+                if (optionServicio == 3) {
                     system("cls");
-                    for (ventanillas->goToStart(); !ventanillas->atEnd(); usuarios->next()) {
-
-                        cout << usuarios->getElement()->getNombre() << endl;
-                        cout << usuarios->getElement()->getCount() << endl;
+                    for(areas->goToStart(); !areas->atEnd(); areas->next())
+                    {
+                        Area *areaActual = areas->getElement();
+                        ventanillas = areaActual->ventanillas;
+                        for (ventanillas->goToStart(); !ventanillas->atEnd(); ventanillas->next()) {
+                            cout << "Area: " << areaActual->getDescripcion() << endl;
+                            cout << "Código de ventanilla: " << ventanillas->getElement()->getNombre() << endl;
+                            cout << "Cantidad de tiquetes: " << ventanillas->getElement()->getCount() << endl << endl;
+                        }
                     }
                     cout << "Presione cualquier tecla para continuar...";
                     cin.ignore();
                     cin.get();
 
-                }*/
+                }
 
                 if (optionServicio == 4) {
                     system("cls");
+                    for (servicios->goToStart(); !servicios->atEnd(); servicios->next()) {
+                        Servicio* servicioActual = servicios->getElement();
+                        cout << "Area: " << servicioActual->getAreaAsignada() << endl;
+                        cout << "Servicio: " << servicioActual->getDescripcion() << endl;
+                        cout << "Tiquetes: " << servicioActual->getCount() << endl << endl;
+                    }
+                    cout << "Presione cualquier tecla para continuar...";
+                    cin.ignore();
+                    cin.get();
 
                 }
 

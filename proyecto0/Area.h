@@ -30,7 +30,12 @@ private:
 	string descrip;
 	string codigo;
 	int cantVentanillas;
+<<<<<<< HEAD
 	int count;	
+=======
+	int count;
+	
+>>>>>>> origin/main
 	PriorityQueue<Tiquete *> *tiquetes;
 
 	void asignarCodigosVentanillas() {
@@ -44,8 +49,13 @@ private:
 	}
 
 public:
+<<<<<<< HEAD
 	List<Servicio *> *servicios;
 	List <Ventanilla *> *ventanillas;	
+=======
+	List<Servicio*>* servicios;
+	List <Ventanilla *> *ventanillas;
+>>>>>>> origin/main
 
 	Area() {
 		descrip, codigo = "";
@@ -121,10 +131,13 @@ public:
 		return servicios->getElement();
 	}
 
+<<<<<<< HEAD
 	List<Servicio *> *getServicios() {
 		return servicios;
 	}
 
+=======
+>>>>>>> origin/main
 	void eliminarServicio(Servicio *serv) {
 		servicios->goToPos(servicios->indexOf(serv, 0));
 		servicios->remove();
