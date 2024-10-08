@@ -50,6 +50,10 @@ public:
         return count;
     }
 
+    void restartCount() {
+        this->count = 0;
+    }
+
     void setCount() {
         this->count++;
     }

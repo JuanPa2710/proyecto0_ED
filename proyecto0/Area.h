@@ -110,6 +110,10 @@ public:
 		this->count += 1;
 	}
 
+	void restartCount() {
+		this->count = 0;
+	}
+
 	int getCount() {
 		return this->count;
 	}
@@ -139,6 +143,9 @@ public:
 		}
 	}
 
+	void limpiarCola() {
+		tiquetes->clear();
+	}
 
 	void toString() {
 		cout << "Area: " << cantVentanillas << endl;
