@@ -1,3 +1,4 @@
+
 /*
 EL archivo tipo objeto el cual define el comportamiento de las áreas.
 Entre sus diversos atributos, se tiene la descripción del área, el código del área, la cantidad de las ventanillas, dos listas para las ventanillas y los sevicios
@@ -31,7 +32,7 @@ private:
 	string codigo;
 	int cantVentanillas;
 	int count;
-	
+
 	PriorityQueue<Tiquete *> *tiquetes;
 
 
@@ -46,7 +47,7 @@ private:
 	}
 
 public:
-	List<Servicio*>* servicios;
+	List<Servicio *> *servicios;
 	List <Ventanilla *> *ventanillas;
 
 	Area() {
@@ -119,7 +120,7 @@ public:
 		servicios->append(serv);
 	}
 
-	Servicio* obtenerServicio() {
+	Servicio *obtenerServicio() {
 		return servicios->getElement();
 	}
 
