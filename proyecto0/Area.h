@@ -33,9 +33,6 @@ private:
 	int cantVentanillas;
 	int count;
 
-	PriorityQueue<Tiquete *> *tiquetes;
-
-
 	void asignarCodigosVentanillas() {
 		if (ventanillas->getSize() > 0)
 			ventanillas->clear();
@@ -49,6 +46,7 @@ private:
 public:
 	List<Servicio *> *servicios;
 	List <Ventanilla *> *ventanillas;
+	PriorityQueue<Tiquete *> *tiquetes;
 
 	Area() {
 		descrip, codigo = "";
@@ -143,6 +141,7 @@ public:
 
 
 	void toString() {
+		cout << "Area: " << cantVentanillas << endl;
 		cout << "Ventanillas: ";  ventanillas->print();
 		cout << "Servicios: "; servicios->print();
 		cout << "Tiquetes: "; tiquetes->print();

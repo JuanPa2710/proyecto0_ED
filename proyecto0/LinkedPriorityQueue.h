@@ -95,5 +95,13 @@ public:
 		}
 	}
 
+	void printShow() {
+		cout << "[ ";
+		for (int i = 0; i < priorities; i++) {
+			if (!queues->isEmpty())
+				queues[i].print();
+		}
+		cout << " ]";
+	}
 };
 

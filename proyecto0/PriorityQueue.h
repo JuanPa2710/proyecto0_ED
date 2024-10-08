@@ -26,5 +26,6 @@ public:
 	virtual int getSize() = 0;
 	virtual bool isEmpty() = 0;
 	virtual void print() = 0;
+	virtual void printShow() = 0;
 };
 

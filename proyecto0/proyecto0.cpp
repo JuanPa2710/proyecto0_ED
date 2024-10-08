@@ -19,539 +19,963 @@ Código hecho por Fiorella Gónzalez, Jose Adrián Piedra y Juan Pablo Jímenez.
 #include "Area.h"
 #include "Tiquete.h"
 
-
 using namespace std;
 using std::cin;
 using std::stoi;
 using std::chrono::system_clock;
 
-static int countAreas = 0;
+List<Usuarios *> *usuarios = new ArrayList<Usuarios *>();
+List<Area *> *areas = new LinkedList<Area *>();
+List<Servicio *> *servicios = new ArrayList<Servicio *>();
+List <Ventanilla *> *ventanillas = new ArrayList<Ventanilla *>;
 
 
-int main() {
-    std::chrono::time_point<std::chrono::system_clock> horaActual;
-    setlocale(LC_ALL, "es_ES.UTF-8");
 
-    List<Usuarios *> *usuarios = new ArrayList<Usuarios *>();
-    List<Area *> *areas = new LinkedList<Area *>();
-    List<Servicio*> *servicios = new ArrayList<Servicio*>();
-    List <Ventanilla *> *ventanillas = new ArrayList<Ventanilla *>;
+std::chrono::time_point<std::chrono::system_clock> horaActual;
+int tiqueteConsecutivo = 100;
 
-    bool continuar = true;
+//Funciones auxiliares
+int chequeoRestriccionesEnteros(string input) {
+    try {
+        int num = stoi(input);
 
-    Usuarios *tipo0 = new Usuarios("Adulto mayor", 0);
-    Usuarios *tipo1 = new Usuarios("Menor de edad", 1);
-    Usuarios *tipo2 = new Usuarios("Usuario regular", 2);
+        if (num < 0) {
+            cout << "\nError: El número está fuera del rango permitido. Intente de nuevo" << endl;
+            return -1;
+        } else {
+            return num;
+        }
+    } catch (const invalid_argument &) {
+        cout << "\nError: Entrada no válida, por favor ingrese un número entero. Intente de nuevo" << endl;
+        return -1;
+    } catch (const std::out_of_range &) {
+        std::cout << "\nError: El número está fuera del rango permitido. Intente de nuevo" << std::endl;
+        return -1;
+    }
+}
 
-    usuarios->insert(tipo0);
-    usuarios->insert(tipo1);
-    usuarios->insert(tipo2);
+int chequeoRestriccionesRangos(string input, int r1, int r2) {
+    try {
+        int num = stoi(input);
+        int option = 0;
+        if (r1 != r2)
+            option = (num >= r1 && num <= r2) ? num : 0;
+        else
+            option = (num == 1) ? num : 0;
 
-    Area *tempArea1 = new Area("Cajas", "C", stoi("4"));
-    Area *tempArea2 = new Area("Farmacia", "F", stoi("5"));
+        if (option == 0) {
+            cout << "\nError: El número está fuera del rango permitido. Intente de nuevo" << endl;
+            return 0;
+        } else {
+            return option;
+        }
+    } catch (const invalid_argument &) {
+        cout << "\nError: Entrada no válida, por favor ingrese un número entero. Intente de nuevo" << endl;
+        return 0;
+    } catch (const std::out_of_range &) {
+        std::cout << "\nError: El número está fuera del rango permitido. Intente de nuevo" << std::endl;
+        return 0;
+    }
+}
 
-    Servicio *tempServicio1 = new Servicio("Pagos", stoi("0"), "Cajas");
-    Servicio *tempServicio2 = new Servicio("Facturas", stoi("1"), "Cajas");
-    Servicio *tempServicio3 = new Servicio("Consulta", stoi("2"), "Cajas");
+void imprimirOpciones(string arr[], int max) {
+    system("cls");
 
-    tempArea1->agregarServicio(tempServicio1);
-    tempArea1->agregarServicio(tempServicio2);
-    tempArea1->agregarServicio(tempServicio3);
+    for (int i = 0; i < max; i++)
+        cout << i + 1 << ". " << arr[i] << endl;
+}
 
-    areas->append(tempArea1);
-    areas->append(tempArea2);
+//Funciones principales
+void operacionTiquetes() {
+    system("cls");
 
-    servicios->append(tempServicio1);
-    servicios->append(tempServicio2);
-    servicios->append(tempServicio3);
+    if (usuarios->getSize() > 0 && servicios->getSize() > 0) {
+        usuarios->printShow();
+        string tipoUsuarioSeleccionado;
+        int usuarioOp = 0;
 
-    int tiqueteConsecutivo = 100;
+        cout << "Seleccione el tipo de usuario: ";
+        getline(cin, tipoUsuarioSeleccionado);
+        usuarioOp = chequeoRestriccionesRangos(tipoUsuarioSeleccionado, 1, usuarios->getSize());
+        while (usuarioOp == 0) {
+            cout << "Seleccione el tipo de usuario: ";
+            getline(cin, tipoUsuarioSeleccionado);
+            usuarioOp = chequeoRestriccionesRangos(tipoUsuarioSeleccionado, 1, usuarios->getSize());
+        }        
+        cout << endl;
+
+        servicios->printShow();
+        string servicioSeleccionado;
+        int servicioOp = 0;
+
+        cout << "Seleccione el servicio que desea usar: ";
+        getline(cin, servicioSeleccionado);
+        servicioOp = chequeoRestriccionesRangos(servicioSeleccionado, 1, servicios->getSize());
+
+        servicios->goToPos(stoi(servicioSeleccionado) - 1);
+        Servicio *servicioActual = servicios->getElement();
+        Area *areaActual = new Area();
+
+        string areaSeleccionada = servicioActual->getAreaAsignada();
+        bool areaEncontrada = false;
+        string codigoArea;
+        for (areas->goToStart(); !areas->atEnd(); areas->next()) {
+            Area *temp = areas->getElement();
+
+            if (temp->getDescripcion() == areaSeleccionada) {
+                areaActual = temp;
+                codigoArea = temp->getCodigo();
+                break;
+            }
+        }
+
+        string codigoTiquete = codigoArea + to_string(tiqueteConsecutivo);
+        horaActual = std::chrono::system_clock::now();
+
+        usuarios->goToPos(stoi(tipoUsuarioSeleccionado) - 1);
+        Usuarios *usuario = usuarios->getElement();
+        int prioridadUsuario = usuario->getPrioridad();
+        int prioridadServicio = servicioActual->getPrioridad();
+        int prioridadTiquete = prioridadUsuario * 10 + prioridadServicio;
+
+        std::time_t tiempoActual = std::chrono::system_clock::to_time_t(horaActual);
+        std::tm *horaLocal = std::localtime(&tiempoActual);
+
+        // Crear el tiquete y agregarlo a la cola
+        Tiquete *nuevoTiquete = new Tiquete(codigoTiquete, horaActual, prioridadTiquete);
+
+        areaActual->agregarTiquete(nuevoTiquete, prioridadTiquete);
+        areaActual->setCount();
+        usuario->setCount();
+        servicioActual->setCount();
+
+        cout << "Tiquete generado: " << codigoTiquete << endl;
+        cout << "Hora: " << std::put_time(horaLocal, "%H:%M:%S") << endl;
+        cout << "Prioridad: " << prioridadTiquete << endl;
+        tiqueteConsecutivo++;
+        cout << "Presione cualquier tecla para continuar...";
+        cin.get();
+    }
+    else {
+        if (usuarios->getSize() == 0) {
+            cout << "No se puede realizar esta operación." << endl;
+            cout << "Causa: No hay usuarios registrados." << endl;
+        } else {
+            cout << "No se puede realizar esta operación." << endl;
+            cout << "Causa: No hay servicios registrados." << endl;
+        }
+        cout << "Presione cualquier tecla para continuar...";
+        cin.get();
+    }
+}
+
+void operacionAtender() {
+    system("cls");
+
+    if (areas->getSize() > 0) {
+        string areaSeleccionada;
+        string ventanilla;
+
+        areas->printShow();
+        int areaOP = 0;
+
+        cout << "Ingrese el área que desee atender: ";
+        getline(cin, areaSeleccionada);
+        areaOP = chequeoRestriccionesRangos(areaSeleccionada, 1, areas->getSize());
+        while (areaOP == 0) {
+            cout << "Ingrese el área que desee atender: ";
+            getline(cin, areaSeleccionada);
+            areaOP = chequeoRestriccionesRangos(areaSeleccionada, 1, areas->getSize());
+        }
+
+        Area *areaActual = new Area();
+        bool areaEncontrada = false;
+
+        for (areas->goToStart(); !areas->atEnd(); areas->next()) {
+            if (areas->getElement()->getDescripcion() == areaSeleccionada) {
+                areaActual = areas->getElement();
+                areaEncontrada = true;
+            }
+        }
+
+        areaActual->ventanillas->printShow();
+        int ventanilaOp = 0;
+
+        cout << "Ingrese el número de ventanilla: ";
+        getline(cin, ventanilla);
+        ventanilaOp = chequeoRestriccionesRangos(ventanilla, 1, areaActual->ventanillas->getSize());
+
+        Ventanilla *ventanillaActual = new Ventanilla();
+        bool ventanillaEncontrada = false;
+
+        for (areaActual->ventanillas->goToStart(); !areaActual->ventanillas->atEnd(); areaActual->ventanillas->next()) {
+            if (areaActual->ventanillas->getElement()->getNombre() == ventanilla) {
+                ventanillaActual = areaActual->ventanillas->getElement();
+                ventanillaEncontrada = true;
+            }
+        }
+
+        if (!areaEncontrada) {
+            cout << "Error: No se encontró el área seleccionada." << endl;
+        } else {
+            Tiquete *tiqueteAtendido = areaActual->atenderTiquete();
+            ventanillaActual->agregarTiquete(tiqueteAtendido);
+            cout << "Se está atendiendo el tiquete: " << tiqueteAtendido->getCod() << endl;
+            ventanillaActual->setCount();
+        }
+        ventanillaActual->toString();
+        cout << "Presione cualquier tecla para continuar...";
+        cin.get();
+    } 
+    else {
+        cout << "No se puede realizar esta operación." << endl;
+        cout << "Causa: No hay areas registradas, ni tiquetes para atender." << endl;
+        cout << "Presione cualquier tecla para continuar...";
+        cin.get();
+    }
+}
+
+void subOperacionUsuarios() {
+    system("cls");
+
+    string input = "";
     int option = 0;
 
-    while (option != 6) {
-        cout << "1- Estado de las colas." << endl;
-        cout << "2- Tiquetes." << endl;
-        cout << "3- Atender." << endl;
-        cout << "4- Administración." << endl;
-        cout << "5- Estadísticas del sistema." << endl;
-        cout << "6- Salir." << endl;
-        cout << endl;
+    string ops[3] = {
+            "Agregar un tipo de usuario.",
+            "Eliminar un tipo de usuario.",
+            "Regresar."
+    };
+
+    while (option != 3) {
+        imprimirOpciones(ops, 3);
         cout << "Inserte la opción que quiere realizar: ";
-        cin >> option;
+        getline(cin, input);
+        option = chequeoRestriccionesRangos(input, 1, 3);
+
+        while (option == 0) {
+            cout << "Inserte la opción que quiere realizar: ";
+            getline(cin, input);
+            option = chequeoRestriccionesRangos(input, 1, 3);
+        }
 
         if (option == 1) {
             system("cls");
-            cout << "Limpiando las colas...";
-            usuarios->clear();
-            areas->clear();
-            servicios->clear();
-            ventanillas->clear();
-        }
+            string nombre;
+            int prioridad;
 
-        if (option == 2) {  // Opción para solicitar un tiquete
-            system("cls");
-            usuarios->printShow();
-            string tipoUsuarioSeleccionado;
-            cout << "Seleccione el tipo de usuario: ";
-            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            getline(cin, tipoUsuarioSeleccionado);
-            cout << endl;
+            cout << "Ingrese el nombre del Usuario: ";
+            getline(cin, nombre);
 
-            servicios->printShow();
-            cout << endl;
-            string servicioSeleccionado;
-            cout << "Seleccione el servicio que desea usar: ";
-            getline(cin, servicioSeleccionado);
-
-            servicios->goToPos(stoi(servicioSeleccionado) - 1);
-            Servicio *servicioActual = servicios->getElement();
-            Area *areaActual = new Area();
-
-            string areaSeleccionada = servicioActual->getAreaAsignada();
-            bool areaEncontrada = false;
-            string codigoArea;
-            for (areas->goToStart(); !areas->atEnd(); areas->next()) {
-                Area *temp = areas->getElement();
-
-                if (temp->getDescripcion() == areaSeleccionada) {
-                    areaActual = temp;
-                    codigoArea = temp->getCodigo();
-                    break;
-                }
+            string inputPrioridad = "";
+            cout << "Ingrese la prioridad: ";
+            getline(cin, inputPrioridad);
+            prioridad = chequeoRestriccionesEnteros(inputPrioridad);
+            while (prioridad < 0) {
+                cout << "Ingrese la prioridad: ";
+                getline(cin, inputPrioridad);
+                prioridad = chequeoRestriccionesEnteros(inputPrioridad);
             }
 
-            string codigoTiquete = codigoArea + to_string(tiqueteConsecutivo);
-            horaActual = std::chrono::system_clock::now();
+            Usuarios *tipo = new Usuarios(nombre, prioridad);
+            usuarios->insert(tipo);
 
-            usuarios->goToPos(stoi(tipoUsuarioSeleccionado) - 1);
-            Usuarios *usuario = usuarios->getElement();
-            int prioridadUsuario = usuario->getPrioridad();
-            int prioridadServicio = servicioActual->getPrioridad();
-            int prioridadTiquete = prioridadUsuario * 10 + prioridadServicio;
+            cout << "El tipo de usuario -" << nombre << "- fue agregado." << endl;
+            cout << "Presione cualquier tecla para continuar...";
+            cin.get();
+        }
 
-            std::time_t tiempoActual = std::chrono::system_clock::to_time_t(horaActual);
-            std::tm* horaLocal = std::localtime(&tiempoActual);
+        if (option == 2) {
+            system("cls");
 
-            // Crear el tiquete y agregarlo a la cola
-            Tiquete *nuevoTiquete = new Tiquete(codigoTiquete, horaActual, prioridadTiquete);
+            if (usuarios->getSize() > 0) {
+                string nombre;
+                int nombreOp = 0;
+                usuarios->printShow();
+                cout << "Ingrese el usuario a eliminar: ";
+                getline(cin, nombre);
+                nombreOp = chequeoRestriccionesRangos(nombre, 1, usuarios->getSize());
+                while (nombreOp == 0) {
+                    usuarios->printShow();
+                    cout << "Ingrese el usuario a eliminar: ";
+                    getline(cin, nombre);
+                }
 
-            areaActual->agregarTiquete(nuevoTiquete, prioridadTiquete);
-            areaActual->setCount();
-            usuario->setCount();
-            servicioActual->setCount();
+                int decisionOp = 0;
+                string decision = "";
+                usuarios->goToPos(nombreOp - 1);
 
-            cout << "Tiquete generado: " << codigoTiquete << endl;
-            cout << "Hora: " << std::put_time(horaLocal, "%H:%M:%S") << endl;
-            cout << "Prioridad: " << prioridadTiquete << endl;
-            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            tiqueteConsecutivo++;
+                cout << "¿Está seguro de eliminar el usuario?" << endl;
+                cout << "1. Si" << endl;
+                cout << "2. No" << endl;
+                cout << "Escoja una opción: ";
+                getline(cin, decision);
+                decisionOp = chequeoRestriccionesRangos(decision, 1, 2);
+                while (decisionOp == 0) {
+                    cout << "¿Está seguro de eliminar el usuario?" << endl;
+                    cout << "1. Si" << endl;
+                    cout << "2. No" << endl;
+                    cout << "Escoja una opción: ";
+                    getline(cin, decision);
+                    decisionOp = chequeoRestriccionesRangos(decision, 1, 2);
+                }
+
+                if (decisionOp == 1) {
+                    cout << "Usuario " << usuarios->remove() << " eliminado correctamente" << endl;
+                    cout << "Presione cualquier tecla para continuar...";
+                    cin.get();
+                } else {
+                    cout << "El usuario no fue eliminado." << endl;
+                    cout << "Presione cualquier tecla para continuar...";
+                    cin.get();
+                }
+            }
+            else {
+                cout << "Actualmente no hay registrado ningún usuario." << endl;
+                cout << "Presione cualquier tecla para continuar...";
+                cin.get();
+            }
+        }
+
+        if (option == 3) {
+            break;
+        }
+    }
+}
+
+void subOperacionAreas() {
+    system("cls");
+
+    string input = "";
+    int option = 0;
+
+    string ops[5] = {
+            "Agregar un área.",
+            "Modificar cantidad de ventanillas.",
+            "Consultar áreas.",
+            "Eliminar un área.",
+            "Regresar."
+    };
+
+    while (option != 5) {
+        imprimirOpciones(ops, 5);
+        cout << "Inserte la opción que quiere realizar: ";
+        getline(cin, input);
+        option = chequeoRestriccionesRangos(input, 1, 5);
+
+        while (option == 0) {
+            cout << "Inserte la opción que quiere realizar: ";
+            getline(cin, input);
+            option = chequeoRestriccionesRangos(input, 1, 5);
+        }
+
+        if (option == 1) {
+            system("cls");
+            string descripcion, codigo, ventanilla;
+
+            cout << "Ingrese la descripción del área: ";
+            getline(cin, descripcion);
+
+            cout << "Ingrese el código del área: ";
+            getline(cin, codigo);
+
+            int ventanilaCant = 0;
+            cout << "Ingrese la cantidad de ventanillas del área: ";
+            getline(cin, ventanilla);
+            ventanilaCant = chequeoRestriccionesEnteros(ventanilla);
+            while (ventanilaCant < 0) {
+                cout << "Ingrese la cantidad de ventanillas del área: ";
+                getline(cin, ventanilla);
+                ventanilaCant = chequeoRestriccionesEnteros(ventanilla);
+            }
+
+            Area *tempArea = new Area(descripcion, codigo, ventanilaCant);
+            areas->append(tempArea);
+            cout << "\nEl área " << descripcion << " fue creada correctamente." << endl;
+            cout << "Presione cualquier tecla para continuar...";
+            cin.get();
+        }
+
+        if (option == 2) {
+            system("cls");
+
+            if (areas->getSize() > 0) {
+                Area *tempArea = new Area();
+                string resul;
+
+                cout << "Áreas disponibles: " << endl << endl;
+                areas->printShow();
+
+                int resulOp = 0;
+                cout << "Ingrese que área desea modificar: ";
+                getline(cin, resul);
+                resulOp = chequeoRestriccionesRangos(resul, 1, areas->getSize());
+                while (resulOp == 0) {
+                    cout << "Ingrese que área desea modificar: ";
+                    getline(cin, resul);
+                    resulOp = chequeoRestriccionesRangos(resul, 1, areas->getSize());
+                }
+
+                areas->goToPos(resulOp - 1);
+                tempArea = areas->getElement();
+                cout << "\nSe ha encontrado el área: " << tempArea->getDescripcion() << endl;
+
+                int ventanilaCant = 0;
+                cout << "\nCantidad actual de ventanillas: " << tempArea->getCantVentanillas() << endl;
+                cout << "Ingrese la nueva cantidad de ventanillas: ";
+                getline(cin, resul);
+                ventanilaCant = chequeoRestriccionesEnteros(resul);
+                while (ventanilaCant < 0) {
+                    cout << "Ingrese la nueva cantidad de ventanillas: ";
+                    getline(cin, resul);
+                    ventanilaCant = chequeoRestriccionesEnteros(resul);
+                }
+
+                tempArea->setCantVentanillas(ventanilaCant);
+                cout << "\nLa nueva cantidad de ventanillas es: " << tempArea->getCantVentanillas() << endl;
+                cout << "Presione cualquier tecla para continuar...";
+                cin.get();
+            }
+            else {
+                cout << "Actualmente no hay áreas registradas." << endl;
+                cout << "Presione cualquier tecla para continuar...";
+                cin.get();
+            }
         }
 
         if (option == 3) {
             system("cls");
-            string areaSeleccionada;
-            string ventanilla;
 
-            areas->printShow();
-
-            cout << "Ingrese el área que desee atender: ";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            getline(cin, areaSeleccionada);
-
-            cout << "Ingrese el número de ventanilla: ";
-            getline(cin, ventanilla);
-
-            Area *areaActual = new Area();
-            bool areaEncontrada = false;
-
-            for (areas->goToStart(); !areas->atEnd(); areas->next()) {
-                if (areas->getElement()->getDescripcion() == areaSeleccionada) {
-                    areaActual = areas->getElement();
-                    areaEncontrada = true;
+            if (areas->getSize() > 0) {
+                string resul;
+                cout << "Áreas disponibles: " << endl << endl;
+                for (areas->goToStart(); !areas->atEnd(); areas->next()) {
+                    Area *temp = areas->getElement();
+                    cout << "Nombre: " << temp->getDescripcion() << endl;
+                    cout << "Cantidad de ventanillas: " << temp->getCantVentanillas() << endl;
+                    cout << "Ventanillas: ";
+                    temp->ventanillas->print();
+                    cout << endl;
                 }
+
+                cout << "Presione cualquier tecla para continuar...";
+                cin.get();
             }
-
-            Ventanilla *ventanillaActual = new Ventanilla();
-            bool ventanillaEncontrada = false;
-
-            for (areaActual->ventanillas->goToStart(); !areaActual->ventanillas->atEnd(); areaActual->ventanillas->next()) {
-                if (areaActual->ventanillas->getElement()->getNombre() == ventanilla) {
-                    ventanillaActual = areaActual->ventanillas->getElement();
-                    ventanillaEncontrada = true;
-                }
+            else {
+                cout << "Actualmente no hay áreas registradas." << endl;
+                cout << "Presione cualquier tecla para continuar...";
+                cin.get();
             }
-
-
-
-            if (!areaEncontrada) {
-                cout << "Error: No se encontró el área seleccionada." << endl;
-            } else {
-                Tiquete *tiqueteAtendido = areaActual->atenderTiquete();
-                ventanillaActual->agregarTiquete(tiqueteAtendido);
-                cout << "Se está atendiendo el tiquete: " << tiqueteAtendido->getCod() << endl;
-                ventanillaActual->setCount();
-            }
-            ventanillaActual->toString();
-
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
 
         if (option == 4) {
-            int suboption = 0;
-            while (suboption != 5) {
+            system("cls");
+
+            if (areas->getSize() > 0) {
+                Area *tempArea = new Area();
+                string resul;
                 system("cls");
-                cout << "1- Manejo de tipos de usuarios." << endl;
-                cout << "2- Manejo de áreas." << endl;
-                cout << "3- Manejo de servicios." << endl;
-                cout << "4- Limpiar colas y estadísticas." << endl;
-                cout << "5- Regresar." << endl;
-                cout << "Inserte la opción que quiere realizar: ";
-                cin >> suboption;
 
-                if (suboption == 1) {
-                    system("cls");
-                    int optionUsers = 0;
+                cout << "Áreas disponibles: " << endl;
+                areas->printShow();
 
-                    while (optionUsers != 3) {
-                        system("cls");
-                        cout << "1- Agregar un tipo de usuario. " << endl;
-                        cout << "2- Eliminar un tipo de usuario. " << endl;
-                        cout << "3- Regresar." << endl;
-                        cout << "Inserte la opción que quiere realizar: ";
-
-                        cin >> optionUsers;
-
-                        if (optionUsers == 1) {
-                            system("cls");
-                            string nombre;
-                            int prioridad;
-
-                            cout << "Ingrese el nombre del Usuario: " << endl;
-                            cin >> nombre;
-
-                            cout << "Ingrese la prioridad: " << endl;
-                            cin >> prioridad;
-
-                            Usuarios *tipo = new Usuarios(nombre, prioridad);
-                            usuarios->insert(tipo);
-
-                            cout << "El tipo de usuario " << nombre << " fue agregado." << endl;
-                        }
-
-                        if (optionUsers == 2) {
-                            system("cls");
-                            string nombre;
-                            cout << "Ingrese el nombre del área: " << endl;
-                            getline(cin, nombre);
-
-                            int pos = usuarios->indexOf(new Usuarios(nombre), 0);
-                            usuarios->goToPos(pos);
-                            cout << "Usuario " << usuarios->remove() << " eliminado correctamente" << endl;
-                        }
-
-                        if (optionUsers == 3) {
-                            break;
-                        }
-                    }
+                int resulOp = 0;
+                cout << "\nIngrese que área desea eliminar: ";
+                getline(cin, resul);
+                resulOp = chequeoRestriccionesRangos(resul, 1, areas->getSize());
+                while (resulOp < 0) {
+                    cout << "\nIngrese que área desea eliminar: ";
+                    getline(cin, resul);
+                    resulOp = chequeoRestriccionesRangos(resul, 1, areas->getSize());
                 }
 
-                if (suboption == 2) {
-                    system("cls");
-                    int optionArea = 0;
-                    while (optionArea != 5) {
-                        system("cls");
-                        cout << "1- Agregar un área. " << endl;
-                        cout << "2- Modificar cantidad de ventanillas. " << endl;
-                        cout << "3- Consultar áreas. " << endl;
-                        cout << "4- Eliminar un área. " << endl;
-                        cout << "5- Regresar." << endl;
-                        cout << "Inserte la opción que quiere realizar: ";
-
-                        cin >> optionArea;
-
-                        if (optionArea == 1) {
-                            system("cls");
-                            string descripcion, codigo, ventanillas;
-                            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-                            cout << "Ingrese la descripción del área: ";
-                            getline(cin, descripcion);
-
-                            cout << "Ingrese el código del área: ";
-                            getline(cin, codigo);
-
-                            cout << "Ingrese la cantidad de ventanillas del área: ";
-                            getline(cin, ventanillas);
-
-                            Area *tempArea = new Area(descripcion, codigo, stoi(ventanillas));
-                            areas->append(tempArea);
-                            cout << "El área " << descripcion << " fue creada correctamente." << endl;
-
-                        }
-
-                        if (optionArea == 2) {
-                            system("cls");
-                            Area *tempArea = new Area();
-                            string resul;
-
-                            cout << "Áreas disponibles: " << endl;
-                            areas->printShow();
-
-                            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                            cout << "\nIngrese que área desea modificar: ";
-                            getline(cin, resul);
-
-                            for (areas->goToStart(); !areas->atEnd(); areas->next()) {
-                                if (areas->getElement()->getDescripcion() == resul)
-                                    tempArea = areas->getElement();
-                            }
-
-                            int pos = areas->indexOf(tempArea, 0);
-                            areas->goToPos(pos);
-                            tempArea->setDescripcion(areas->getElement()->getDescripcion());
-                            cout << "Se ha encontrado el área: " << tempArea->getDescripcion() << endl;
-                            cout << "Ingrese el nuevo número de ventanillas: ";
-                            getline(cin, resul);
-
-                            tempArea->setCantVentanillas(stoi(resul));
-                            tempArea->toString();
-                            cin >> resul;
-                        }
-
-                        if (optionArea == 3) {
-                            system("cls");
-
-                            string resul;
-                            cout << "Áreas disponibles: " << endl << endl;
-                            for (areas->goToStart(); !areas->atEnd(); areas->next())
-                                areas->getElement()->toString();
-
-                            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                            cin >> resul;
-                        }
-
-                        if (optionArea == 4) {
-                            Area *tempArea = new Area();
-                            string resul;
-                            system("cls");
-
-                            cout << "Áreas disponibles: " << endl;
-                            areas->printShow();
-
-                            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                            cout << "\nIngrese que área desea eliminar: ";
-                            getline(cin, resul);
-
-                            areas->goToPos(stoi(resul)-1);
-                            tempArea = areas->getElement();
-                            List<Servicio*> *serviciosEliminar = new ArrayList<Servicio*>();
-                            servicios->print();
-                            tempArea->servicios->print();
-                            for (servicios->goToStart(); !servicios->atEnd(); servicios->next()) {
-                                Servicio *servicioActual = servicios->getElement();
-                                if (tempArea->servicios->contains(servicioActual)) {
-                                    serviciosEliminar->append(servicioActual);
-                                }
-                            }
-
-                            for (serviciosEliminar->goToStart(); !serviciosEliminar->atEnd(); serviciosEliminar->next()) {
-                                int pos = servicios->indexOf(serviciosEliminar->getElement(), 0);
-                                servicios->goToPos(pos);
-                                servicios->remove();
-                            }
-
-                            cout << "Se ha eliminado correctamente el área: " << areas->remove() << endl;
-                            getline(cin, resul);
-                        }
-                    }
+                string decision = "";
+                int decisionOp = 0;
+                cout << "¿Está seguro de eliminar el área?" << endl;
+                cout << "También se eliminaran todos los servicios, ventanillas y tiquetes asociados a esta área" << endl;
+                cout << "1. Si" << endl;
+                cout << "2. No" << endl;
+                cout << "Escoja la opción: ";
+                getline(cin, decision);
+                decisionOp = chequeoRestriccionesRangos(decision, 1, 2);
+                
+                while (decisionOp == 0) {
+                    cout << "¿Está seguro de eliminar el área?" << endl;
+                    cout << "1. Si" << endl;
+                    cout << "2. No" << endl;
+                    cout << "Escoja la opción: ";
+                    getline(cin, decision);
+                    decisionOp = chequeoRestriccionesRangos(decision, 1, 2);
                 }
 
-                if (suboption == 3) {
-                    system("cls");
-                    int optionServicio = 0;
-                    while (optionServicio != 5) {
-                        system("cls");
-                        cout << "1- Agregar un servicio. " << endl;
-                        cout << "2- Reordenar servicios. " << endl;
-                        cout << "3- Consultar servicios. " << endl;
-                        cout << "4- Eliminar servicios. " << endl;
-                        cout << "5- Regresar." << endl;
-                        cout << "Inserte la opción que quiere realizar: ";
-                        cin >> optionServicio;
-
-                        if (optionServicio == 1) {
-                            system("cls");
-                            string descripcion, prioridad, area, prueba;
-                            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-                            cout << "Ingrese la descripción del servicio: ";
-                            getline(cin, descripcion);
-
-                            cout << "Ingrese la prioridad del servicio: ";
-                            getline(cin, prioridad);
-
-                            cout << "\nÁreas disponibles: " << endl;
-                            areas->printShow();
-
-                            cout << "\nIngrese a que área pertenece: ";
-                            getline(cin, area);
-
-                            Area *tempArea = new Area(area);
-                            areas->goToPos(stoi(area) - 1);
-                            tempArea = areas->getElement();
-
-                            Servicio *tempServicio = new Servicio(descripcion, stoi(prioridad), area);
-                            tempArea->agregarServicio(tempServicio);
-                            servicios->append(tempServicio);
-                            servicios->print();
-                            getline(cin, prueba);
-                        }
-
-                        if (optionServicio == 2) {
-                            system("cls");
-                            servicios->printShow();
-
-                            string servicio;
-                            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-                            cout << "Digite el servicio que desee reordenar: ";
-                            getline(cin, servicio);
-                            int pos = servicios->indexOf(new Servicio(servicio), 0);
-                            servicios->goToPos(pos);
-                            Servicio *elemento = servicios->remove();
-                            servicios->print();
-                            string posicion;
-                            cout << "Digite la posición a la que desea mover el elemento: ";
-                            getline(cin, posicion);
-
-                            servicios->goToPos(stoi(posicion) - 1);
-                            servicios->insert(elemento);
-                            cout << "Lista reordenada..." << endl;
-                            servicios->printShow();
-                            getline(cin, posicion);
-                        }
-
-                        if (optionServicio == 3) {
-                            system("cls");
-                            string detener;
-                            cout << "Servicios disponibles: " << endl;
-                            servicios->printShow();
-                            cin >> detener;
-                        }
-
-                        if (optionServicio == 4) {
-                            system("cls");
-                            string servicio;
-                            cout << "Servicios disponibles: " << endl;
-                            servicios->printShow();
-
-                            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                            cout << "Digite el servicio que desea eliminar: ";
-                            getline(cin, servicio);
-
-                            int pos = servicios->indexOf(new Servicio(servicio), 0);
-
-                            if (pos != -1) {
-                                servicios->goToPos(pos);
-                                Servicio *elemento = servicios->remove();
-                                int pos = areas->indexOf(new Area(elemento->getAreaAsignada()), 0);
-                                areas->goToPos(pos);
-                                Area *element = areas->getElement();
-                                element->eliminarServicio(elemento);
-                                cout << "El servicio " << servicio << " fue eliminado correctamente." << endl;
-                            } else {
-                                cout << "El servicio " << servicio << " no ha sido encontrado." << endl;
-                            }
-                            cout << endl << "Servicios disponibles: " << endl;
-                            servicios->printShow();
-                            getline(cin, servicio);
-
+                if (decisionOp == 1) {
+                    areas->goToPos(resulOp - 1);
+                    tempArea = areas->getElement();
+                    List<Servicio *> *serviciosEliminar = new ArrayList<Servicio *>();
+                    for (servicios->goToStart(); !servicios->atEnd(); servicios->next()) {
+                        Servicio *servicioActual = servicios->getElement();
+                        if (tempArea->servicios->contains(servicioActual)) {
+                            serviciosEliminar->append(servicioActual);
                         }
                     }
+
+                    for (serviciosEliminar->goToStart(); !serviciosEliminar->atEnd(); serviciosEliminar->next()) {
+                        int pos = servicios->indexOf(serviciosEliminar->getElement(), 0);
+                        servicios->goToPos(pos);
+                        servicios->remove();
+                    }
+                    cout << "Se ha eliminado correctamente el área: " << areas->remove() << endl;
+                }
+                else {
+                    cout << "El area no ha sido eliminada" << endl;
                 }
 
-                if (suboption == 4) {}
-
+                
+                cout << "Presione cualquier tecla para continuar...";
+                cin.get();
             }
+            else {
+                cout << "Actualmente no hay áreas registradas." << endl;
+                cout << "Presione cualquier tecla para continuar...";
+                cin.get();
+            }
+        }
+    }
+}
+
+void subOperacionServicios() {
+    system("cls");
+
+    string input = "";
+    int option = 0;
+
+    string ops[5] = {
+            "Agregar un servicio.",
+            "Reordenar servicios.",
+            "Consultar servicios.",
+            "Eliminar un servicios.",
+            "Regresar."
+    };
+
+    while (option != 5) {
+        imprimirOpciones(ops, 5);
+        cout << "Inserte la opción que quiere realizar: ";
+        getline(cin, input);
+        option = chequeoRestriccionesRangos(input, 1, 5);
+
+        while (option == 0) {
+            cout << "Inserte la opción que quiere realizar: ";
+            getline(cin, input);
+            option = chequeoRestriccionesRangos(input, 1, 5);
+        }
+
+        if (option == 1) {
+            system("cls");
+
+            if (areas->getSize() > 0) {
+                string descripcion, prioridad, area, prueba;
+
+                cout << "Ingrese la descripción del servicio: ";
+                getline(cin, descripcion);
+
+                int prioridadOp = 0;
+                cout << "Ingrese la prioridad del servicio: ";
+                getline(cin, prioridad);
+                prioridadOp = chequeoRestriccionesEnteros(prioridad);
+                while (prioridadOp < 0) {
+                    cout << "Ingrese la prioridad del servicio: ";
+                    getline(cin, prioridad);
+                    prioridadOp = chequeoRestriccionesEnteros(prioridad);
+                }
+
+                cout << "\nÁreas disponibles: " << endl;
+                areas->printShow();
+
+                int areaOp = 0;
+                cout << "Ingrese a que área pertenece: ";
+                getline(cin, area);
+                areaOp = chequeoRestriccionesRangos(area, 1, areas->getSize());
+                while (areaOp == 0) {
+                    cout << "\nÁreas disponibles: " << endl;
+                    areas->printShow();
+                    cout << "Ingrese a que área pertenece: ";
+                    getline(cin, area);
+                    areaOp = chequeoRestriccionesRangos(area, 1, areas->getSize());
+                }
+
+                areas->goToPos(areaOp - 1);
+                Area *tempArea = areas->getElement();
+
+                Servicio *tempServicio = new Servicio(descripcion, prioridadOp, tempArea->getDescripcion());
+                tempArea->agregarServicio(tempServicio);
+                servicios->append(tempServicio);
+                cout << "El servicio " << tempServicio->getDescripcion() << " fue agregado correctamente." << endl;
+                cout << "Presione cualquier tecla para continuar...";
+                cin.get();
+            }
+            else {
+                cout << "Actualmente no hay áreas registradas." << endl;
+                cout << "Se necesitan áreas, para poder asignar los servicios." << endl;
+                cout << "Presione cualquier tecla para continuar...";
+                cin.get();
+            }
+        }
+
+        if (option == 2) {
+            system("cls");            
+
+            if (servicios->getSize() > 1) {
+                cout << "Servicios disponibles: " << endl;
+                servicios->printShow();
+                string servicio = "";
+                int servicioOp = 0;
+                cout << "Digite el servicio que desee reordenar: ";
+                getline(cin, servicio);
+                servicioOp = chequeoRestriccionesRangos(servicio, 1, servicios->getSize());
+                while (servicioOp == 0) {
+                    cout << "Digite el servicio que desee reordenar: ";
+                    getline(cin, servicio);
+                    servicioOp = chequeoRestriccionesRangos(servicio, 1, servicios->getSize());
+                }
+
+                string posicion;
+                int posicionOp = 0;
+                cout << "Digite la posición a la que desea mover el elemento: ";
+                getline(cin, posicion);
+                posicionOp = chequeoRestriccionesRangos(posicion, 1, servicios->getSize());
+                while (servicioOp == 0) {
+                    cout << "Digite la posición a la que desea mover el elemento: ";
+                    getline(cin, posicion);
+                    posicionOp = chequeoRestriccionesRangos(posicion, 1, servicios->getSize());
+                }
+
+                servicios->goToPos(servicioOp - 1);
+                Servicio *elemento = servicios->remove();
+
+                servicios->goToPos(posicionOp - 1);
+                servicios->insert(elemento);
+
+                cout << "Lista reordenada..." << endl;
+                servicios->printShow();
+                cout << "Presione cualquier tecla para continuar...";
+                cin.get();
+            }
+            else {
+                if (servicios->getSize() == 0)
+                    cout << "No hay servicios registrados actualmente" << endl;
+
+                if (servicios->getSize() == 1)
+                    cout << "No se puede reodenar los servicios, porque solo hay uno." << endl;
+
+                cout << "Presione cualquier tecla para continuar...";
+                cin.get();
+            }
+        }
+
+        if (option == 3) {
+            system("cls");
+
+            if (servicios->getSize() > 0) {
+                cout << "Servicios disponibles: " << endl;
+                for (servicios->goToStart(); !servicios->atEnd(); servicios->next()) {
+                    Servicio *temp = servicios->getElement();
+                    cout << "Nombre: " << temp->getDescripcion() << endl;
+                    cout << "Area asignada: " << temp->getAreaAsignada() << endl;
+                    cout << "Prioridad: " << temp->getPrioridad() << endl;
+                    cout << endl;
+                }
+            }
+            else {
+                cout << "No hay servicios registrados actualmente" << endl;
+            }
+
+            cout << "Presione cualquier tecla para continuar...";
+            cin.get();
+        }
+
+        if (option == 4) {
+            system("cls");
+
+            if (servicios->getSize() > 0) {
+                string servicio;
+                cout << "Servicios disponibles: " << endl;
+                servicios->printShow();
+
+                int servicioOp = 0;
+                cout << "Digite el servicio que desee eliminar: ";
+                getline(cin, servicio);
+                servicioOp = chequeoRestriccionesRangos(servicio, 1, servicios->getSize());
+                while (servicioOp == 0) {
+                    cout << "Digite el servicio que desee eliminar: ";
+                    getline(cin, servicio);
+                    servicioOp = chequeoRestriccionesRangos(servicio, 1, servicios->getSize());
+                }
+
+                string decision = "";
+                int decisionOp = 0;
+                cout << "¿Está seguro de eliminar el servicio?" << endl;
+                cout << "1. Si" << endl;
+                cout << "2. No" << endl;
+                cout << "Escoja una opción: ";
+                getline(cin, decision);
+                decisionOp = chequeoRestriccionesRangos(decision, 1, 2);
+
+                while (decisionOp == 0) {
+                    int decisionOp = 0;
+                    cout << "¿Está seguro de eliminar el servicio?" << endl;
+                    cout << "1. Si" << endl;
+                    cout << "2. No" << endl;
+                    cout << "Escoja una opción: ";
+                    getline(cin, decision);
+                    decisionOp = chequeoRestriccionesRangos(decision, 1, 2);
+                }
+
+                if (decisionOp == 1) {
+
+                    servicios->goToPos(servicioOp - 1);
+                    Servicio *elemento = servicios->remove();
+
+                    int pos = areas->indexOf(new Area(elemento->getAreaAsignada()), 0);
+                    areas->goToPos(pos);
+                    Area *element = areas->getElement();
+                    element->eliminarServicio(elemento);
+                    cout << "El servicio " << servicio << " fue eliminado correctamente." << endl;
+                } else {
+                    cout << "No se eliminó el servicio" << endl;
+                }
+
+                cout << endl << "Servicios disponibles: " << endl;
+                servicios->printShow();
+                cout << "Presione cualquier tecla para continuar...";
+                cin.get();
+            }
+            else {
+                cout << "No hay servicios registrados actualmente" << endl;
+                cout << "Presione cualquier tecla para continuar...";
+                cin.get();
+            }
+        }
+    }
+}
+
+void subOperacionColasListas() {
+
+}
+
+void operacionAdministracion() {
+    string input = "";
+    int option = 0;
+
+    while (option != 5) {
+        string ops[5] = {
+                "Manejo de tipos de usuarios.",
+                "Manejo de áreas.",
+                "Manejo de servicios.",
+                "Limpiar colas y estadísticas.",
+                "Regresar."
+        };
+
+        imprimirOpciones(ops, 5);
+        cout << "Inserte la opción que quiere realizar: ";
+        getline(cin, input);
+        option = chequeoRestriccionesRangos(input, 1, 5);
+
+
+        while (option == 0) {
+            cout << "Inserte la opción que quiere realizar: ";
+            getline(cin, input);
+            option = chequeoRestriccionesRangos(input, 1, 5);
+        }
+
+        if (option == 1) {
+            subOperacionUsuarios();
+        }
+
+        if (option == 2) {
+            subOperacionAreas();
+        }
+
+        if (option == 3) {
+            subOperacionServicios();
+        }
+
+        if (option == 4) {
+
+        }
+    }
+}
+
+void operacionEstadisticas() {
+    system("cls");
+
+    string input = "";
+    int option = 0;
+
+    string ops[6] = {
+            "Tiempo de espera por área.",
+            "Cantidad de tiquetes por área.",
+            "Cantidad de tiquetes por ventanilla.",
+            "Cantidad de tiquetes por servicio.",
+            "Cantidad de tiquetes por tipo de usuario"
+            "Regresar."
+    };
+
+    while (option != 6) {
+        imprimirOpciones(ops, 6);
+        cout << "Inserte la opción que quiere realizar: ";
+        getline(cin, input);
+        option = chequeoRestriccionesRangos(input, 1, 6);
+
+        while (option == 0) {
+            cout << "Inserte la opción que quiere realizar: ";
+            getline(cin, input);
+            option = chequeoRestriccionesRangos(input, 1, 6);
+        }
+
+        if (option == 1) {
+            system("cls");
+        }
+
+        if (option == 2) {
+            system("cls");
+            for (areas->goToStart(); !areas->atEnd(); areas->next()) {
+                cout << areas->getElement()->getDescripcion() << endl;
+                cout << areas->getElement()->getCount() << endl;
+            }
+            cout << "Presione cualquier tecla para continuar...";
+            cin.get();
+        }
+
+        if (option == 3) {
+            system("cls");
+            for (areas->goToStart(); !areas->atEnd(); areas->next()) {
+                Area *areaActual = areas->getElement();
+                ventanillas = areaActual->ventanillas;
+                for (ventanillas->goToStart(); !ventanillas->atEnd(); ventanillas->next()) {
+                    cout << "Area: " << areaActual->getDescripcion() << endl;
+                    cout << "Código de ventanilla: " << ventanillas->getElement()->getNombre() << endl;
+                    cout << "Cantidad de tiquetes: " << ventanillas->getElement()->getCount() << endl << endl;
+                }
+            }
+            cout << "Presione cualquier tecla para continuar...";
+            cin.get();
+        }
+
+        if (option == 4) {
+            system("cls");
+            for (servicios->goToStart(); !servicios->atEnd(); servicios->next()) {
+                Servicio *servicioActual = servicios->getElement();
+                cout << "Area: " << servicioActual->getAreaAsignada() << endl;
+                cout << "Servicio: " << servicioActual->getDescripcion() << endl;
+                cout << "Tiquetes: " << servicioActual->getCount() << endl << endl;
+            }
+            cout << "Presione cualquier tecla para continuar...";
+            cin.get();
         }
 
         if (option == 5) {
-            int optionServicio = 0;
-            while (optionServicio != 6) {
-                system("cls");
-                cout << "1- Tiempo de espera por área." << endl;
-                cout << "2- Cantidad de tiquetes por área" << endl;
-                cout << "3- Cantidad de tiquetes por ventanilla" << endl;
-                cout << "4- Cantidad de tiquetes por servicio. " << endl;
-                cout << "5- Cantidad de tiquetes por tipo de usuario" << endl;
-                cout << "6- Regresar." << endl;
-                cout << "Inserte la opción que quiere realizar: ";
-                cin >> optionServicio;
+            system("cls");
+            for (usuarios->goToStart(); !usuarios->atEnd(); usuarios->next()) {
 
-                if (optionServicio == 1) {
-                    system("cls");
+                cout << usuarios->getElement()->getNombre() << endl;
+                cout << usuarios->getElement()->getCount() << endl;
+            }
+            cout << "Presione cualquier tecla para continuar...";
+            cin.get();
+        }
+    }
+}
 
-                }
+int main() {    
+    setlocale(LC_ALL, "es_ES.UTF-8");   
+    bool continuar = true;
 
-                if (optionServicio == 2) {
-                    system("cls");
-                    for (areas->goToStart(); !areas->atEnd(); areas->next()) {
-                        cout << areas->getElement()->getDescripcion() << endl;
-                        cout << areas->getElement()->getCount() << endl;
-                    }
-                    cout << "Presione cualquier tecla para continuar...";
-                    cin.ignore();
-                    cin.get();
-                }
+    //Usuarios *tipo0 = new Usuarios("Adulto mayor", 0);
+    //Usuarios *tipo1 = new Usuarios("Menor de edad", 1);
+    //Usuarios *tipo2 = new Usuarios("Usuario regular", 2);
 
-                if (optionServicio == 3) {
-                    system("cls");
-                    for(areas->goToStart(); !areas->atEnd(); areas->next())
-                    {
-                        Area *areaActual = areas->getElement();
-                        ventanillas = areaActual->ventanillas;
-                        for (ventanillas->goToStart(); !ventanillas->atEnd(); ventanillas->next()) {
-                            cout << "Area: " << areaActual->getDescripcion() << endl;
-                            cout << "Código de ventanilla: " << ventanillas->getElement()->getNombre() << endl;
-                            cout << "Cantidad de tiquetes: " << ventanillas->getElement()->getCount() << endl << endl;
-                        }
-                    }
-                    cout << "Presione cualquier tecla para continuar...";
-                    cin.ignore();
-                    cin.get();
+    //usuarios->insert(tipo0);
+    //usuarios->insert(tipo1);
+    //usuarios->insert(tipo2);
 
-                }
+    //Area *tempArea1 = new Area("Cajas", "C", stoi("4"));
+    //Area *tempArea2 = new Area("Farmacia", "F", stoi("5"));
 
-                if (optionServicio == 4) {
-                    system("cls");
-                    for (servicios->goToStart(); !servicios->atEnd(); servicios->next()) {
-                        Servicio* servicioActual = servicios->getElement();
-                        cout << "Area: " << servicioActual->getAreaAsignada() << endl;
-                        cout << "Servicio: " << servicioActual->getDescripcion() << endl;
-                        cout << "Tiquetes: " << servicioActual->getCount() << endl << endl;
-                    }
-                    cout << "Presione cualquier tecla para continuar...";
-                    cin.ignore();
-                    cin.get();
+    //Servicio *tempServicio1 = new Servicio("Pagos", stoi("0"), "Cajas");
+    //Servicio *tempServicio2 = new Servicio("Facturas", stoi("1"), "Cajas");
+    //Servicio *tempServicio3 = new Servicio("Consulta", stoi("2"), "Cajas");
 
-                }
+    //tempArea1->agregarServicio(tempServicio1);
+    //tempArea1->agregarServicio(tempServicio2);
+    //tempArea1->agregarServicio(tempServicio3);
 
-                if (optionServicio == 5) {
-                    system("cls");
-                    for (usuarios->goToStart(); !usuarios->atEnd(); usuarios->next()) {
+    //areas->append(tempArea1);
+    //areas->append(tempArea2);
 
-                        cout << usuarios->getElement()->getNombre() << endl;
-                        cout << usuarios->getElement()->getCount() << endl;
-                    }
-                    cout << "Presione cualquier tecla para continuar...";
-                    cin.ignore();
-                    cin.get();
+    //servicios->append(tempServicio1);
+    //servicios->append(tempServicio2);
+    //servicios->append(tempServicio3);
 
+    string input = "";
+    int option = 0;
+
+    while (option != 6) {  
+        string ops[6] = {
+            "Estado de las colas.",
+            "Tiquetes.",
+            "Atender.",
+            "Administración.",
+            "Estadísticas del sistema.",
+            "Salir."
+        };
+
+        imprimirOpciones(ops, 6);
+        cout << "Inserte la opción que quiere realizar: ";
+        getline(cin, input);
+        option = chequeoRestriccionesRangos(input, 1, 6);
+
+        while (option == 0) {
+            cout << "Inserte la opción que quiere realizar: ";
+            getline(cin, input);
+            option = chequeoRestriccionesRangos(input, 1, 6);
+        }        
+
+        if (option == 1) {
+            system("cls");
+            cout << "Estado de las colas: " << endl;
+
+            for (areas->goToStart(); !areas->atEnd(); areas->next()) {
+                Area *temp = areas->getElement();
+                cout << "\n\nNombre del área: " << temp->getDescripcion() << endl;
+                cout << "Cantidad de ventanillas: " << temp->getCantVentanillas() << endl;
+                cout << "Tiquetes en espera en el área: "; temp->tiquetes->printShow();
+                cout << "\nVentanillas: " << endl;
+                ventanillas = temp->ventanillas;
+                for (ventanillas->goToStart(); !ventanillas->atEnd(); ventanillas->next()) {
+                    Ventanilla *temp2 = ventanillas->getElement();
+                    cout << "\t*Ventanilla " << temp2->getNombre();
+                    cout << "\t\t///\tÚltimo tiquete atendido: " << temp2->getCodTiquete() << endl;
                 }
             }
+            cout << "\n\nPresione cualquier tecla para continuar...";
+            cin.get();
         }
 
-        if (option == 6) {}
+        if (option == 2) {
+            operacionTiquetes();
+        }
+
+        if (option == 3) {
+            operacionAtender();
+        }
+
+        if (option == 4) {
+            operacionAdministracion();
+        }
+
+        if (option == 5) {
+            operacionEstadisticas();
+        }
     }
 
     return 0;

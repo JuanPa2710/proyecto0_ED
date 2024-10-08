@@ -184,7 +184,7 @@ public:
 		Node<E> *temp = head->next;
 		int i = 1;
 		while (temp != nullptr) {
-			cout << i << ". " << temp->element << " ";
+			cout << i << ". " << temp->element << endl;
 			temp = temp->next;
 			i++;
 		}
