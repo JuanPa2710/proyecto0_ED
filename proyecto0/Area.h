@@ -30,10 +30,8 @@ private:
 	string descrip;
 	string codigo;
 	int cantVentanillas;
-	int count;
-	List<Servicio *> *servicios;
+	int count;	
 	PriorityQueue<Tiquete *> *tiquetes;
-
 
 	void asignarCodigosVentanillas() {
 		if (ventanillas->getSize() > 0)
@@ -46,7 +44,8 @@ private:
 	}
 
 public:
-	List <Ventanilla *> *ventanillas;
+	List<Servicio *> *servicios;
+	List <Ventanilla *> *ventanillas;	
 
 	Area() {
 		descrip, codigo = "";
@@ -116,6 +115,14 @@ public:
 
 	void agregarServicio(Servicio *serv) {
 		servicios->append(serv);
+	}
+
+	Servicio* obtenerServicio() {
+		return servicios->getElement();
+	}
+
+	List<Servicio *> *getServicios() {
+		return servicios;
 	}
 
 	void eliminarServicio(Servicio *serv) {

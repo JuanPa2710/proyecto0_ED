@@ -154,7 +154,7 @@ int main() {
 
     List<Usuarios *> *usuarios = new ArrayList<Usuarios *>();
     List<Area *> *areas = new LinkedList<Area *>();
-    List<Servicio *> *servicios = new ArrayList<Servicio *>();
+    List<Servicio*> *servicios = new ArrayList<Servicio*>();
     List <Ventanilla *> *ventanillas = new ArrayList<Ventanilla *>;
 
     bool continuar = true;
@@ -199,7 +199,14 @@ int main() {
         cout << "Inserte la opción que quiere realizar: ";
         cin >> option;
 
-        if (option == 1) {}
+        if (option == 1) {
+            system("cls");
+            cout << "Limpiando las colas...";
+            usuarios->clear();
+            areas->clear();
+            servicios->clear();
+            ventanillas->clear();
+        }
 
         if (option == 2) {  // Opción para solicitar un tiquete
             system("cls");
@@ -310,6 +317,7 @@ int main() {
         if (option == 4) {
             int suboption = 0;
             while (suboption != 5) {
+                system("cls");
                 cout << "1- Manejo de tipos de usuarios." << endl;
                 cout << "2- Manejo de áreas." << endl;
                 cout << "3- Manejo de servicios." << endl;
@@ -452,13 +460,24 @@ int main() {
                             cout << "\nIngrese que área desea eliminar: ";
                             getline(cin, resul);
 
-                            for (areas->goToStart(); !areas->atEnd(); areas->next()) {
-                                if (areas->getElement()->getDescripcion() == resul)
-                                    tempArea = areas->getElement();
+                            areas->goToPos(stoi(resul)-1);
+                            tempArea = areas->getElement();
+                            List<Servicio*> *serviciosEliminar = new ArrayList<Servicio*>();
+                            servicios->print();
+                            tempArea->servicios->print();
+                            for (servicios->goToStart(); !servicios->atEnd(); servicios->next()) {
+                                Servicio *servicioActual = servicios->getElement();
+                                if (tempArea->servicios->contains(servicioActual)) {
+                                    serviciosEliminar->append(servicioActual);
+                                }
                             }
 
-                            int pos = areas->indexOf(tempArea, 0);
-                            areas->goToPos(pos);
+                            for (serviciosEliminar->goToStart(); !serviciosEliminar->atEnd(); serviciosEliminar->next()) {
+                                int pos = servicios->indexOf(serviciosEliminar->getElement(), 0);
+                                servicios->goToPos(pos);
+                                servicios->remove();
+                            }
+
                             cout << "Se ha eliminado correctamente el área: " << areas->remove() << endl;
                             getline(cin, resul);
                         }
@@ -489,19 +508,18 @@ int main() {
                             cout << "Ingrese la prioridad del servicio: ";
                             getline(cin, prioridad);
 
-                            cout << "\nÁreas disponibles: " << endl << endl;
-                            for (areas->goToStart(); !areas->atEnd(); areas->next())
-                                areas->getElement()->toString();
-                            cout << "Ingrese a que área pertenece: ";
+                            cout << "\nÁreas disponibles: " << endl;
+                            areas->printShow();
+
+                            cout << "\nIngrese a que área pertenece: ";
                             getline(cin, area);
 
                             Area *tempArea = new Area(area);
-                            int pos = areas->indexOf(tempArea, 0);
-                            areas->goToPos(pos);
+                            areas->goToPos(stoi(area) - 1);
                             tempArea = areas->getElement();
 
                             Servicio *tempServicio = new Servicio(descripcion, stoi(prioridad), area);
-                            areas->getElement()->agregarServicio(tempServicio);
+                            tempArea->agregarServicio(tempServicio);
                             servicios->append(tempServicio);
                             servicios->print();
                             getline(cin, prueba);
