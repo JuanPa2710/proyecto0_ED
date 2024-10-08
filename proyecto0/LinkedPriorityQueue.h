@@ -17,7 +17,7 @@ using std::runtime_error;
 template <typename E>
 class LinkedPriorityQueue : public PriorityQueue<E> {
 private:
-	LinkedQueue<E>* queues;
+	LinkedQueue<E> *queues;
 	int priorities;
 	int size;
 
@@ -28,8 +28,6 @@ private:
 		}
 		throw runtime_error("Queue not found.");
 	}
-
-
 
 public:
 	LinkedPriorityQueue(int priorities) {
@@ -57,8 +55,7 @@ public:
 				queues[i].remove(element);
 				size--;
 				return;
-			}
-			catch (runtime_error& e) {
+			} catch (runtime_error &e) {
 			}
 		}
 		throw runtime_error("Element not found in the priority queue.");

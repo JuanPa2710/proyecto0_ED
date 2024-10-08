@@ -19,6 +19,7 @@ Código hecho por Jose Adrián Piedra y Juan Pablo Jímenez.
 #include "ArrayList.h"
 #include "Servicio.h"
 #include "Tiquete.h"
+#include "Ventanilla.h"
 
 using std::string;
 using std::ostream;
@@ -30,10 +31,9 @@ private:
 	string codigo;
 	int cantVentanillas;
 	int count;
-	List<string>* ventanillas;
-	List<Servicio*> *servicios;
-	PriorityQueue<Tiquete> *tiquetes;
-	
+	List<Servicio *> *servicios;
+	PriorityQueue<Tiquete *> *tiquetes;
+
 
 	void asignarCodigosVentanillas() {
 		if (ventanillas->getSize() > 0)
@@ -41,18 +41,20 @@ private:
 
 		for (int i = 1; i <= cantVentanillas; i++) {
 			string tempCod = codigo + to_string(i);
-			ventanillas->append(tempCod);
+			ventanillas->append(new Ventanilla(tempCod));
 		}
 	}
 
 public:
+	List <Ventanilla *> *ventanillas;
+
 	Area() {
 		descrip, codigo = "";
 		cantVentanillas = 0;
 		count = 0;
-		ventanillas = new ArrayList<string>();
-		servicios = new ArrayList<Servicio*>();
-		tiquetes = new LinkedPriorityQueue<Tiquete>(100);	
+		ventanillas = new ArrayList<Ventanilla *>();
+		servicios = new ArrayList<Servicio *>();
+		tiquetes = new LinkedPriorityQueue<Tiquete *>(100);
 	}
 
 	Area(string descrip, string codigo, int cantVentanillas) {
@@ -60,9 +62,9 @@ public:
 		this->codigo = codigo;
 		this->cantVentanillas = cantVentanillas;
 		this->count = 0;
-		ventanillas = new ArrayList<string>();
-		servicios = new ArrayList<Servicio*>();
-		tiquetes = new LinkedPriorityQueue<Tiquete>(100);
+		ventanillas = new ArrayList<Ventanilla *>();
+		servicios = new ArrayList<Servicio *>();
+		tiquetes = new LinkedPriorityQueue<Tiquete *>(100);
 		asignarCodigosVentanillas();
 	}
 
@@ -121,21 +123,20 @@ public:
 		servicios->remove();
 	}
 
-	void agregarTiquete(Tiquete tiquete, int prioridad) {
+	void agregarTiquete(Tiquete *tiquete, int prioridad) {
 		tiquetes->insert(tiquete, prioridad);
 	}
 
-	Tiquete atenderTiquete() {
+	Tiquete *atenderTiquete() {
 		if (!tiquetes->isEmpty()) {
 			return tiquetes->removeMin();
-		}
-		else {
+		} else {
 			throw runtime_error("No hay tiquetes en la cola");
 		}
 	}
 
+
 	void toString() {
-		cout << "Area: {" << descrip << ", " << codigo << ", " << cantVentanillas << "}" << endl;
 		cout << "Ventanillas: ";  ventanillas->print();
 		cout << "Servicios: "; servicios->print();
 		cout << "Tiquetes: "; tiquetes->print();
@@ -152,7 +153,7 @@ public:
 		this->tiquetes = other.tiquetes;
 	}
 
-	bool operator==(const Area& other) {
+	bool operator==(const Area &other) {
 		return descrip == other.descrip;
 	}
 
@@ -167,12 +168,12 @@ public:
 	}
 };
 
-ostream& operator<<(ostream& os, Area *area) {
+ostream &operator<<(ostream &os, Area *area) {
 	os << area->getDescripcion();
 	return os;
 }
 
-ostream &operator<<(ostream &os, Area& area) {
+ostream &operator<<(ostream &os, Area &area) {
 	os << area.getDescripcion();
 	return os;
 }

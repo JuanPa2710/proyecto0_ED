@@ -21,8 +21,8 @@ using std::endl;
 template <typename E>
 class LinkedQueue : public Queue<E> {
 private:
-	Node<E>* front;
-	Node<E>* back;
+	Node<E> *front;
+	Node<E> *back;
 	int size;
 
 public:
@@ -42,7 +42,7 @@ public:
 		if (size == 0)
 			throw runtime_error("Queue is empty.");
 		E result = front->next->element;
-		Node<E>* temp = front->next;
+		Node<E> *temp = front->next;
 		front->next = temp->next;
 		delete temp;
 		size--;
@@ -54,8 +54,8 @@ public:
 	void remove(E element) {
 		if (size == 0)
 			throw runtime_error("Queue is empty.");
-		Node<E>* current = front->next;
-		Node<E>* previous = front;
+		Node<E> *current = front->next;
+		Node<E> *previous = front;
 		while (current != nullptr) {
 			if (current->element == element) {
 				previous->next = current->next;
@@ -79,7 +79,7 @@ public:
 	}
 	void clear() {
 		while (front->next != nullptr) {
-			Node<E>* temp = front->next;
+			Node<E> *temp = front->next;
 			front->next = temp->next;
 			delete temp;
 		}
@@ -94,7 +94,7 @@ public:
 	}
 	void print() {
 		cout << "[ ";
-		Node<E>* nodoTemp = front->next;
+		Node<E> *nodoTemp = front->next;
 		while (nodoTemp != nullptr) {
 			cout << nodoTemp->element << " ";
 			nodoTemp = nodoTemp->next;

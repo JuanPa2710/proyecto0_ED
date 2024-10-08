@@ -12,9 +12,9 @@ using std::endl;
 template <typename E>
 class LinkedList : public List<E> {
 private:
-	Node<E>* head;
-	Node<E>* tail;
-	Node<E>* current;
+	Node<E> *head;
+	Node<E> *tail;
+	Node<E> *current;
 	int size;
 
 public:
@@ -47,7 +47,7 @@ public:
 			throw runtime_error("No current element.");
 
 		E result = current->next->element;
-		Node<E>* temp = current->next;
+		Node<E> *temp = current->next;
 		if (temp == tail)
 			tail = current;
 
@@ -98,7 +98,7 @@ public:
 
 	void previous() {
 		if (current != head) {
-			Node<E>* temp = head;
+			Node<E> *temp = head;
 			while (temp->next != current)
 				temp = temp->next;
 
@@ -117,7 +117,7 @@ public:
 	bool contains(E element) {
 		if (size == 0)
 			throw runtime_error("List is empty.");
-		
+
 		Node<E> *temp = head->next;
 		while (temp != nullptr) {
 			if (temp->element == element)
@@ -152,7 +152,7 @@ public:
 
 	int getPos() {
 		int pos = 0;
-		Node<E>* temp = head;
+		Node<E> *temp = head;
 		while (temp != current) {
 			temp = temp->next;
 			pos++;
@@ -166,9 +166,9 @@ public:
 
 	void print() {
 		cout << "[ ";
-		Node<E>* temp = head->next;
+		Node<E> *temp = head->next;
 		while (temp != nullptr) {
-			if (temp == current -> next)
+			if (temp == current->next)
 				cout << "*";
 			cout << temp->element << " ";
 			temp = temp->next;

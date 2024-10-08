@@ -16,6 +16,128 @@ Código hecho por Fiorella Gónzalez, Jose Adrián Piedra y Juan Pablo Jímenez.
 #include "Servicio.h"
 #include "Area.h"
 #include "Tiquete.h"
+#include "curses.h"
+
+using namespace std;
+using std::cin;
+using std::stoi;
+using std::to_string;
+using std::chrono::system_clock;
+
+//void printMenu(WINDOW *menu_win, int highlight, const char *choices[], int n_choices) {
+//    int x, y;
+//    x = 2;
+//    y = 2;
+//    box(menu_win, 0, 0);
+//    curs_set(0);
+//
+//    for (int i = 0; i < n_choices; ++i) {
+//        if (highlight == i + 1) {
+//            wattron(menu_win, A_REVERSE);
+//            mvwprintw(menu_win, y, x, "%s", choices[i]);
+//            wattroff(menu_win, A_REVERSE);
+//        } else
+//            mvwprintw(menu_win, y, x, "%s", choices[i]);
+//        ++y;
+//    }
+//    wrefresh(menu_win);
+//}
+//
+//int main() {
+//    // Inicializa curses
+//    initscr();
+//    clear();
+//    noecho();
+//    cbreak();
+//
+//    int startx = 0, starty = 0;
+//    int highlight = 1;
+//    int choice = 0;
+//    int c;
+//
+//    const char *choices[] = {
+//            "Opción 1",
+//            "Opción 2",
+//            "Opción 3",
+//            "Salir",
+//    };
+//
+//    int n_choices = sizeof(choices) / sizeof(char *);
+//
+//    WINDOW *menu_win = newwin(10, 10, starty, startx);
+//    keypad(menu_win, TRUE);  // Permite usar teclas como las flechas
+//    mvprintw(0, 0, "Usa las teclas de flecha para moverte, Enter para seleccionar");
+//    refresh();
+//
+//    printMenu(menu_win, highlight, choices, n_choices);
+//
+//    while (1) {
+//        c = wgetch(menu_win);
+//        switch (c) {
+//        case KEY_UP:
+//            if (highlight == 1)
+//                highlight = n_choices;
+//            else
+//                --highlight;
+//            break;
+//        case KEY_DOWN:
+//            if (highlight == n_choices)
+//                highlight = 1;
+//            else
+//                ++highlight;
+//            break;
+//        case 10:  // Tecla Enter
+//            choice = highlight;
+//            break;
+//        }
+//        printMenu(menu_win, highlight, choices, n_choices);
+//        if (choice != 0)
+//            break;
+//    }
+//
+//    mvprintw(23, 0, "Has elegido la opción %d con texto: %s", choice, choices[choice - 1]);
+//    clrtoeol();
+//    refresh();
+//    getch();
+//    endwin();
+//    return 0;
+//}
+//
+//int prueba() {
+//    initscr();
+//    clear();
+//    noecho();
+//    cbreak();
+//    curs_set(0);
+//
+//    WINDOW *menuWin = newwin(10, 10, 0, 0);
+//    keypad(menuWin, TRUE);
+//    refresh();
+//
+//    printMenu(menuWin, highlight, choices, n_choices);
+//
+//    endwin();
+//    return 0;
+//}
+
+/*
+El archivo principal en el que se maneja toda la interacción de la consola con el usuario.
+En el main, se encuentra diversos prints y manejos de input para decidir que mostrar en el menú, basado en lo que decida el usuario.
+Además, se puede encontrar algunos aspectos lógicos del programa en general, como la inicialización de listas en las que se trabajara.
+Código hecho por Fiorella Gónzalez, Jose Adrián Piedra y Juan Pablo Jímenez.
+*/
+
+#include <iostream>
+#include <string>
+#include <cstdlib>
+#include <time.h>
+
+#include "LinkedPriorityQueue.h"
+#include "LinkedList.h"
+#include "Usuarios.h"
+#include "Servicio.h"
+#include "Area.h"
+#include "Tiquete.h"
 
 
 using namespace std;
@@ -31,8 +153,9 @@ int main() {
     setlocale(LC_ALL, "es_ES.UTF-8");
 
     List<Usuarios *> *usuarios = new ArrayList<Usuarios *>();
-    List<Area*> *areas = new LinkedList<Area*>();
-    List<Servicio*> *servicios = new ArrayList<Servicio*>();
+    List<Area *> *areas = new LinkedList<Area *>();
+    List<Servicio *> *servicios = new ArrayList<Servicio *>();
+    List <Ventanilla *> *ventanillas = new ArrayList<Ventanilla *>;
 
     bool continuar = true;
 
@@ -93,7 +216,7 @@ int main() {
             cout << "Seleccione el servicio que desea usar: ";
             getline(cin, servicioSeleccionado);
 
-            servicios->goToPos(stoi(servicioSeleccionado));
+            servicios->goToPos(stoi(servicioSeleccionado) - 1);
             Servicio *servicioActual = servicios->getElement();
             Area *areaActual = new Area();
 
@@ -113,7 +236,7 @@ int main() {
             string codigoTiquete = codigoArea + to_string(tiqueteConsecutivo);
             horaActual = std::chrono::system_clock::now();
 
-            usuarios->goToPos(stoi(tipoUsuarioSeleccionado));
+            usuarios->goToPos(stoi(tipoUsuarioSeleccionado) - 1);
             Usuarios *usuario = usuarios->getElement();
             int prioridadUsuario = usuario->getPrioridad();
             int prioridadServicio = servicioActual->getPrioridad();
@@ -122,7 +245,7 @@ int main() {
             std::time_t tiempoActual = std::chrono::system_clock::to_time_t(horaActual);
 
             // Crear el tiquete y agregarlo a la cola
-            Tiquete nuevoTiquete(codigoTiquete, horaActual, prioridadTiquete);
+            Tiquete *nuevoTiquete = new Tiquete(codigoTiquete, horaActual, prioridadTiquete);
 
             areaActual->agregarTiquete(nuevoTiquete, prioridadTiquete);
             areaActual->setCount();
@@ -147,7 +270,6 @@ int main() {
             getline(cin, areaSeleccionada);
 
             cout << "Ingrese el número de ventanilla: ";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             getline(cin, ventanilla);
 
             Area *areaActual = new Area();
@@ -160,12 +282,27 @@ int main() {
                 }
             }
 
+            Ventanilla *ventanillaActual = new Ventanilla();
+            bool ventanillaEncontrada = false;
+
+            for (areaActual->ventanillas->goToStart(); !areaActual->ventanillas->atEnd(); areaActual->ventanillas->next()) {
+                if (areaActual->ventanillas->getElement()->getNombre() == ventanilla) {
+                    ventanillaActual = areaActual->ventanillas->getElement();
+                    ventanillaEncontrada = true;
+                }
+            }
+
+
+
             if (!areaEncontrada) {
                 cout << "Error: No se encontró el área seleccionada." << endl;
             } else {
-                Tiquete tiqueteAtendido = areaActual->atenderTiquete(); //**
-                cout << "Se está atendiendo el tiquete. " << endl;
+                Tiquete *tiqueteAtendido = areaActual->atenderTiquete();
+                ventanillaActual->agregarTiquete(tiqueteAtendido);
+                cout << "Se está atendiendo el tiquete: " << tiqueteAtendido->getCod() << endl;
+                ventanillaActual->setCount();
             }
+            ventanillaActual->toString();
 
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
@@ -468,10 +605,18 @@ int main() {
                     cin.get();
                 }
 
-                if (optionServicio == 3) {
+                /*if (optionServicio == 3) {
                     system("cls");
+                    for (ventanillas->goToStart(); !ventanillas->atEnd(); usuarios->next()) {
 
-                }
+                        cout << usuarios->getElement()->getNombre() << endl;
+                        cout << usuarios->getElement()->getCount() << endl;
+                    }
+                    cout << "Presione cualquier tecla para continuar...";
+                    cin.ignore();
+                    cin.get();
+
+                }*/
 
                 if (optionServicio == 4) {
                     system("cls");

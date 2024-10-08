@@ -1,5 +1,5 @@
 /*
-Archivo donde se define como objeto los tipos de usuarios. 
+Archivo donde se define como objeto los tipos de usuarios.
 Contiene su atributo principal nombre, con su debido constructor el cual recibe el nombre que recibirá el tipo de usuario.
 Además, contiene un metodo para descubrir el nombre del tipo de usuario, y otro para verificar si dos tipos de usuarios tienen el mismo nombre.
 Código hecho por Fiorella González.
@@ -22,7 +22,7 @@ private:
 public:
     Usuarios() {
         this->nombre = "";
-        this->prioridad=0;
+        this->prioridad = 0;
         this->count = 0;
     }
 
@@ -34,7 +34,7 @@ public:
 
     Usuarios(string nombre, int prioridad) {
         this->nombre = nombre;
-        this->prioridad= prioridad;
+        this->prioridad = prioridad;
         this->count = 0;
     }
 
@@ -51,7 +51,7 @@ public:
     }
 
     void setCount() {
-        this->count++; 
+        this->count++;
     }
 
 
@@ -59,7 +59,7 @@ public:
         return this->nombre == other->nombre;
     }
 
-    bool operator==(Usuarios& other) {
+    bool operator==(Usuarios &other) {
         return this->nombre == other.nombre;
     }
 
@@ -70,7 +70,7 @@ public:
     }
 
 };
-ostream &operator<<(ostream& os, Usuarios usuario) {
+ostream &operator<<(ostream &os, Usuarios usuario) {
     os << usuario.getNombre();
     return os;
 }

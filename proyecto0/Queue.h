@@ -12,8 +12,8 @@ Código hecho por Fiorella González.
 template <typename E>
 class Queue {
 private:
-	Queue(const Queue<E>& other) {}
-	void operator =(const Queue<E>& other) {}
+	Queue(const Queue<E> &other) {}
+	void operator =(const Queue<E> &other) {}
 
 public:
 	Queue() {}
