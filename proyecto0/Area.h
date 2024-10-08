@@ -31,7 +31,7 @@ private:
 	string codigo;
 	int cantVentanillas;
 	int count;
-	List<Servicio *> *servicios;
+	
 	PriorityQueue<Tiquete *> *tiquetes;
 
 
@@ -46,6 +46,7 @@ private:
 	}
 
 public:
+	List<Servicio*>* servicios;
 	List <Ventanilla *> *ventanillas;
 
 	Area() {
@@ -116,6 +117,10 @@ public:
 
 	void agregarServicio(Servicio *serv) {
 		servicios->append(serv);
+	}
+
+	Servicio* obtenerServicio() {
+		return servicios->getElement();
 	}
 
 	void eliminarServicio(Servicio *serv) {

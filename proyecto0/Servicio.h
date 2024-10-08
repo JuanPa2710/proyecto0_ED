@@ -21,21 +21,25 @@ private:
     string descrip;
     int prioridad;
     string areaAsignada;
+    int count;
 
 public:
     Servicio() {
         this->descrip, this->areaAsignada = "";
         this->prioridad = 0;
+        this->count = 0;
     }
 
     Servicio(string descrip, int prioridad, string areaAsignada) {
         this->descrip = descrip;
         this->prioridad = prioridad;
         this->areaAsignada = areaAsignada;
+        this->count = 0;
     }
 
     Servicio(string descrip) {
         this->descrip = descrip;
+        this->count = 0;
     }
 
     ~Servicio() {}
@@ -72,6 +76,13 @@ public:
 
     bool operator==(const Servicio &other) {
         return this->descrip == other.descrip;
+    }
+    int getCount() {
+        return count;
+    }
+
+    void setCount() {
+        this->count++;
     }
 };
 
