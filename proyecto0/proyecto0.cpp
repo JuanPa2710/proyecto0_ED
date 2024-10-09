@@ -25,14 +25,12 @@ using std::stoi;
 using std::chrono::system_clock;
 
 List<Usuarios *> *usuarios = new ArrayList<Usuarios *>();
-List<Area *> *areas = new LinkedList<Area *>();
+List<Area *> *areas = new ArrayList<Area *>();
 List<Servicio *> *servicios = new ArrayList<Servicio *>();
 List <Ventanilla *> *ventanillas = new ArrayList<Ventanilla *>;
 
 std::chrono::time_point<std::chrono::system_clock> horaActual;
 int tiqueteConsecutivo = 100;
-
-
 
 //Funciones auxiliares
 int chequeoRestriccionesEnteros(string input) {
@@ -111,6 +109,11 @@ void operacionTiquetes() {
         cout << "Seleccione el servicio que desea usar: ";
         getline(cin, servicioSeleccionado);
         servicioOp = chequeoRestriccionesRangos(servicioSeleccionado, 1, servicios->getSize());
+        while (servicioOp == 0) {
+            cout << "Seleccione el servicio que desea usar: ";
+            getline(cin, servicioSeleccionado);
+            servicioOp = chequeoRestriccionesRangos(servicioSeleccionado, 1, servicios->getSize());
+        }
 
         servicios->goToPos(stoi(servicioSeleccionado) - 1);
         Servicio *servicioActual = servicios->getElement();
@@ -149,7 +152,7 @@ void operacionTiquetes() {
         usuario->setCount();
         servicioActual->setCount();
 
-        cout << "Tiquete generado: " << codigoTiquete << endl;
+        cout << "\nTiquete generado: " << codigoTiquete << endl;
         cout << "Hora: " << std::put_time(horaLocal, "%H:%M:%S") << endl;
         cout << "Prioridad: " << prioridadTiquete << endl;
         tiqueteConsecutivo++;
@@ -189,31 +192,52 @@ void operacionAtender() {
         }
         areas->goToPos(areaOP-1);
         Area *areaActual = areas->getElement();
-        bool areaEncontrada = false;
 
+        if (areaActual->tiquetes->getSize() > 0) {
+            cout << endl;
+            areaActual->ventanillas->printShow();
+            int ventanilaOp = 0;
 
-        areaActual->ventanillas->printShow();
-        int ventanilaOp = 0;
+            cout << "Ingrese el número de ventanilla: ";
+            getline(cin, ventanilla);
+            ventanilaOp = chequeoRestriccionesRangos(ventanilla, 1, areaActual->ventanillas->getSize());
+            while (ventanilaOp == 0) {
+                cout << "Ingrese el número de ventanilla: ";
+                getline(cin, ventanilla);
+                ventanilaOp = chequeoRestriccionesRangos(ventanilla, 1, areaActual->ventanillas->getSize());
+            }
 
-        cout << "Ingrese el número de ventanilla: ";
-        getline(cin, ventanilla);
-        ventanilaOp = chequeoRestriccionesRangos(ventanilla, 1, areaActual->ventanillas->getSize());
+            Ventanilla* ventanillaActual = new Ventanilla();
+            bool ventanillaEncontrada = false;
 
-        Ventanilla *ventanillaActual = new Ventanilla();
-        bool ventanillaEncontrada = false;
+            areaActual->ventanillas->goToPos(ventanilaOp - 1);
+            ventanillaActual = areaActual->ventanillas->getElement();
 
-        areaActual->ventanillas->goToPos(ventanilaOp - 1);
-        ventanillaActual = areaActual->ventanillas->getElement();
+            Tiquete* tiqueteAtendido = areaActual->atenderTiquete();
 
-        Tiquete *tiqueteAtendido = areaActual->atenderTiquete();
-        ventanillaActual->agregarTiquete(tiqueteAtendido);
-        ventanillaActual->setCodTiquete(tiqueteAtendido->getCod());
-        cout << "Se está atendiendo el tiquete: " << tiqueteAtendido->getCod() << endl;
-        ventanillaActual->setCount();
+            horaActual = std::chrono::system_clock::now();
+            Tiempo horaTiquete = tiqueteAtendido->getHora();
+            std::chrono::duration<double> duracion = horaActual - horaTiquete;
+            auto duracionEnSegundos = std::chrono::duration_cast<std::chrono::seconds>(duracion).count();
+            int minutos = duracionEnSegundos / 60;
+            int segundos = duracionEnSegundos % 60;
 
-        ventanillaActual->toString();
-        cout << "Presione cualquier tecla para continuar...";
-        cin.get();
+            areaActual->setTiempoProm(segundos);
+
+            ventanillaActual->agregarTiquete(tiqueteAtendido);
+            ventanillaActual->setCodTiquete(tiqueteAtendido->getCod());
+            cout << "\nSe está atendiendo el tiquete: " << tiqueteAtendido->getCod() << endl;
+            ventanillaActual->setCount();
+
+            ventanillaActual->toString();
+            cout << "Presione cualquier tecla para continuar...";
+            cin.get();
+        } 
+        else {
+            cout << "No hay tiquete para atender en esta área." << endl;
+            cout << "Presione cualquier tecla para continuar...";
+            cin.get();
+        }
     } 
     else {
         cout << "No se puede realizar esta operación." << endl;
@@ -723,13 +747,16 @@ void subOperacionServicios() {
                 }
 
                 if (decisionOp == 1) {
-
                     servicios->goToPos(servicioOp - 1);
                     Servicio *elemento = servicios->remove();
+                    Area* element = areas->getElement();
 
-                    int pos = areas->indexOf(new Area(elemento->getAreaAsignada()), 0);
-                    areas->goToPos(pos);
-                    Area *element = areas->getElement();
+                    for (areas->goToStart(); !areas->atEnd(); areas->next()) {
+                        Area* temp = areas->getElement();
+                        if (temp->getDescripcion() == elemento->getAreaAsignada())
+                            element = temp;
+                    }
+
                     element->eliminarServicio(elemento);
                     cout << "El servicio " << servicio << " fue eliminado correctamente." << endl;
                 } else {
@@ -752,12 +779,11 @@ void subOperacionServicios() {
 
 void subOperacionColasListas() {
     system("cls");
-    cout << "Limpiando las colas...";
-
+    cout << "Limpiando las colas..." << endl;
+    ventanillas->clear();
     for (areas->goToStart(); !areas->atEnd(); areas->next()) {
         areas->getElement()->limpiarCola();
         areas->getElement()->restartCount();
-
         Area* areaActual = areas->getElement();
         ventanillas = areaActual->ventanillas;
         for (ventanillas->goToStart(); !ventanillas->atEnd(); ventanillas->next()) {
@@ -773,6 +799,8 @@ void subOperacionColasListas() {
         usuarios->getElement()->restartCount();
     }
 
+    cout << "Presione cualquier tecla para continuar...";
+    cin.get();
 }
 
 void operacionAdministracion() {
@@ -829,7 +857,7 @@ void operacionEstadisticas() {
             "Cantidad de tiquetes por área.",
             "Cantidad de tiquetes por ventanilla.",
             "Cantidad de tiquetes por servicio.",
-            "Cantidad de tiquetes por tipo de usuario"
+            "Cantidad de tiquetes por tipo de usuario",
             "Regresar."
     };
 
@@ -847,6 +875,16 @@ void operacionEstadisticas() {
 
         if (option == 1) {
             system("cls");
+            for (areas->goToStart(); !areas->atEnd(); areas->next()) {
+                Area* temp = areas->getElement();
+                if (temp->getCount() > 0) {
+                    int tiempoPromedio = temp->getTiempoProm() / temp->getCount();
+                    cout << "Nombre área: " << temp->getDescripcion() << endl;
+                    cout << "Tiempo promedio de espera: " << tiempoPromedio << "sgs" << endl;
+                }
+            }
+            cout << "Presione cualquier tecla para continuar...";
+            cin.get();
         }
 
         if (option == 2) {
@@ -902,22 +940,22 @@ void operacionEstadisticas() {
 int main() {    
     setlocale(LC_ALL, "es_ES.UTF-8");   
     bool continuar = true;
-    
 
-    Usuarios *tipo0 = new Usuarios("Adulto mayor", 0);
-    Usuarios *tipo1 = new Usuarios("Menor de edad", 1);
-    Usuarios *tipo2 = new Usuarios("Usuario regular", 2);
+
+    Usuarios* tipo0 = new Usuarios("Adulto mayor", 0);
+    Usuarios* tipo1 = new Usuarios("Menor de edad", 1);
+    Usuarios* tipo2 = new Usuarios("Usuario regular", 2);
 
     usuarios->insert(tipo0);
     usuarios->insert(tipo1);
     usuarios->insert(tipo2);
 
-    Area *tempArea1 = new Area("Cajas", "C", stoi("4"));
-    Area *tempArea2 = new Area("Farmacia", "F", stoi("5"));
+    Area* tempArea1 = new Area("Cajas", "C", stoi("4"));
+    Area* tempArea2 = new Area("Farmacia", "F", stoi("5"));
 
-    Servicio *tempServicio1 = new Servicio("Pagos", stoi("0"), "Cajas");
-    Servicio *tempServicio2 = new Servicio("Facturas", stoi("1"), "Cajas");
-    Servicio *tempServicio3 = new Servicio("Consulta", stoi("2"), "Cajas");
+    Servicio* tempServicio1 = new Servicio("Pagos", stoi("0"), "Cajas");
+    Servicio* tempServicio2 = new Servicio("Facturas", stoi("1"), "Cajas");
+    Servicio* tempServicio3 = new Servicio("Consulta", stoi("2"), "Cajas");
 
     tempArea1->agregarServicio(tempServicio1);
     tempArea1->agregarServicio(tempServicio2);

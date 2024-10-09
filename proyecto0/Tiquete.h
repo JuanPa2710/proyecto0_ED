@@ -11,10 +11,9 @@ Código hecho por Jose Adrián Piedra y Juan Pablo Jímenez.
 #include <string>
 #include <ostream>
 #include <chrono>
-
-using Tiempo = std::chrono::time_point<std::chrono::system_clock>;
 using std::string;
 using std::ostream;
+using Tiempo = std::chrono::time_point<std::chrono::system_clock>;
 
 class Tiquete {
 private:

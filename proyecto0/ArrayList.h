@@ -99,6 +99,11 @@ public:
 	}
 
 	void clear() {
+		for (int i = 0; i < size; i++) {
+			E temp = elements[i];
+			delete temp;
+		}
+
 		size = pos = 0;
 	}
 

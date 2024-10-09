@@ -81,6 +81,8 @@ public:
 		while (front->next != nullptr) {
 			Node<E> *temp = front->next;
 			front->next = temp->next;
+			E element = temp->element;
+			delete element;
 			delete temp;
 		}
 		back = front;

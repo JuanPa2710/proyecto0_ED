@@ -22,6 +22,7 @@ Código hecho por Jose Adrián Piedra y Juan Pablo Jímenez.
 #include "Tiquete.h"
 #include "Ventanilla.h"
 
+
 using std::string;
 using std::ostream;
 using std::to_string;
@@ -32,6 +33,7 @@ private:
 	string codigo;
 	int cantVentanillas;
 	int count;
+	int tiempoProm;
 
 	void asignarCodigosVentanillas() {
 		if (ventanillas->getSize() > 0)
@@ -118,6 +120,15 @@ public:
 		return this->count;
 	}
 
+	void setTiempoProm(int tiempo) {
+		this->tiempoProm += tiempo;
+	}
+
+	int getTiempoProm() {
+		return this->tiempoProm;
+	}
+
+		 
 	void agregarServicio(Servicio *serv) {
 		servicios->append(serv);
 	}

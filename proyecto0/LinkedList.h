@@ -68,11 +68,12 @@ public:
 	void clear() {
 		while (head->next != nullptr) {
 			current = head->next;
+			delete head->element; 
 			head->next = current->next;
 			delete current;
 		}
 		current = tail = head;
-		size = 0;
+		size = 0;;
 	}
 
 	void goToStart() {

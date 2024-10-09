@@ -76,7 +76,7 @@ public:
 
 	void clear() {
 		for (int i = 0; i < priorities; i++)
-			queues[i].clear();
+			queues[i].clear(); 
 		size = 0;
 	}
 
