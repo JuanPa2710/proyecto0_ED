@@ -52,6 +52,16 @@ int chequeoRestriccionesEnteros(string input) {
     }
 }
 
+bool chequeoRestriccionesFlotantes(string input) {
+    for (char letra : input) {
+        if (letra == ',' or letra == '.') {
+            std::cout << "\nError: El número no puede ser un decimal. Intente de nuevo" << std::endl;
+            return false;
+        }
+    }
+        return true;
+}
+
 int chequeoRestriccionesRangos(string input, int r1, int r2) {
     try {
         int num = stoi(input);
@@ -73,6 +83,28 @@ int chequeoRestriccionesRangos(string input, int r1, int r2) {
     } catch (const std::out_of_range &) {
         std::cout << "\nError: El número está fuera del rango permitido. Intente de nuevo" << std::endl;
         return 0;
+    }
+}
+
+bool chequeoRestriccionesString(string input) {
+    try {
+        for (char letra : input) {
+            if ((letra >= 'á' && letra <= 'ú') || (letra >= 'Á' && letra <= 'Ú')) {
+                std::cout << "\nError: El nombre no puede contener tildes. Intente de nuevo" << std::endl;
+                return false;
+            }
+        }
+
+        stoi(input);
+        cout << "\nError: El nombre no puede ser un número. Intente de nuevo" << endl;
+        return false;
+    }
+    catch (const invalid_argument&) {
+        return true;
+    }
+    catch (const std::out_of_range&) {
+        cout << "\nError: El nombre es demasiado largo. Intente de nuevo" << endl;
+        return false;
     }
 }
 
@@ -278,11 +310,19 @@ void subOperacionUsuarios() {
 
             cout << "Ingrese el nombre del Usuario: ";
             getline(cin, nombre);
+            bool nombreValido = chequeoRestriccionesString(nombre);
+
+            while (nombreValido == false) {
+                cout << "Ingrese el nombre del Usuario: ";
+                getline(cin, nombre);
+                nombreValido = chequeoRestriccionesString(nombre);
+            }
 
             string inputPrioridad = "";
             cout << "Ingrese la prioridad: ";
             getline(cin, inputPrioridad);
             prioridad = chequeoRestriccionesEnteros(inputPrioridad);
+
             while (prioridad < 0) {
                 cout << "Ingrese la prioridad: ";
                 getline(cin, inputPrioridad);
@@ -388,9 +428,17 @@ void subOperacionAreas() {
         if (option == 1) {
             system("cls");
             string descripcion, codigo, ventanilla;
+            bool verificar;
 
             cout << "Ingrese la descripción del área: ";
             getline(cin, descripcion);
+            verificar = chequeoRestriccionesString(descripcion);
+
+            while (verificar == false) {
+                cout << "Ingrese la descripción del área: ";
+                getline(cin, descripcion);
+                verificar = chequeoRestriccionesString(descripcion);
+            }
 
             cout << "Ingrese el código del área: ";
             getline(cin, codigo);
@@ -590,9 +638,17 @@ void subOperacionServicios() {
 
             if (areas->getSize() > 0) {
                 string descripcion, prioridad, area, prueba;
+                bool valido;
 
                 cout << "Ingrese la descripción del servicio: ";
                 getline(cin, descripcion);
+                valido = chequeoRestriccionesString(descripcion);
+
+                while (valido == false) {
+                    cout << "Ingrese el nombre del Usuario: ";
+                    getline(cin, descripcion);
+                    valido = chequeoRestriccionesString(descripcion);
+                }
 
                 int prioridadOp = 0;
                 cout << "Ingrese la prioridad del servicio: ";
@@ -648,10 +704,19 @@ void subOperacionServicios() {
                 cout << "Digite el servicio que desee reordenar: ";
                 getline(cin, servicio);
                 servicioOp = chequeoRestriccionesRangos(servicio, 1, servicios->getSize());
+
                 while (servicioOp == 0) {
                     cout << "Digite el servicio que desee reordenar: ";
                     getline(cin, servicio);
                     servicioOp = chequeoRestriccionesRangos(servicio, 1, servicios->getSize());
+                }
+
+                bool servicioOp1 = chequeoRestriccionesFlotantes(servicio);
+
+                while (servicioOp1 == false) {
+                    cout << "Digite el servicio que desee reordenar: ";
+                    getline(cin, servicio);
+                    servicioOp1 = chequeoRestriccionesFlotantes(servicio);
                 }
 
                 string posicion;
@@ -939,8 +1004,6 @@ void operacionEstadisticas() {
 
 int main() {    
     setlocale(LC_ALL, "es_ES.UTF-8");   
-    bool continuar = true;
-
 
     Usuarios* tipo0 = new Usuarios("Adulto mayor", 0);
     Usuarios* tipo1 = new Usuarios("Menor de edad", 1);
@@ -1029,6 +1092,5 @@ int main() {
             operacionEstadisticas();
         }
     }
-
     return 0;
 }
