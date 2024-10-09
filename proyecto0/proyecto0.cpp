@@ -823,7 +823,7 @@ void operacionAdministracion() {
         }
 
         if (option == 4) {
-
+            subOperacionColasListas();
         }
     }
 }
@@ -939,7 +939,7 @@ int main() {
 
         if (option == 1) {
             system("cls");
-            cout << "Estado de las colas: " << endl;
+            cout << "Estado de las colas: ";
 
             for (areas->goToStart(); !areas->atEnd(); areas->next()) {
                 Area *temp = areas->getElement();
