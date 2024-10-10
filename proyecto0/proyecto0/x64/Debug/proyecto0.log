@@ -1,8 +1,9 @@
 ﻿  proyecto0.cpp
-C:\Users\josea\source\repos\JuanPa2710\proyecto0_ED\proyecto0\proyecto0.cpp(222,25): warning C4244: 'inicializando': conversión de '_Rep' a 'int'; posible pérdida de datos
-C:\Users\josea\source\repos\JuanPa2710\proyecto0_ED\proyecto0\proyecto0.cpp(222,25): warning C4244:         with
-C:\Users\josea\source\repos\JuanPa2710\proyecto0_ED\proyecto0\proyecto0.cpp(222,25): warning C4244:         [
-C:\Users\josea\source\repos\JuanPa2710\proyecto0_ED\proyecto0\proyecto0.cpp(222,25): warning C4244:             _Rep=__int64
-C:\Users\josea\source\repos\JuanPa2710\proyecto0_ED\proyecto0\proyecto0.cpp(222,25): warning C4244:         ]
+C:\Users\josea\source\repos\JuanPa2710\proyecto0_ED\proyecto0\proyecto0.cpp(103,13): warning C4834: Descartar el valor de retorno de la función con el atributo [[nodiscard]]
+C:\Users\josea\source\repos\JuanPa2710\proyecto0_ED\proyecto0\proyecto0.cpp(259,25): warning C4244: 'inicializando': conversión de '_Rep' a 'int'; posible pérdida de datos
+C:\Users\josea\source\repos\JuanPa2710\proyecto0_ED\proyecto0\proyecto0.cpp(259,25): warning C4244:         with
+C:\Users\josea\source\repos\JuanPa2710\proyecto0_ED\proyecto0\proyecto0.cpp(259,25): warning C4244:         [
+C:\Users\josea\source\repos\JuanPa2710\proyecto0_ED\proyecto0\proyecto0.cpp(259,25): warning C4244:             _Rep=__int64
+C:\Users\josea\source\repos\JuanPa2710\proyecto0_ED\proyecto0\proyecto0.cpp(259,25): warning C4244:         ]
 C:\Users\josea\source\repos\JuanPa2710\proyecto0_ED\proyecto0\LinkedPriorityQueue.h(58,28): warning C4101: 'e': variable local sin referencia
   proyecto0.vcxproj -> C:\Users\josea\Source\Repos\JuanPa2710\proyecto0_ED\proyecto0\x64\Debug\proyecto0.exe

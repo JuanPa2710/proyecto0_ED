@@ -33,6 +33,16 @@ std::chrono::time_point<std::chrono::system_clock> horaActual;
 int tiqueteConsecutivo = 100;
 
 //Funciones auxiliares
+bool chequeoRestriccionesFlotantes(string input) {
+    for (char letra : input) {
+        if (letra == ',' or letra == '.') {
+            std::cout << "\nError: El número no puede ser un decimal. Intente de nuevo" << std::endl;
+            return false;
+        }
+    }
+    return true;
+}                        
+
 int chequeoRestriccionesEnteros(string input) {
     try {
         int num = stoi(input);
@@ -40,7 +50,12 @@ int chequeoRestriccionesEnteros(string input) {
         if (num < 0) {
             cout << "\nError: El número está fuera del rango permitido. Intente de nuevo" << endl;
             return -1;
-        } else {
+        } 
+        
+        if (!chequeoRestriccionesFlotantes(input)) {
+            return -1;
+        }
+        else {
             return num;
         }
     } catch (const invalid_argument &) {
@@ -50,16 +65,6 @@ int chequeoRestriccionesEnteros(string input) {
         std::cout << "\nError: El número está fuera del rango permitido. Intente de nuevo" << std::endl;
         return -1;
     }
-}
-
-bool chequeoRestriccionesFlotantes(string input) {
-    for (char letra : input) {
-        if (letra == ',' or letra == '.') {
-            std::cout << "\nError: El número no puede ser un decimal. Intente de nuevo" << std::endl;
-            return false;
-        }
-    }
-        return true;
 }
 
 int chequeoRestriccionesRangos(string input, int r1, int r2) {
@@ -711,12 +716,12 @@ void subOperacionServicios() {
                     servicioOp = chequeoRestriccionesRangos(servicio, 1, servicios->getSize());
                 }
 
-                bool servicioOp1 = chequeoRestriccionesFlotantes(servicio);
+                bool servicioOp1 = chequeoRestriccionesEnteros(servicio);
 
                 while (servicioOp1 == false) {
                     cout << "Digite el servicio que desee reordenar: ";
                     getline(cin, servicio);
-                    servicioOp1 = chequeoRestriccionesFlotantes(servicio);
+                    servicioOp1 = chequeoRestriccionesEnteros(servicio);
                 }
 
                 string posicion;
