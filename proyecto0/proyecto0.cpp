@@ -1016,7 +1016,14 @@ void operacionEstadisticas() {
                 if (temp->getCount() > 0) {
                     int tiempoPromedio = temp->getTiempoProm() / temp->getCount();
                     cout << "Nombre área: " << temp->getDescripcion() << endl;
-                    cout << "Tiempo promedio de espera: " << tiempoPromedio << "sgs" << endl;
+
+                    int tiempoHoras = tiempoPromedio / 3600;
+                    int tiempoSegundos = tiempoPromedio % 60;
+                    tiempoPromedio = tiempoPromedio / 60;
+
+                    if (tiempoHoras > 0)
+                        cout << "Tiempo promedio de espera: " << tiempoHoras << "hora(s)" << tiempoPromedio << " minuto(s) y " << tiempoSegundos << " segundo(s)" << endl;
+                    cout << "Tiempo promedio de espera: " << tiempoPromedio << " minuto(s) y " << tiempoSegundos << " segundo(s)" << endl;
                 }
             }
             cout << "Presione cualquier tecla para continuar...";
