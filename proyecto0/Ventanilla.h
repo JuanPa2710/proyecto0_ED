@@ -45,15 +45,15 @@ public:
 	}
 
 	void agregarTiquete(Tiquete *tiquete) {
-		if (!tiquetes->isEmpty()) {
-			cout << "" << endl;
-			tiquetes->dequeue();
-			tiquetes->enqueue(tiquete);
-		} else {
-			cout << "No hay usuarios esperando en la cola" << endl;
-			tiquetes->enqueue(tiquete);
-		}
+	if (!tiquetes->isEmpty()) {
+		cout << "" << endl;
+		tiquetes->dequeue();
+		tiquetes->enqueue(tiquete);
+	} else {
+		cout << "Atendiendo al usuario en la cola" << endl;
+		tiquetes->enqueue(tiquete);
 	}
+}
 
 	int getCount() {
 		return count;
