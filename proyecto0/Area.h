@@ -11,7 +11,7 @@ el cual compara la descripción de dos áreas, y por último  &operator<<, el cual 
 Código hecho por Jose Adrián Piedra y Juan Pablo Jímenez.
 */
 
-#define DEFAULT_MAX 1024
+#define DEFAULT_MAX 100
 
 #pragma once
 
@@ -21,6 +21,9 @@ Código hecho por Jose Adrián Piedra y Juan Pablo Jímenez.
 #include "Servicio.h"
 #include "Tiquete.h"
 #include "Ventanilla.h"
+#include "PriorityQueue.h"
+#include "MinHeap.h"
+#include "HeapPriorityQueue.h"
 
 
 using std::string;
@@ -54,9 +57,9 @@ public:
 		descrip, codigo = "";
 		cantVentanillas = 0;
 		count = 0;
-		ventanillas = new ArrayList<Ventanilla *>();
-		servicios = new ArrayList<Servicio *>();
-		tiquetes = new LinkedPriorityQueue<Tiquete *>(100);
+		ventanillas = new LinkedList<Ventanilla *>();
+		servicios = new LinkedList<Servicio *>();
+		tiquetes = new HeapPriorityQueue<Tiquete *>();
 	}
 
 	Area(string descrip, string codigo, int cantVentanillas) {
@@ -66,7 +69,7 @@ public:
 		this->count = 0;
 		ventanillas = new ArrayList<Ventanilla *>();
 		servicios = new ArrayList<Servicio *>();
-		tiquetes = new LinkedPriorityQueue<Tiquete *>(100);
+		tiquetes = new HeapPriorityQueue<Tiquete *>();
 		asignarCodigosVentanillas();
 	}
 

@@ -68,5 +68,14 @@
     <ClInclude Include="Ventanilla.h">
       <Filter>Archivos de encabezado\modelos</Filter>
     </ClInclude>
+    <ClInclude Include="HeapPriorityQueue.h">
+      <Filter>Archivos de encabezado\estructuras</Filter>
+    </ClInclude>
+    <ClInclude Include="KVPair.h">
+      <Filter>Archivos de encabezado\estructuras</Filter>
+    </ClInclude>
+    <ClInclude Include="MinHeap.h">
+      <Filter>Archivos de encabezado\estructuras</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

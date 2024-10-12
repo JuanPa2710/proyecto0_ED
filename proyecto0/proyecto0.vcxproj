@@ -135,10 +135,13 @@
   <ItemGroup>
     <ClInclude Include="Area.h" />
     <ClInclude Include="ArrayList.h" />
+    <ClInclude Include="HeapPriorityQueue.h" />
+    <ClInclude Include="KVPair.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="LinkedPriorityQueue.h" />
     <ClInclude Include="LinkedQueue.h" />
     <ClInclude Include="List.h" />
+    <ClInclude Include="MinHeap.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="PriorityQueue.h" />
     <ClInclude Include="Queue.h" />

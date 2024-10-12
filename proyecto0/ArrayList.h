@@ -14,7 +14,7 @@ Código hecho por Jose Adrián Piedra y Juan Pablo Jímenez.
 
 #pragma once
 
-#define DEFAULT_MAX 1024
+#define DEFAULT_MAX 10
 
 #include <stdexcept>
 #include <iostream>

@@ -12,7 +12,6 @@ Código hecho por Fiorella Gónzalez, Jose Adrián Piedra y Juan Pablo Jímenez.
 #include <time.h>
 #include <iomanip>
 
-#include "LinkedPriorityQueue.h"
 #include "LinkedList.h"
 #include "Usuarios.h"
 #include "Servicio.h"
@@ -24,10 +23,9 @@ using std::cin;
 using std::stoi;
 using std::chrono::system_clock;
 
-List<Usuarios *> *usuarios = new ArrayList<Usuarios *>();
-List<Area *> *areas = new ArrayList<Area *>();
-List<Servicio *> *servicios = new ArrayList<Servicio *>();
-List <Ventanilla *> *ventanillas = new ArrayList<Ventanilla *>;
+List<Usuarios *> *usuarios = new LinkedList<Usuarios *>();
+List<Area *> *areas = new ArrayList<Area *>(10);
+List<Servicio *> *servicios = new ArrayList<Servicio *>(20);
 
 std::chrono::time_point<std::chrono::system_clock> horaActual;
 int tiqueteConsecutivo = 100;
@@ -69,19 +67,24 @@ int chequeoRestriccionesEnteros(string input) {
 
 int chequeoRestriccionesRangos(string input, int r1, int r2) {
     try {
-        int num = stoi(input);
+        int num = chequeoRestriccionesEnteros(input);
         int option = 0;
-        if (r1 != r2)
-            option = (num >= r1 && num <= r2) ? num : 0;
-        else
-            option = (num == 1) ? num : 0;
 
-        if (option == 0) {
-            cout << "\nError: El número está fuera del rango permitido. Intente de nuevo" << endl;
+        if (num != -1) {
+            if (r1 != r2)
+                option = (num >= r1 && num <= r2) ? num : 0;
+            else
+                option = (num == 1) ? num : 0;
+
+            if (option == 0) {
+                cout << "\nError: El número está fuera del rango permitido. Intente de nuevo" << endl;
+                return 0;
+            } else {
+                return option;
+            }
+        } else
             return 0;
-        } else {
-            return option;
-        }
+
     } catch (const invalid_argument &) {
         cout << "\nError: Entrada no válida, por favor ingrese un número entero. Intente de nuevo" << endl;
         return 0;
@@ -120,38 +123,38 @@ void imprimirOpciones(string arr[], int max) {
         cout << i + 1 << ". " << arr[i] << endl;
 }
 
-void ordenarServiciosPorPrioridad(List<Servicio*>* servicios) {
-    for (int i = 1; i < servicios->getSize(); i++) {
-        // Ir a la posición i y obtener el servicio actual (sin eliminarlo todavía)
-        servicios->goToPos(i);
-        Servicio* actual = servicios->getElement();  // Obtener el servicio en la posición i
-
-        // Guardar la posición actual para eliminación posterior
-        int posicion_actual = i;
-        int j = i - 1;
-
-        // Moverse a la posición anterior y comparar prioridades
-        servicios->goToPos(j);
-        Servicio* anterior = servicios->getElement();  // Obtener el servicio anterior
-
-        // Buscar la posición correcta donde el servicio 'actual' debería estar
-        while (j >= 0 && actual->getPrioridad() < anterior->getPrioridad()) {
-            j--;
-            if (j >= 0) {
-                servicios->goToPos(j);
-                anterior = servicios->getElement();
-            }
-        }
-
-        // Eliminar el servicio 'actual' de su posición original (para evitar duplicados)
-        servicios->goToPos(posicion_actual);
-        servicios->remove();  // Eliminar el servicio en la posición actual
-
-        // Insertar el servicio 'actual' en su nueva posición
-        servicios->goToPos(j + 1);
-        servicios->insert(actual);  // Insertar 'actual' en la posición correcta
-    }
-}
+//void ordenarServiciosPorPrioridad(List<Servicio*>* servicios) {
+//    for (int i = 1; i < servicios->getSize(); i++) {
+//        // Ir a la posición i y obtener el servicio actual (sin eliminarlo todavía)
+//        servicios->goToPos(i);
+//        Servicio* actual = servicios->getElement();  // Obtener el servicio en la posición i
+//
+//        // Guardar la posición actual para eliminación posterior
+//        int posicion_actual = i;
+//        int j = i - 1;
+//
+//        // Moverse a la posición anterior y comparar prioridades
+//        servicios->goToPos(j);
+//        Servicio* anterior = servicios->getElement();  // Obtener el servicio anterior
+//
+//        // Buscar la posición correcta donde el servicio 'actual' debería estar
+//        while (j >= 0 && actual->getPrioridad() < anterior->getPrioridad()) {
+//            j--;
+//            if (j >= 0) {
+//                servicios->goToPos(j);
+//                anterior = servicios->getElement();
+//            }
+//        }
+//
+//        // Eliminar el servicio 'actual' de su posición original (para evitar duplicados)
+//        servicios->goToPos(posicion_actual);
+//        servicios->remove();  // Eliminar el servicio en la posición actual
+//
+//        // Insertar el servicio 'actual' en su nueva posición
+//        servicios->goToPos(j + 1);
+//        servicios->insert(actual);  // Insertar 'actual' en la posición correcta
+//    }
+//}
 
 void ordenarUsuariosPorPrioridad(List<Usuarios*>* usuarios) {
     for (int i = 1; i < usuarios->getSize(); i++) {
@@ -206,7 +209,7 @@ void operacionTiquetes() {
         }        
         cout << endl;
 
-        ordenarServiciosPorPrioridad(servicios);
+        /*ordenarServiciosPorPrioridad(servicios);*/
         servicios->printShow();
         string servicioSeleccionado;
         int servicioOp = 0;
@@ -447,10 +450,13 @@ void subOperacionUsuarios() {
 
                 if (decisionOp == 1) {
                     for (areas->goToStart(); !areas->atEnd(); areas->next()) {
-                        areas->getElement()->limpiarCola();
+                        Area *temp = areas->getElement();
+                        temp->tiquetes->clear();
                     }
 
+                    Usuarios *tempUsuario = usuarios->getElement();
                     cout << "Usuario " << usuarios->remove() << " eliminado correctamente" << endl;
+                    delete tempUsuario;
                     cout << "Presione cualquier tecla para continuar...";
                     cin.get();
                 } else {
@@ -770,7 +776,7 @@ void subOperacionServicios() {
             system("cls");            
 
             if (servicios->getSize() > 1) {
-                ordenarServiciosPorPrioridad(servicios);
+                /*ordenarServiciosPorPrioridad(servicios);*/
                 cout << "Servicios disponibles: " << endl;
                 servicios->printShow();
                 string servicio = "";
@@ -778,19 +784,10 @@ void subOperacionServicios() {
                 cout << "Digite el servicio que desee reordenar: ";
                 getline(cin, servicio);
                 servicioOp = chequeoRestriccionesRangos(servicio, 1, servicios->getSize());
-
                 while (servicioOp == 0) {
                     cout << "Digite el servicio que desee reordenar: ";
                     getline(cin, servicio);
                     servicioOp = chequeoRestriccionesRangos(servicio, 1, servicios->getSize());
-                }
-
-                bool servicioOp1 = chequeoRestriccionesEnteros(servicio);
-
-                while (servicioOp1 == false) {
-                    cout << "Digite el servicio que desee reordenar: ";
-                    getline(cin, servicio);
-                    servicioOp1 = chequeoRestriccionesEnteros(servicio);
                 }
 
                 string posicion;
@@ -798,7 +795,7 @@ void subOperacionServicios() {
                 cout << "Digite la posición a la que desea mover el elemento: ";
                 getline(cin, posicion);
                 posicionOp = chequeoRestriccionesRangos(posicion, 1, servicios->getSize());
-                while (servicioOp == 0) {
+                while (posicionOp == 0) {
                     cout << "Digite la posición a la que desea mover el elemento: ";
                     getline(cin, posicion);
                     posicionOp = chequeoRestriccionesRangos(posicion, 1, servicios->getSize());
@@ -831,7 +828,7 @@ void subOperacionServicios() {
             system("cls");
 
             if (servicios->getSize() > 0) {
-                ordenarServiciosPorPrioridad(servicios);
+                /*ordenarServiciosPorPrioridad(servicios);*/
                 cout << "Servicios disponibles: " << endl;
                 for (servicios->goToStart(); !servicios->atEnd(); servicios->next()) {
                     Servicio *temp = servicios->getElement();
@@ -854,7 +851,7 @@ void subOperacionServicios() {
 
             if (servicios->getSize() > 0) {
                 string servicio;
-                ordenarServiciosPorPrioridad(servicios);
+                /*ordenarServiciosPorPrioridad(servicios);*/
                 cout << "Servicios disponibles: " << endl;
                 servicios->printShow();
 
@@ -921,14 +918,12 @@ void subOperacionServicios() {
 void subOperacionColasListas() {
     system("cls");
     cout << "Limpiando las colas..." << endl;
-    ventanillas->clear();
     for (areas->goToStart(); !areas->atEnd(); areas->next()) {
         areas->getElement()->limpiarCola();
         areas->getElement()->restartCount();
         Area* areaActual = areas->getElement();
-        ventanillas = areaActual->ventanillas;
-        for (ventanillas->goToStart(); !ventanillas->atEnd(); ventanillas->next()) {
-            ventanillas->getElement()->restartCount();
+        for (areaActual->ventanillas->goToStart(); !areaActual->ventanillas->atEnd(); areaActual->ventanillas->next()) {
+            areaActual->ventanillas->getElement()->restartCount();
         }
     }
 
@@ -1042,11 +1037,10 @@ void operacionEstadisticas() {
             system("cls");
             for (areas->goToStart(); !areas->atEnd(); areas->next()) {
                 Area *areaActual = areas->getElement();
-                ventanillas = areaActual->ventanillas;
-                for (ventanillas->goToStart(); !ventanillas->atEnd(); ventanillas->next()) {
+                for (areaActual->ventanillas->goToStart(); !areaActual->ventanillas->atEnd(); areaActual->ventanillas->next()) {
                     cout << "Area: " << areaActual->getDescripcion() << endl;
-                    cout << "Código de ventanilla: " << ventanillas->getElement()->getNombre() << endl;
-                    cout << "Cantidad de tiquetes: " << ventanillas->getElement()->getCount() << endl << endl;
+                    cout << "Código de ventanilla: " << areaActual->ventanillas->getElement()->getNombre() << endl;
+                    cout << "Cantidad de tiquetes: " << areaActual->ventanillas->getElement()->getCount() << endl << endl;
                 }
             }
             cout << "Presione cualquier tecla para continuar...";
@@ -1081,20 +1075,23 @@ void operacionEstadisticas() {
 int main() {    
     setlocale(LC_ALL, "es_ES.UTF-8");   
 
-    Usuarios* tipo0 = new Usuarios("Adulto mayor", 0);
-    Usuarios* tipo1 = new Usuarios("Menor de edad", 1);
-    Usuarios* tipo2 = new Usuarios("Usuario regular", 2);
+    string input = "";
+    int option = 0;
+
+    Usuarios *tipo0 = new Usuarios("Adulto mayor", 0);
+    Usuarios *tipo1 = new Usuarios("Menor de edad", 1);
+    Usuarios *tipo2 = new Usuarios("Usuario regular", 2);
 
     usuarios->insert(tipo0);
     usuarios->insert(tipo1);
     usuarios->insert(tipo2);
 
-    Area* tempArea1 = new Area("Cajas", "C", stoi("4"));
-    Area* tempArea2 = new Area("Farmacia", "F", stoi("5"));
+    Area *tempArea1 = new Area("Cajas", "C", stoi("4"));
+    Area *tempArea2 = new Area("Farmacia", "F", stoi("5"));
 
-    Servicio* tempServicio1 = new Servicio("Pagos", stoi("0"), "Cajas");
-    Servicio* tempServicio2 = new Servicio("Facturas", stoi("1"), "Cajas");
-    Servicio* tempServicio3 = new Servicio("Consulta", stoi("2"), "Cajas");
+    Servicio *tempServicio1 = new Servicio("Pagos", stoi("2"), "Cajas");
+    Servicio *tempServicio2 = new Servicio("Facturas", stoi("0"), "Cajas");
+    Servicio *tempServicio3 = new Servicio("Consulta", stoi("1"), "Cajas");
 
     tempArea1->agregarServicio(tempServicio1);
     tempArea1->agregarServicio(tempServicio2);
@@ -1106,9 +1103,6 @@ int main() {
     servicios->append(tempServicio1);
     servicios->append(tempServicio2);
     servicios->append(tempServicio3);
-
-    string input = "";
-    int option = 0;
 
     while (option != 6) {  
         string ops[6] = {
@@ -1141,9 +1135,8 @@ int main() {
                 cout << "Cantidad de ventanillas: " << temp->getCantVentanillas() << endl;
                 cout << "Tiquetes en espera en el área: "; temp->tiquetes->printShow();
                 cout << "\nVentanillas: " << endl;
-                ventanillas = temp->ventanillas;
-                for (ventanillas->goToStart(); !ventanillas->atEnd(); ventanillas->next()) {
-                    Ventanilla *temp2 = ventanillas->getElement();
+                for (temp->ventanillas->goToStart(); !temp->ventanillas->atEnd(); temp->ventanillas->next()) {
+                    Ventanilla *temp2 = temp->ventanillas->getElement();
                     cout << "\t*Ventanilla " << temp2->getNombre();
                     cout << "\t\t///\tÚltimo tiquete atendido: " << temp2->getCodTiquete() << endl;
                 }
