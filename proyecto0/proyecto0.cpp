@@ -120,11 +120,78 @@ void imprimirOpciones(string arr[], int max) {
         cout << i + 1 << ". " << arr[i] << endl;
 }
 
+void ordenarServiciosPorPrioridad(List<Servicio*>* servicios) {
+    for (int i = 1; i < servicios->getSize(); i++) {
+        // Ir a la posición i y obtener el servicio actual (sin eliminarlo todavía)
+        servicios->goToPos(i);
+        Servicio* actual = servicios->getElement();  // Obtener el servicio en la posición i
+
+        // Guardar la posición actual para eliminación posterior
+        int posicion_actual = i;
+        int j = i - 1;
+
+        // Moverse a la posición anterior y comparar prioridades
+        servicios->goToPos(j);
+        Servicio* anterior = servicios->getElement();  // Obtener el servicio anterior
+
+        // Buscar la posición correcta donde el servicio 'actual' debería estar
+        while (j >= 0 && actual->getPrioridad() < anterior->getPrioridad()) {
+            j--;
+            if (j >= 0) {
+                servicios->goToPos(j);
+                anterior = servicios->getElement();
+            }
+        }
+
+        // Eliminar el servicio 'actual' de su posición original (para evitar duplicados)
+        servicios->goToPos(posicion_actual);
+        servicios->remove();  // Eliminar el servicio en la posición actual
+
+        // Insertar el servicio 'actual' en su nueva posición
+        servicios->goToPos(j + 1);
+        servicios->insert(actual);  // Insertar 'actual' en la posición correcta
+    }
+}
+
+void ordenarUsuariosPorPrioridad(List<Usuarios*>* usuarios) {
+    for (int i = 1; i < usuarios->getSize(); i++) {
+        // Ir a la posición i y obtener el servicio actual (sin eliminarlo todavía)
+        usuarios->goToPos(i);
+        Usuarios* actual = usuarios->getElement();  // Obtener el servicio en la posición i
+
+        // Guardar la posición actual para eliminación posterior
+        int posicion_actual = i;
+        int j = i - 1;
+
+        // Moverse a la posición anterior y comparar prioridades
+        usuarios->goToPos(j);
+        Usuarios* anterior = usuarios->getElement();  // Obtener el servicio anterior
+
+        // Buscar la posición correcta donde el servicio 'actual' debería estar
+        while (j >= 0 && actual->getPrioridad() < anterior->getPrioridad()) {
+            j--;
+            if (j >= 0) {
+                usuarios->goToPos(j);
+                anterior = usuarios->getElement();
+            }
+        }
+
+        // Eliminar el servicio 'actual' de su posición original (para evitar duplicados)
+        usuarios->goToPos(posicion_actual);
+        usuarios->remove();  // Eliminar el servicio en la posición actual
+
+        // Insertar el servicio 'actual' en su nueva posición
+        usuarios->goToPos(j + 1);
+        usuarios->insert(actual);  // Insertar 'actual' en la posición correcta
+    }
+}
+
 //Funciones principales
 void operacionTiquetes() {
     system("cls");
 
     if (usuarios->getSize() > 0 && servicios->getSize() > 0) {
+        ordenarUsuariosPorPrioridad(usuarios);
         usuarios->printShow();
         string tipoUsuarioSeleccionado;
         int usuarioOp = 0;
@@ -139,6 +206,7 @@ void operacionTiquetes() {
         }        
         cout << endl;
 
+        ordenarServiciosPorPrioridad(servicios);
         servicios->printShow();
         string servicioSeleccionado;
         int servicioOp = 0;
@@ -215,7 +283,6 @@ void operacionAtender() {
     if (areas->getSize() > 0) {
         string areaSeleccionada;
         string ventanilla;
-
         areas->printShow();
         int areaOP = 0;
 
@@ -348,6 +415,7 @@ void subOperacionUsuarios() {
             if (usuarios->getSize() > 0) {
                 string nombre;
                 int nombreOp = 0;
+                ordenarUsuariosPorPrioridad(usuarios);
                 usuarios->printShow();
                 cout << "Ingrese el usuario a eliminar: ";
                 getline(cin, nombre);
@@ -702,6 +770,7 @@ void subOperacionServicios() {
             system("cls");            
 
             if (servicios->getSize() > 1) {
+                ordenarServiciosPorPrioridad(servicios);
                 cout << "Servicios disponibles: " << endl;
                 servicios->printShow();
                 string servicio = "";
@@ -762,6 +831,7 @@ void subOperacionServicios() {
             system("cls");
 
             if (servicios->getSize() > 0) {
+                ordenarServiciosPorPrioridad(servicios);
                 cout << "Servicios disponibles: " << endl;
                 for (servicios->goToStart(); !servicios->atEnd(); servicios->next()) {
                     Servicio *temp = servicios->getElement();
@@ -784,6 +854,7 @@ void subOperacionServicios() {
 
             if (servicios->getSize() > 0) {
                 string servicio;
+                ordenarServiciosPorPrioridad(servicios);
                 cout << "Servicios disponibles: " << endl;
                 servicios->printShow();
 
