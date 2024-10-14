@@ -81,9 +81,9 @@ public:
 	}
 
 	~Area() {
-		delete servicios;
-		delete ventanillas;
-		delete tiquetes;
+		servicios->clear();
+		ventanillas->clear();
+		tiquetes->clear();
 	}
 
 	void setDescripcion(string descrip) {

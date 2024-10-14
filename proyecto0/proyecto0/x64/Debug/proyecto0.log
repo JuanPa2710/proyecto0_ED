@@ -2,11 +2,11 @@
 C:\Users\Juanp\OneDrive - Estudiantes ITCR\TEC\II Semestre\Estructuras de Datos\Proyecto\proyecto0_ED\proyecto0\ArrayList.h(17,9): warning C4005: 'DEFAULT_MAX': redefinición de macro
 C:\Users\Juanp\OneDrive - Estudiantes ITCR\TEC\II Semestre\Estructuras de Datos\Proyecto\proyecto0_ED\proyecto0\MinHeap.h(2,9): warning C4005: 'DEFAULT_MAX': redefinición de macro
 C:\Users\Juanp\OneDrive - Estudiantes ITCR\TEC\II Semestre\Estructuras de Datos\Proyecto\proyecto0_ED\proyecto0\proyecto0.cpp(106,13): warning C4834: Descartar el valor de retorno de la función con el atributo [[nodiscard]]
-C:\Users\Juanp\OneDrive - Estudiantes ITCR\TEC\II Semestre\Estructuras de Datos\Proyecto\proyecto0_ED\proyecto0\proyecto0.cpp(329,25): warning C4244: 'inicializando': conversión de '_Rep' a 'int'; posible pérdida de datos
-C:\Users\Juanp\OneDrive - Estudiantes ITCR\TEC\II Semestre\Estructuras de Datos\Proyecto\proyecto0_ED\proyecto0\proyecto0.cpp(329,25): warning C4244:         with
-C:\Users\Juanp\OneDrive - Estudiantes ITCR\TEC\II Semestre\Estructuras de Datos\Proyecto\proyecto0_ED\proyecto0\proyecto0.cpp(329,25): warning C4244:         [
-C:\Users\Juanp\OneDrive - Estudiantes ITCR\TEC\II Semestre\Estructuras de Datos\Proyecto\proyecto0_ED\proyecto0\proyecto0.cpp(329,25): warning C4244:             _Rep=__int64
-C:\Users\Juanp\OneDrive - Estudiantes ITCR\TEC\II Semestre\Estructuras de Datos\Proyecto\proyecto0_ED\proyecto0\proyecto0.cpp(329,25): warning C4244:         ]
+C:\Users\Juanp\OneDrive - Estudiantes ITCR\TEC\II Semestre\Estructuras de Datos\Proyecto\proyecto0_ED\proyecto0\proyecto0.cpp(297,25): warning C4244: 'inicializando': conversión de '_Rep' a 'int'; posible pérdida de datos
+C:\Users\Juanp\OneDrive - Estudiantes ITCR\TEC\II Semestre\Estructuras de Datos\Proyecto\proyecto0_ED\proyecto0\proyecto0.cpp(297,25): warning C4244:         with
+C:\Users\Juanp\OneDrive - Estudiantes ITCR\TEC\II Semestre\Estructuras de Datos\Proyecto\proyecto0_ED\proyecto0\proyecto0.cpp(297,25): warning C4244:         [
+C:\Users\Juanp\OneDrive - Estudiantes ITCR\TEC\II Semestre\Estructuras de Datos\Proyecto\proyecto0_ED\proyecto0\proyecto0.cpp(297,25): warning C4244:             _Rep=__int64
+C:\Users\Juanp\OneDrive - Estudiantes ITCR\TEC\II Semestre\Estructuras de Datos\Proyecto\proyecto0_ED\proyecto0\proyecto0.cpp(297,25): warning C4244:         ]
   proyecto0.vcxproj -> C:\Users\Juanp\OneDrive - Estudiantes ITCR\TEC\II Semestre\Estructuras de Datos\Proyecto\proyecto0_ED\proyecto0\x64\Debug\proyecto0.exe
   "pwsh.exe" no se reconoce como un comando interno o externo,
   programa o archivo por lotes ejecutable.

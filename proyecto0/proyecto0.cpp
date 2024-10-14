@@ -123,39 +123,6 @@ void imprimirOpciones(string arr[], int max) {
         cout << i + 1 << ". " << arr[i] << endl;
 }
 
-//void ordenarServiciosPorPrioridad(List<Servicio*>* servicios) {
-//    for (int i = 1; i < servicios->getSize(); i++) {
-//        // Ir a la posición i y obtener el servicio actual (sin eliminarlo todavía)
-//        servicios->goToPos(i);
-//        Servicio* actual = servicios->getElement();  // Obtener el servicio en la posición i
-//
-//        // Guardar la posición actual para eliminación posterior
-//        int posicion_actual = i;
-//        int j = i - 1;
-//
-//        // Moverse a la posición anterior y comparar prioridades
-//        servicios->goToPos(j);
-//        Servicio* anterior = servicios->getElement();  // Obtener el servicio anterior
-//
-//        // Buscar la posición correcta donde el servicio 'actual' debería estar
-//        while (j >= 0 && actual->getPrioridad() < anterior->getPrioridad()) {
-//            j--;
-//            if (j >= 0) {
-//                servicios->goToPos(j);
-//                anterior = servicios->getElement();
-//            }
-//        }
-//
-//        // Eliminar el servicio 'actual' de su posición original (para evitar duplicados)
-//        servicios->goToPos(posicion_actual);
-//        servicios->remove();  // Eliminar el servicio en la posición actual
-//
-//        // Insertar el servicio 'actual' en su nueva posición
-//        servicios->goToPos(j + 1);
-//        servicios->insert(actual);  // Insertar 'actual' en la posición correcta
-//    }
-//}
-
 void ordenarUsuariosPorPrioridad(List<Usuarios*>* usuarios) {
     for (int i = 1; i < usuarios->getSize(); i++) {
         // Ir a la posición i y obtener el servicio actual (sin eliminarlo todavía)
@@ -202,6 +169,7 @@ void operacionTiquetes() {
         cout << "Seleccione el tipo de usuario: ";
         getline(cin, tipoUsuarioSeleccionado);
         usuarioOp = chequeoRestriccionesRangos(tipoUsuarioSeleccionado, 1, usuarios->getSize());
+
         while (usuarioOp == 0) {
             cout << "Seleccione el tipo de usuario: ";
             getline(cin, tipoUsuarioSeleccionado);
@@ -434,6 +402,7 @@ void subOperacionUsuarios() {
                 usuarios->goToPos(nombreOp - 1);
 
                 cout << "¿Está seguro de eliminar el usuario?" << endl;
+                cout << "Esto eliminará también los tiquetes que estén en cola." << endl;
                 cout << "1. Si" << endl;
                 cout << "2. No" << endl;
                 cout << "Escoja una opción: ";
@@ -441,6 +410,7 @@ void subOperacionUsuarios() {
                 decisionOp = chequeoRestriccionesRangos(decision, 1, 2);
                 while (decisionOp == 0) {
                     cout << "¿Está seguro de eliminar el usuario?" << endl;
+                    cout << "Esto eliminará también los tiquetes que estén en cola." << endl;
                     cout << "1. Si" << endl;
                     cout << "2. No" << endl;
                     cout << "Escoja una opción: ";
@@ -457,6 +427,7 @@ void subOperacionUsuarios() {
                     Usuarios *tempUsuario = usuarios->getElement();
                     cout << "Usuario " << usuarios->remove() << " eliminado correctamente" << endl;
                     delete tempUsuario;
+                    tiqueteConsecutivo = 100;
                     cout << "Presione cualquier tecla para continuar...";
                     cin.get();
                 } else {
@@ -632,10 +603,15 @@ void subOperacionAreas() {
                     resulOp = chequeoRestriccionesRangos(resul, 1, areas->getSize());
                 }
 
+                areas->goToPos(resulOp - 1);
+                tempArea = areas->getElement();
+
+                cout << "\nTambién se eliminarán los siguientes servicios: " << endl;
+                tempArea->servicios->printShow();
+
                 string decision = "";
                 int decisionOp = 0;
-                cout << "¿Está seguro de eliminar el área?" << endl;
-                cout << "También se eliminaran todos los servicios, ventanillas y tiquetes asociados a esta área" << endl;
+                cout << "\n¿Está seguro de eliminar el área?" << endl;                
                 cout << "1. Si" << endl;
                 cout << "2. No" << endl;
                 cout << "Escoja la opción: ";
@@ -651,12 +627,11 @@ void subOperacionAreas() {
                     decisionOp = chequeoRestriccionesRangos(decision, 1, 2);
                 }
 
-                if (decisionOp == 1) {
-                    areas->goToPos(resulOp - 1);
-                    tempArea = areas->getElement();
+                if (decisionOp == 1) {                    
                     List<Servicio *> *serviciosEliminar = new ArrayList<Servicio *>();
+                    Servicio *servicioActual;
                     for (servicios->goToStart(); !servicios->atEnd(); servicios->next()) {
-                        Servicio *servicioActual = servicios->getElement();
+                        servicioActual = servicios->getElement();
                         if (tempArea->servicios->contains(servicioActual)) {
                             serviciosEliminar->append(servicioActual);
                         }
@@ -665,9 +640,12 @@ void subOperacionAreas() {
                     for (serviciosEliminar->goToStart(); !serviciosEliminar->atEnd(); serviciosEliminar->next()) {
                         int pos = servicios->indexOf(serviciosEliminar->getElement(), 0);
                         servicios->goToPos(pos);
+                        servicioActual = servicios->getElement();
                         servicios->remove();
+                        delete servicioActual;
                     }
-                    cout << "Se ha eliminado correctamente el área: " << areas->remove() << endl;
+
+                    cout << "Se ha eliminado correctamente el área: " << areas->remove() << endl;                
                 }
                 else {
                     cout << "El area no ha sido eliminada" << endl;
@@ -868,6 +846,7 @@ void subOperacionServicios() {
                 string decision = "";
                 int decisionOp = 0;
                 cout << "¿Está seguro de eliminar el servicio?" << endl;
+                cout << "Esto eliminará también los tiquetes que estén en cola." << endl;
                 cout << "1. Si" << endl;
                 cout << "2. No" << endl;
                 cout << "Escoja una opción: ";
@@ -877,6 +856,7 @@ void subOperacionServicios() {
                 while (decisionOp == 0) {
                     int decisionOp = 0;
                     cout << "¿Está seguro de eliminar el servicio?" << endl;
+                    cout << "Esto eliminará también los tiquetes que estén en cola." << endl;
                     cout << "1. Si" << endl;
                     cout << "2. No" << endl;
                     cout << "Escoja una opción: ";
@@ -891,6 +871,7 @@ void subOperacionServicios() {
 
                     for (areas->goToStart(); !areas->atEnd(); areas->next()) {
                         Area* temp = areas->getElement();
+                        temp->tiquetes->clear();
                         if (temp->getDescripcion() == elemento->getAreaAsignada())
                             element = temp;
                     }
@@ -934,6 +915,8 @@ void subOperacionColasListas() {
     for (usuarios->goToStart(); !usuarios->atEnd(); usuarios->next()) {
         usuarios->getElement()->restartCount();
     }
+
+    tiqueteConsecutivo = 100;
 
     cout << "Presione cualquier tecla para continuar...";
     cin.get();

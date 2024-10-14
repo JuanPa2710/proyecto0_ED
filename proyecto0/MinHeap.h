@@ -1,5 +1,5 @@
 #pragma once
-#define DEFAULT_MAX 1024
+#define DEFAULT_MAX 100
 
 #include <stdexcept>
 #include <iostream>
@@ -16,7 +16,9 @@ private:
 	int size;
 
 	void siftUp(int pos) {
-		while (pos != 0 && elements[pos] < elements[parent(pos)]) {
+		int tempPos = pos;
+
+		while (pos != 0 && (elements[pos] < elements[parent(pos)])) {
 			swap(pos, parent(pos));
 			pos = parent(pos);
 		}
@@ -95,6 +97,7 @@ public:
 	E remove(int pos) {
 		if (pos < 0 || pos >= size)
 			throw runtime_error("Index out of bounds.");
+
 		swap(pos, size - 1);
 		size--;
 		siftDown(pos);
@@ -102,12 +105,7 @@ public:
 	}
 
 	void clear() {
-		for (int i = 0; i < size; i++) {
-			E temp = elements[i];
-			delete temp;
-		}
-
-		elements[0];
+		size = 0;
 	}
 
 	bool isEmpty() {
@@ -125,7 +123,7 @@ public:
     			cout << (i != 0? "]" : "") << "\n[ ";
 				temp = temp * 2 + 1;
 			}
-			cout << elements[i] << " ";
+			cout << i << " " << elements[i] << " ";
 		}
 
 		cout << "]\n";

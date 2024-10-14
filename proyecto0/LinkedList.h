@@ -72,6 +72,7 @@ public:
 			head->next = current->next;
 			delete current;
 		}
+
 		current = tail = head;
 		size = 0;;
 	}
